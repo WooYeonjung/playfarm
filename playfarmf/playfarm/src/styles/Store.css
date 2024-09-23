@@ -1,0 +1,24 @@
+.gamelist {
+    box-sizing: border-box;
+    /* border: solid 1px; */
+
+    /* width: 1520px; */
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.container {
+    background: #fff;
+    transition: 0.5s;
+}
+
+.container.dark {
+    background: #000;
+}
+
+@media (width < 965px) {
+    .gamelist {
+        flex-direction: column;
+    }
+}

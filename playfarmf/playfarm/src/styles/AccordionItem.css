@@ -1,0 +1,38 @@
+/* 기본적인 아코디언 요소 스타일 */
+.accordion-item {
+  border: 1px solid #000000; /* 테두리 스타일과 색상 설정 */
+  border-radius: 4px; /* 테두리의 모서리를 둥글게 만듦 */
+  margin-bottom: 30px; /* 아코디언 요소들 사이의 간격 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
+
+/* 아코디언 제목 스타일 */
+.accordion-title {
+  background-color: white; /* 배경색 설정 */
+  color: black; /* 글자색 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  font-weight: bold; /* 글자의 두께를 두꺼운(bold)으로 설정 */
+  border-bottom: 1px solid #ccc; /* 아코디언 제목 아래에 회색 경계선 추가 */
+  cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태를 나타냄 */
+}
+
+/* 아코디언 제목이 열린 상태일 때의 스타일 */
+.accordion-title.open {
+  background-color: #f0f0f0; /* 제목이 열린 경우의 배경색 설정 */
+}
+
+/* 아코디언 내용 스타일 */
+.accordion-content {
+  padding: 10px; /* 내부 여백 설정 */
+  max-height: 0; /* 초기에는 내용이 숨겨짐 */
+  overflow: hidden; /* 내용이 넘칠 경우를 방지하기 위해 숨김 처리 */
+  transition: max-height 0.3s ease-out; /* max-height 속성에 부드러운 트랜지션 효과 추가 */
+  display: none; /* 초기에는 내용이 보이지 않음 */
+}
+
+/* 아코디언 내용이 활성화된 상태일 때의 스타일 */
+.accordion-content.active {
+  max-height: 200px; /* 활성화된 경우 최대 높이 설정 */
+  display: block; /* 내용이 보이도록 설정 */
+}

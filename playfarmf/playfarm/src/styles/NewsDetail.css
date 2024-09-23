@@ -1,0 +1,186 @@
+.newsDetail_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.newsDetail_top {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    color: rgb(6, 6, 6);
+}
+
+.newsDetail_top img {
+    /* position: relative; */
+    width: 100%;
+    height: 100%;
+    filter: brightness(0.4)
+}
+
+.newsDetail_top .detail_title {
+    width: 100%;
+    position: absolute;
+    top: 250px;
+    text-align: center;
+}
+
+.newsDetail_top h1,
+.newsDetail_top h1+p {
+    opacity: 1;
+    word-break: break-all;
+}
+
+.newsDetail_top h1 {
+    color: rgb(252, 251, 211);
+    font-size: 3rem;
+
+}
+
+.newsDetail_top h1+p {
+    position: relative;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/****************Detail 상세****************/
+.newsDetail_middle {
+    width: 70%;
+    /* border: 1px solid #44444421; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    font-size: 2rem;
+    align-items: center;
+    gap: 20px;
+    border-radius: 30px;
+    box-shadow: 1px 1px 3px 1px #dadce0;
+}
+
+.newsDetail_middle>p:nth-of-type(1) {
+    font-weight: bolder;
+    margin-bottom: 10px;
+}
+
+.newsDetail_middle>p:nth-of-type(2) {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+.newsDetail_middle>img {
+    /* align-self: center; */
+    width: 70%;
+    box-sizing: border-box;
+    box-shadow: 5px 5px 5px 5px #444;
+}
+
+.newsDetail_middle>p:nth-of-type(3) {
+    font-weight: bolder;
+    align-self: self-start;
+    padding: 10px;
+}
+
+.newsDetail_middle>p:nth-of-type(4) {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: justify;
+    word-break: break-all;
+}
+
+
+/*New로 돌아가기*/
+.flipBox_wrapper {
+    position: relative;
+    width: 70%;
+
+
+}
+
+.flip-box {
+    position: relative;
+    right: 0px;
+    width: 200px;
+    margin-top: 30px;
+    border-radius: 50px;
+    /* height: 150px; */
+    perspective: 1000px;
+    background-color: rgba(36, 36, 36, 0.952);
+
+
+
+}
+
+.backButton {
+    /* background-color: rgba(0, 123, 255, 1); */
+    width: 100%;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    /* background-color: rgba(36, 36, 36, 0.952); */
+    background-color: rgba(0, 0, 0);
+    border-radius: 50px;
+
+    transition: background-color 0.3s, color 0.3s;
+    /* opacity: 1; */
+}
+
+.flip-box:hover {
+    background-color: rgba(0, 0, 0);
+}
+
+.backButton:hover {
+    /* background-color: #0056b3; */
+    color: #fff;
+}
+
+.backButton .icon {
+    position: relative;
+    /* float: left; */
+    color: #fff;
+    margin-right: 10px;
+    transition: transform 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.backButton:hover .icon {
+    transform: rotateY(360deg);
+
+}
+
+.backButton>.text {
+    /* float: left; */
+    position: relative;
+    z-index: 3;
+    opacity: 1;
+
+
+}
+
+.backButton:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 1;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease-in-out;
+}
+
+.backButton:hover:before {
+    transform: scaleX(1);
+    transform-origin: left;
+}

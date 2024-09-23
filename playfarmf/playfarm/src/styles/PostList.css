@@ -1,0 +1,32 @@
+.post-list-container {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left; /* 내용을 왼쪽 정렬 */
+}
+
+.post-list-title {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 10px;
+  text-align: center; /* 제목을 가운데 정렬 */
+}
+
+.post-item {
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.post-content {
+  color: #555;
+}

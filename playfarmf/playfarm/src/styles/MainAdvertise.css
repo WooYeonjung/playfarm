@@ -1,0 +1,139 @@
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.MainAdvertise {
+    max-width: 100vw;
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.newsTitle {
+    color: beige;
+    font-size: 2rem;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s, transform 0.9s;
+    text-align: center;
+}
+
+.newsVideo {
+    height: 70%;
+    width: 60%;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.9s, transform 0.9s;
+
+}
+
+.newsArticle {
+    border: 1px solid;
+    width: 30vw;
+    height: 80%;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.1s, transform 0.9s;
+
+}
+
+.newsVideo video {
+    border-radius: 20px;
+    width: 100%;
+    height: 90%;
+    object-fit: fill;
+}
+
+.newsArticleInfo {
+    color: white;
+    opacity: 0;
+}
+
+.newsArticleInfo p {
+    text-align: justify;
+    white-space: pre-wrap;
+    font-size: 1.5rem;
+    margin-top: 30px;
+}
+
+.newsVideo.visible,
+.newsTitle.visible,
+.newsArticle.visible,
+.newsArticleInfo.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900 */
+
+.noto-sans-kr-newsArticleInfo {
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+@media (width< 865px) {
+    .MainAdvertise {
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    .newsVideo {
+        height: 40%;
+        width: 80%;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.9s, transform 0.9s;
+        box-sizing: border-box;
+
+    }
+
+    .newsArticle {
+        border: 1px solid;
+
+        width: 80vw;
+        height: 40%;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 1.1s, transform 0.9s;
+
+    }
+
+    .newsArticleInfo>p {
+        font-size: 0.8rem;
+    }
+
+    .btn_1container {
+        position: relative;
+        /* display: flex; */
+        width: 50%;
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+        margin: 50px auto;
+        border: 1px solid white;
+        border-radius: 10px;
+        /* box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.637); */
+        background-color: #0a0a0a;
+        bottom: 40px
+    }
+
+}

@@ -1,0 +1,107 @@
+.gamelist_container {
+    flex: 3;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* min-height: 960px; */
+}
+
+.no_games_message {
+    grid-column: 2 / span 1;
+    align-content: center;
+}
+
+/* game item individual container */
+.gameitem_container {
+    height: 300px;
+    margin: 10px;
+
+    position: relative;
+    cursor: pointer;
+}
+
+.gameitem_image {
+    /* box-sizing: border-box;
+    border: solid 1px; */
+    width: 100%;
+    height: 150px;
+    /* height: 100%; */
+}
+
+.gameitem_releasedate {
+    color: gray;
+    margin-top: 5px;
+}
+
+.gameitem_title {
+    /* color: white; */
+    /* margin-top: 10px; */
+    /* white-space: nowrap; */
+    width: 100%;
+    word-break: break-all;
+    /* text-align: justify; */
+}
+
+.gameitem_price {
+    color: red;
+    font-size: 20px;
+    font-weight: 700;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+/* game item container hover css */
+
+
+.gameitem_container:hover {
+    box-sizing: border-box;
+    border: 1px solid #eee;
+
+
+}
+
+.dark .gameitem_container:hover {
+    box-sizing: border-box;
+    border: 1px solid #222;
+}
+
+.dark .gameitem_title {
+    color: #fff;
+}
+
+/* ================================================================= */
+/* pagination */
+
+.gamelist>div:nth-of-type(2) {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.pagination {
+    display: flex;
+    margin: auto;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination>button {
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    background: none;
+}
+
+.pagination>button.active {
+    color: blue;
+    transform: scale(1.2);
+    text-decoration: underline;
+}
+
+.pagination>button:not(.active):hover {
+    transform: scale(1.2);
+}

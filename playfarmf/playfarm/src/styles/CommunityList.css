@@ -1,0 +1,123 @@
+.commuList_container {
+    flex: 3;
+}
+
+.commuList_wrapper {
+    min-height: 850px;
+}
+
+.commuItem_container {
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.no_posts_message {
+    margin: 50px 300px;
+}
+
+/* <TOP> */
+.commuList_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.write_Btn_container {
+    display: flex;
+    align-items: center;
+}
+
+/* 글쓰기 button */
+.write_Btn {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: 0.4s;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.write_Btn:hover {
+    background-color: #242424;
+    color: #fff;
+}
+
+/* search bar */
+.commu_search_box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-sizing: border-box;
+    border: 2px solid;
+}
+
+.commu_search_box input {
+    padding: 5px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #000;
+    font-size: 18px;
+    max-width: 180px;
+}
+
+.commu_search_box input::placeholder {
+    color: #000;
+}
+
+.commu_search_icon {
+    width: 20px;
+    cursor: pointer;
+}
+
+/* <MAIN> */
+.commu_item_container {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid;
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
+.cmItem_icon {
+    flex: 1;
+}
+
+.cmItem_title {
+    flex: 3;
+}
+
+.cmItem_date {
+    flex: 1;
+}
+
+.cmItem_userId {
+    flex: 1;
+}
+
+/* pagenation */
+.commu_list_pagination {
+    margin-bottom: 20px;
+}
+
+@media (width < 680px) {
+    .commu_search_box {
+        width: 200px;
+        padding: 3px 8px;
+    }
+    .commu_search_box input {
+        max-width: 150px;
+    }
+}
+
+@media (width < 600px) {
+    .cmItem_userId {
+        display: none;
+    }
+}

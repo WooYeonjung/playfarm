@@ -1,0 +1,46 @@
+*{
+    margin: 0 auto;
+}
+
+/* 전체 틀 */
+.game_main_area {
+    width: 80vw;
+}
+
+/* 게임 구매 종류 */
+.game_purchase_type_area {
+    width: 100vw - 18px;
+}
+
+.game_purchase_type_area div {
+    width: 600px;
+    height: 250px;
+    /* background-color: #2b2a2ad8; */
+    box-sizing: border-box;
+    border-radius: 30px;
+    margin: 0;
+    margin-bottom: 20px;
+
+    display: flex;
+}
+
+.game_purchase_type_area img {
+    width: 250px;
+    height: 250px;
+
+    margin: 0;
+}
+
+/* nintendo 구매 */
+.nintendo_purchase {
+
+    /* width: 100%; */
+
+}
+
+/* playstation 구매 */
+.playstation_purchase {
+    /* width: 100%; */
+
+}
+

@@ -1,0 +1,188 @@
+/* WriteCommunity.css */
+.blank {
+    width: 100%;
+    /* height: 70.4px; */
+    margin: 25px 0 25px 20px;
+    /* padding: 30px 30px 0 30px; */
+}
+
+.write_community_container {
+    width: 60vw;
+    height: 100vh;
+    display: flex;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.write_community_title {
+    margin-bottom: 10px;
+}
+
+
+
+.write_community_wrapper {
+    flex: 2;
+    height: 70%;
+    margin-right: 100px;
+}
+
+.write_community_wrapper form {
+    margin-top: 10px;
+
+}
+
+.write_community_flex_container {
+    display: flex;
+    align-items: center;
+}
+
+.write_community_flex_between {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.write_community_margin_bottom {
+    margin-bottom: 10px;
+}
+
+.write_community_border_bottom {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.write_community_input,
+.write_community_textarea {
+    width: 90%;
+}
+
+.write_community_input[type='text'] {
+    padding: '5px 10px';
+    border: '2px solid #ccc';
+    border-radius: '5px';
+    font-size: '16px';
+    color: '#333';
+    cursor: 'pointer';
+    height: 40px;
+}
+
+.write_community_textarea {
+    resize: none;
+    /* 리사이즈 비활성화 */
+}
+
+.write_community_button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.write_community_button_cancel {
+    background-color: #f84949;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: 0.4s;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+}
+
+.write_community_button_submit {
+
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: 0.4s;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.write_community_button_submit:hover {
+    background-color: #242424;
+    color: #fff;
+}
+
+.write_community_button_cancel:hover {
+    background-color: #fff;
+    color: #f84949;
+}
+
+.write_community_select {
+    width: 200px;
+
+}
+
+.community_advertise {
+    flex: .8;
+    height: 70%;
+
+}
+
+/* 기존 CSS 코드 위에 추가 */
+.write_community_select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #e0dddd;
+    border-radius: 5px;
+    background: url('data:image/svg+xml;utf8,<svg fill="gray" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.write_community_select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.write_community_section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0dfdf;
+    /* padding-left:0px; */
+}
+
+.write_community_label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+/* .write_community_section>label:nth-of-type(1) {
+    display: flex;
+    flex-direction: row;
+} */
+
+@media (width<865px) {
+
+    .community_advertise {
+        display: none;
+    }
+
+    .write_community_wrapper {
+        /* flex: 1; */
+        height: 70%;
+        margin: 0px;
+    }
+
+    .write_community_input,
+    .write_community_textarea {
+        width: 100%;
+    }
+
+    .write_community_container {
+        width: 80vw;
+        height: 100vh;
+        display: flex;
+        /* margin: 0 auto; */
+        box-sizing: border-box;
+    }
+
+}

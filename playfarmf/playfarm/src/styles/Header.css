@@ -1,0 +1,323 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+
+}
+
+@font-face {
+    font-family: "Rock Salt";
+    src: url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+}
+
+.Header_container {
+    min-width: 320px;
+    color: #fff;
+    background: #000;
+    height: 160px;
+
+}
+
+.Header_top {
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.Header_top_third button {
+    color: white;
+    font-size: 20px;
+}
+
+/*header 윗부분 정렬*/
+.Header_top_first {
+
+    margin-left: 20px;
+}
+
+.Header_top_third {
+    margin-right: 20px;
+
+
+}
+
+/* 외부 링크  css*/
+
+
+.outlink_btn:not(.normalize *) {
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* button:not(.normalize *) {
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    appearance: none;
+    cursor: pointer;
+} */
+
+/**아웃링크 x버튼 css*/
+.xbtn {
+    text-align: right;
+}
+
+.xbtn>button {
+    background-color: #555;
+    border: none;
+}
+
+.xbtnIcon:hover {
+    transition: all .5s ease;
+    transform: scale(1.3);
+}
+
+/*아웃링크 타이틀*/
+.outLinkTitle {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+}
+
+/*logo css*/
+.Header_top_second.logo h2 span {
+    position: relative;
+    display: inline-block;
+    animation: bounce .7s ease-in-out alternate;
+    font-family: "Rock Salt", cursive;
+    font-weight: 400;
+    font-style: normal;
+    color: #FFF;
+    text-shadow: 0 1px 0 #CCC,
+        0 2px 0 #CCC,
+        0 3px 0 #CCC,
+        0 4px 0 #CCC,
+        0 5px 0 #CCC,
+        0 6px 0 transparent,
+        0 7px 0 transparent,
+        0 8px 0 transparent,
+        0 9px 0 transparent,
+        0 10px 10px rgba(0, 0, 0, .4);
+}
+
+.Header_top_second.logo h2 span:nth-child(2) {
+    animation-delay: .1s;
+}
+
+.Header_top_second.logo h2 span:nth-child(3) {
+    animation-delay: .2s;
+}
+
+.Header_top_second.logo h2 span:nth-child(4) {
+    animation-delay: .3s;
+}
+
+.Header_top_second.logo h2 span:nth-child(5) {
+    animation-delay: .4s;
+}
+
+.Header_top_second.logo h2 span:nth-child(6) {
+    animation-delay: .5s;
+}
+
+.Header_top_second.logo h2 span:nth-child(7) {
+    animation-delay: .6s;
+}
+
+.Header_top_second.logo h2 span:nth-child(8) {
+    animation-delay: .7s;
+}
+
+@keyframes bounce {
+    100% {
+        top: -20px;
+        text-shadow: 0 1px 0 #CCC,
+            0 2px 0 #CCC,
+            0 3px 0 #CCC,
+            0 4px 0 #CCC,
+            0 5px 0 #CCC,
+            0 6px 0 #CCC,
+            0 7px 0 #CCC,
+            0 8px 0 #CCC,
+            0 9px 0 #CCC,
+            0 50px 25px rgba(0, 0, 0, .2);
+    }
+}
+
+
+
+/*Header Bottom*/
+
+
+
+
+.Header_bottom {
+    height: 56px;
+    background-color: #2b2a2ad8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.Header_bottom ul {
+    padding: 0;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    /* align-content: center; */
+
+}
+
+.Header_bottom ul li {
+    padding: 5px;
+}
+
+.Header_bottom ul a {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+
+}
+
+
+.Header_bottom ul li:hover {
+    /* border-bottom: 1px solid #555;
+    text-shadow:0 5px 0 0 #555; */
+    box-shadow: 0px 10px #555;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+.Header_bottom span {
+    color: white;
+}
+
+
+/*햄버거 메뉴*/
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #444;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    width: 150px;
+    max-height: 0;
+    overflow: hidden;
+    /* transition: max-height 0.3s ease-out; */
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    z-index: 99999;
+    opacity: 0.9;
+
+}
+
+.menu.open {
+
+    max-height: 200px;
+    /* Adjust this value based on the number of items */
+}
+
+.menu li {
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-bottom: 1px solid #555;
+
+
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+}
+
+.menu li:hover {
+    background-color: #555;
+}
+
+
+.arcodianIcon {
+    color: white;
+    /* padding-right: 10px; */
+    width: 40px;
+}
+
+.Header_top_third span:hover {
+    color: orange;
+    cursor: pointer;
+}
+
+/* @media (width<865px) {
+
+    .Header_bottom ul {
+        padding: 0;
+        width: 100%;
+        height: autu;
+
+
+    }
+
+    .Header_bottom ul li {
+        font-size: 0.9rem;
+
+    }
+
+} */
+@media (max-width: 865px) {
+    .Header_container {
+        height: auto;
+    }
+
+    .Header_bottom {
+        height: auto;
+        flex-direction: column;
+    }
+
+    .Header_bottom ul {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 10px;
+    }
+
+    .Header_bottom ul li {
+        font-size: 0.9rem;
+        text-align: center;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .Header_bottom ul a {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .Header_bottom ul li:hover {
+        box-shadow: none;
+        transform: none;
+        background-color: #555;
+    }
+
+    .Header_bottom ul li:nth-child(1),
+    .Header_bottom ul li:nth-child(2),
+    .Header_bottom ul li:nth-child(3) {
+        grid-column: 1;
+    }
+
+    .Header_bottom ul li:nth-child(4),
+    .Header_bottom ul li:nth-child(5) {
+        grid-column: 2;
+    }
+}

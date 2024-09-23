@@ -1,0 +1,6 @@
+/* <commu_detail_container> */
+.commu_detail_container {
+    width: 80vw;
+    margin: 0 auto;
+    display: flex;
+}

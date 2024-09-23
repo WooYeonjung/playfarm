@@ -1,0 +1,182 @@
+/* 전체 폼(.InquiryForm)의 스타일 */
+.InquiryForm {
+  max-width: 50%; /* 최대 너비 설정 */
+  margin: 50px auto; /* 중앙 정렬 및 상하 여백 설정 */
+  padding: 20px; /* 내부 여백 설정 */
+  border: 2px solid #333; /* 검정 테두리 설정 */
+  border-radius: 10px; /* 모서리 둥글게 처리 */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  position: relative; /* 상대적 위치 설정 */
+}
+
+/* 1:1 문의 링크(.inquiry-view-link)의 스타일 */
+.inquiry-view-link {
+  position: fixed; /* 고정 위치로 설정 */
+  top: 210px; /* 상단에서 210px 위치로 배치 */
+  right: 2%; /* 우측에서 21% 위치로 배치 */
+  font-size: 16px; /* 글자 크기 설정 */
+  color: #fff; /* 텍스트 색상 흰색으로 설정 */
+  padding: 1%; /* 내부 여백 설정 */
+  background-color: #333; /* 배경색 검정색으로 설정 */
+  text-decoration: none; /* 링크의 밑줄 제거 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  line-height: 1.5; /* 줄 높이 설정 */
+  writing-mode: vertical-lr; /* 텍스트 세로로 배열 설정 */
+  text-orientation: upright; /* 텍스트 방향 설정 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  border-radius: 10px; /* 모서리 둥글게 처리 */
+  letter-spacing: 2.5px; /* 글자 간격 설정 */
+}
+
+/* 팝업 창(.popup)의 스타일 */
+.popup {
+  position: fixed; /* 고정 위치로 설정 */
+  top: 50%; /* 상단에서 중앙으로 이동 */
+  left: 50%; /* 좌측에서 중앙으로 이동 */
+  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 이동 */
+  background-color: #ffffff; /* 배경색 설정 */
+  padding: 30px; /* 내부 여백 설정 */
+  border-radius: 10px; /* 모서리 둥글게 처리 */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  width: 300px; /* 너비 설정 */
+  max-width: 80%; /* 최대 너비 설정 */
+  z-index: 1000; /* z-index를 사용하여 위로 띄우기 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 팝업 창 내 단락(p)의 스타일 */
+.popup p {
+  font-size: 18px; /* 글자 크기 설정 */
+  margin-bottom: 20px; /* 하단 마진 설정 */
+}
+
+/* 팝업 창 내 버튼(button)의 스타일 */
+.popup button {
+  background-color: #4CAF50; /* 배경색 설정 */
+  color: white; /* 텍스트 색상 설정 */
+  padding: 10px 20px; /* 내부 여백 설정 */
+  border: none; /* 테두리 없애기 */
+  cursor: pointer; /* 커서 타입 설정 */
+  border-radius: 5px; /* 모서리 둥글게 처리 */
+  font-size: 16px; /* 글자 크기 설정 */
+}
+
+/* 버튼 호버 효과 스타일 */
+.popup button:hover {
+  background-color: #45a049; /* 호버 시 배경색 변경 */
+}
+
+/* 제목(1:1 문의) 스타일 */
+.InquiryForm h2 {
+  margin: 10px 0; /* 마진 설정 */
+  margin-bottom: 5%; /* 하단 마진 추가 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  font-size: 1.5rem; /* 글자 크기 설정 */
+  color: #333; /* 텍스트 색상 설정 */
+}
+
+/* 폼 요소들을 세로 방향으로 배열하기 위한 설정 */
+.InquiryForm form {
+  display: flex; /* 플렉스 박스로 설정 */
+  flex-direction: column; /* 세로 방향으로 배열 */
+}
+
+/* 라벨(label)의 스타일 */
+.InquiryForm label {
+  margin-bottom: 15px; /* 하단 마진 설정 */
+  display: flex; /* 플렉스 박스로 설정 */
+  align-items: center; /* 수직 방향으로 가운데 정렬 */
+}
+
+/* 라벨의 텍스트(span) 스타일 */
+.InquiryForm label span {
+  width: 120px; /* 너비 설정 */
+  text-align: right; /* 텍스트 오른쪽 정렬 */
+  margin-right: 10px; /* 오른쪽 마진 설정 */
+}
+
+/* 입력 필드(input[type="email"], input[type="text"], textarea, select) 공통 스타일 */
+.InquiryForm input[type="email"],
+.InquiryForm input[type="text"],
+.InquiryForm textarea,
+.InquiryForm select {
+  flex: 1; /* 자동 크기 조정 */
+  padding: 12px; /* 내부 여백 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+  border-radius: 4px; /* 모서리 둥글게 처리 */
+  margin-top: 5px; /* 상단 마진 설정 */
+}
+
+/* 텍스트 영역(textarea) 스타일 */
+.InquiryForm textarea {
+  resize: vertical; /* 세로 크기 조절 허용 */
+  height: 200px; /* 원하는 높이로 설정 */
+  padding: 12px; /* 내부 여백 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+  border-radius: 4px; /* 모서리 둥글게 처리 */
+  margin-top: 5px; /* 상단 마진 설정 */
+}
+
+/* 제출 버튼(button) 스타일 */
+.InquiryForm button {
+  margin-top: 15px; /* 상단 마진 설정 */
+  align-self: center; /* 자기 자신을 가운데 정렬 */
+  padding: 12px 24px; /* 내부 여백 설정 */
+  background-color: #007bff; /* 배경색 설정 */
+  color: #fff; /* 텍스트 색상 설정 */
+  border: none; /* 테두리 없애기 */
+  border-radius: 4px; /* 모서리 둥글게 처리 */
+  cursor: pointer; /* 커서 타입 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+}
+
+/* 제출 버튼 호버 효과 스타일 */
+.InquiryForm button:hover {
+  background-color: #0056b3; /* 호버 시 배경색 변경 */
+}
+
+/* 경고 메시지(.warning-message)의 스타일 */
+.warning-message {
+  text-align: center; /* 텍스트 가운데 정렬 */
+  margin-top: 40%; /* 상단 여백 설정 */
+  margin-bottom: 50%; /* 하단 여백 설정 */
+  font-size: 1.4rem; /* 글자 크기 설정 */
+}
+
+/* 게임 장르 선택 부분(.genres)의 스타일 */
+.InquiryForm .genres {
+  display: flex; /* 플렉스 박스로 설정 */
+  flex-direction: column; /* 세로 방향으로 배열 */
+  align-items: center; /* 수직 방향으로 가운데 정렬 */
+}
+
+/* 게임 장르 선택 제목(.genres h3)의 스타일 */
+.InquiryForm .genres h3 {
+  margin: 3%; /* 마진 설정 */
+}
+
+/* 게임 장르 체크박스들을 묶는 요소(.genre-checkboxes)의 스타일 */
+.InquiryForm .genre-checkboxes {
+  display: flex; /* 플렉스 박스로 설정 */
+  flex-wrap: wrap; /* 자식 요소가 넘칠 경우 줄 바꿈 */
+  justify-content: center; /* 가로 방향으로 가운데 정렬 */
+  gap: 10px; /* 요소 사이 간격 설정 */
+  margin-top: 10px; /* 상단 마진 설정 */
+}
+
+/* 게임 장르 체크박스 라벨(label)의 스타일 */
+.InquiryForm .genre-checkboxes label {
+  display: flex; /* 플렉스 박스로 설정 */
+  align-items: center; /* 수직 방향으로 가운데 정렬 */
+  margin-right: 10px; /* 오른쪽 마진 설정 */
+  padding: 5px; /* 내부 여백 설정 */
+}
+
+@media screen and (max-width: 495px) {
+  .warning-message {
+    font-size: 0.8rem; /* 작은 글자 크기 */
+    font-weight: bold; /* 진한 글자 설정 */
+  }
+}

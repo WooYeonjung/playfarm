@@ -1,0 +1,171 @@
+.mainSlideImg_container {
+    position: relative;
+    width: 100vw - 18px;
+    height: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: black;
+    flex-wrap: wrap;
+}
+
+.mainSlide_title {
+    color: beige;
+    font-size: 2rem;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s, transform 0.9s;
+    text-align: center;
+}
+
+.mainSlide_title.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slideWrapper {
+    position: relative;
+    width: 100%;
+    height: 95%;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.mainSlideImg_wrapper {
+    display: flex;
+    overflow: hidden;
+    transition: transform 0.5s ease-in-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainSlideImg {
+    width: 70vw;
+    height: 600px;
+    /* transition: opacity 0.7s ease, transform 0.7s ease-in-out; */
+    cursor: pointer;
+    position: absolute;
+    transition: opacity 0.2s ease, transform 0.7s ease;
+}
+
+.mainSlideImg.current {
+    opacity: 1;
+}
+
+.mainSlideImg.previous {
+    opacity: 0.5;
+
+    /* left: -100%; */
+}
+
+.mainSlideImg.next {
+    opacity: 0.5;
+    /* right: -100%; */
+}
+
+.play_btn_wrapper {
+    position: absolute;
+    bottom: 70px;
+    right: 30px;
+}
+
+.play_btn {
+    font-size: 24px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+/*nowGame 버튼*/
+/* .nowGame_wrapper {
+    display: flex;
+    overflow: hidden;
+    transition: transform 0.5s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+
+
+} */
+
+.nowGameBtn_wrapper {
+    padding: 10px;
+    width: 70vw;
+    position: absolute;
+    margin-left: 20px;
+    transition: opacity 0.2s ease, transform 0.7s ease;
+
+}
+
+
+.nowGameBtn_wrapper>button {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.808);
+    width: 200px;
+    color: rgb(12, 12, 12);
+    position: absolute;
+    top: 250px;
+    transition: opacity 0.3s ease, transform 0.7s ease;
+    border-radius: 30px;
+    font-weight: bolder;
+    font-size: 1.2rem;
+
+}
+
+.nowGameBtn_wrapper>button:hover {
+    background-color: rgba(0, 0, 0, 0.712);
+    color: white;
+}
+
+.nowGameBtn.current {
+    opacity: 1;
+}
+
+.nowGameBtn.previous {
+    opacity: 0;
+
+    /* left: -100%; */
+}
+
+.nowGameBtn.next {
+    opacity: 0;
+    /* right: -100%; */
+}
+
+@media (max-width: 768px) {
+    .mainSlideImg_container {
+        padding-top: 50px;
+        padding-bottom: 100px;
+        height: 550px;
+
+    }
+
+    .mainSlideImg {
+        width: 70vw;
+        height: 400px;
+        /* transition: opacity 0.7s ease, transform 0.7s ease-in-out; */
+        cursor: pointer;
+        position: absolute;
+        transition: opacity 0.2s ease, transform 0.7s ease;
+    }
+
+    .nowGameBtn_wrapper>button {
+        padding: 5px;
+        background-color: rgba(255, 255, 255, 0.808);
+        width: 100px;
+        color: rgb(12, 12, 12);
+        position: absolute;
+        top: 180px;
+        transition: opacity 0.3s ease, transform 0.7s ease;
+        border-radius: 30px;
+        font-weight: bolder;
+        font-size: .8rem;
+
+    }
+}

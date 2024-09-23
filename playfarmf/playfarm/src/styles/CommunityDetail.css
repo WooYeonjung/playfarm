@@ -1,0 +1,40 @@
+.detail_nav_area {
+    margin: 25px 0;
+    margin-left: 20px;
+}
+
+.commu_detail_main_container {
+    width: 80vw;
+    height: 800px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.commu_detail_main {
+    flex: 3;
+    padding: 20px;
+}
+
+.commu_detail_title {
+    font-size: 28px;
+    font-weight: 700;
+    padding: 10px 0;
+}
+
+.commu_detail_addinfo {
+    font-size: 16px;
+    color: #777;
+    padding-bottom: 10px;
+}
+
+.commu_detail_addinfo span:nth-child(2)::before,
+.commu_detail_addinfo span:nth-child(3)::before {
+    border-left: 1px solid #ebeef1;
+    height: 10px;
+    content: "";
+    margin: 0 8px;
+}
+
+.commu_detail_content {
+    font-size: 20px;
+}

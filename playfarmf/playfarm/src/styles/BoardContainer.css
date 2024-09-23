@@ -1,0 +1,27 @@
+.customer-board {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.customer-post {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.customer-post h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.customer-post p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}

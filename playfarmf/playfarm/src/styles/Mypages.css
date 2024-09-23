@@ -1,0 +1,821 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.myPageMain {
+  display: flex;
+  flex-direction: column;
+  /* grid-template-rows: 120px 800px; */
+  height: 100%;
+  gap: 10px;
+}
+
+.page1 {
+  display: flex;
+  justify-content: center;
+  /* grid-row: 1 / 2; */
+  height: 150px;
+}
+
+.page1>ul {
+  flex: .5;
+  display: flex;
+  gap: 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.page1>ul>li {
+  flex: 1;
+  align-content: center;
+  width: 100%;
+}
+
+.page1 li>a {
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  color: black;
+  padding: 5%;
+}
+
+.page1 li>a:nth-of-type(1)>span:nth-child(2) {
+  display: none;
+}
+
+.page1 li:hover>a:nth-of-type(1)>span:nth-child(2) {
+  display: block;
+}
+
+.page1 li:hover>a {
+  display: block;
+  transform: scale(1.1);
+}
+
+.page2 {
+  grid-row: 2 / 3;
+}
+
+
+/* ============================================================================ */
+/* list1 css */
+/* userInfo css */
+
+.userInfoBox {
+  display: flex;
+  /* grid-template-columns: 300px 1fr;
+  grid-template-rows: 1fr 100px; */
+  justify-content: center;
+  gap: 2%;
+  /* margin-bottom: 5%; */
+}
+
+.userInfoBox>h1 {
+  flex: 1;
+  /* grid-column: 1 / 2; */
+  text-align: center;
+}
+
+.userInfoBox>div {
+  /* flex: 4; */
+  width: 80%;
+  height: 100%;
+  margin-inline: 1%;
+}
+
+.userInfo {
+  flex: 4;
+  box-sizing: border-box;
+  /* grid-column: 2 / 3; */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  /* width: 80%; */
+  height: 80vh;
+  border-radius: 20px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  gap: 10px;
+  margin-inline: 2%;
+  margin-bottom: 10px;
+}
+
+.userInfo>div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column: 2 / 5;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userInfo>div>h4 {
+  grid-column: 1 / 2;
+  color: black;
+  padding-left: 20px;
+  justify-self: start;
+}
+
+.userInfo>div>input {
+  grid-column: 2 / 4;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  padding-left: 10px;
+  margin-right: 20px;
+  font-size: medium;
+  font-weight: bold;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+}
+
+.userInfo>div>input:focus {
+  transform: scale(1.05);
+}
+
+.userInfo>p {
+  grid-column: 3 / 5;
+  font-size: small;
+  font-weight: bold;
+  font-style: italic;
+  justify-self: center;
+}
+
+.userInfo>div:nth-child(1) {
+  grid-row: 2 / 3;
+}
+
+.userInfo>p:nth-of-type(1) {
+  grid-row: 3 / 4;
+  align-content: center;
+}
+
+.userInfo>div:nth-child(2) {
+  grid-row: 4 / 5;
+}
+
+.userInfo>div:nth-child(3) {
+  grid-row: 5 / 6;
+}
+
+.userInfo>p:nth-of-type(2) {
+  grid-row: 6 / 7;
+  align-content: center;
+}
+
+.userInfo>div:nth-child(4) {
+  grid-row: 7 / 8;
+}
+
+.userInfo>div:nth-child(5) {
+  grid-row: 8 / 9;
+}
+
+.userInfo>button {
+  width: 50%;
+  height: 65%;
+  /* border: 1px solid; */
+  border-radius: 8px;
+  justify-self: start;
+  align-self: center;
+  font-weight: bold;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+}
+
+.userInfo>button {
+  grid-column: 5 / 6;
+  grid-row: 2 / 3;
+}
+
+.userInfo>button:hover {
+  transform: scale(1.1);
+}
+
+.userInfo>div:nth-of-type(6) {
+  grid-column: 3 / 4;
+  grid-row: 12 / 13;
+  display: flex;
+  height: 3vh;
+  width: 100%;
+  height: 100%;
+  /* gap: 1%; */
+}
+
+.userInfoBtn {
+  gap: 3%;
+}
+
+.userInfoBtn>button {
+  width: 80%;
+  height: 80%;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  background-color: rgb(0, 0, 255);
+  box-shadow: 1px 1px 3px 1px #dadce0;
+}
+
+
+.userInfoBtn>button:nth-child(2) {
+  background-color: red;
+}
+
+.userInfoBtn>button:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================================================== */
+/* Mypages css */
+
+.container_box {
+  grid-row: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 3%;
+  margin-block: 5%;
+}
+
+.container_box>div {
+  position: relative;
+  /* border: 1px solid; */
+  width: 20%;
+  height: 70vh;
+  align-content: end;
+
+  transition-duration: 300ms;
+  transition-property: transform, box-shadow;
+  transition-timing-function: ease-out;
+  /* transform: rotate3d(0); */
+
+}
+
+.container_box>div>.conItem1:hover,
+.container_box>div>.conItem2:hover,
+.container_box>div>.conItem3:hover {
+  transition-duration: 150ms;
+  box-shadow: 0 5px 20px 5px #00000044;
+  filter: blur(3px);
+  transform: rotate3d(0, 1, 2, .01rad);
+  /* transform: rotate3d(0, 1, 0.5, 3.142rad); */
+}
+
+.container_box>div span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  filter: blur(0);
+  transform: scale(2) translateX(-25%) translateY(-100%);
+  z-index: 2;
+  font-weight: bold;
+  color: white;
+}
+
+.container_box>div:hover span {
+  transform: scale(2.5) translateX(-20%) translateY(-100%);
+}
+
+.container_box>div>div {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.container_box>div>.conItem1 {
+  background: url(../images/store/PUBG/battlegrounds-duo.jpg) no-repeat 0/100% 100%;
+}
+
+.container_box>div>.conItem2 {
+  background: url(../images/store/PUBG/battlegrounds-solo.jpg) no-repeat 0/100% 100%;
+}
+
+.container_box>div>.conItem3 {
+  background: url(../images/store/PUBG/battlegrounds-squad.jpg) no-repeat 0/100% 100%;
+}
+
+
+/* ========================================================================== */
+/* List2 css */
+
+.userInfo2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-auto-flow: dense;
+  width: 80%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  gap: 10px;
+  padding: 1%;
+}
+
+.userInfo2>[class^=game] {
+  position: relative;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  width: 100%;
+  height: 175px;
+  background-size: 100% 100%;
+  background-position: center;
+}
+
+.userInfo2>[class^=game]>a>p {
+  font-size: large;
+  font-weight: bold;
+  align-self: end;
+  padding-bottom: 8%;
+  color: blueviolet;
+}
+
+.userInfo2>[class^=game]>button {
+  font-weight: bold;
+  align-self: end;
+  padding-bottom: 8%;
+  color: red;
+  border: none;
+  background: none;
+}
+
+.userInfo2+div>button {
+  top: 0;
+  right: 0;
+  transform: translateX(-10%) translateY(20%);
+}
+
+.userInfo2>[class^=game]>button:hover {
+  transform: scale(1.2);
+}
+
+.userInfo2>[class^=game]>button:active {
+  color: black;
+}
+
+/* ==================================================================== */
+/* list3 css */
+
+.userInfo3 {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-auto-flow: dense;
+  width: 78%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  gap: 10px;
+  padding: 1%;
+}
+
+.userInfo3>div {
+  display: grid;
+  grid-template-rows: 1fr 50px;
+  gap: 5px;
+  height: 200px;
+}
+
+.userInfo3>div>[class^=game] {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  background-size: 100% 100%;
+  background-position: center;
+}
+
+.userInfo3>div>[class^=game]>div:nth-of-type(1)>button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  transform: translateX(-20%) translateY(20%);
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  background-color: white;
+}
+
+.userInfo3>div>[class^=game]>div:nth-of-type(1)>button:hover {
+  transform: scale(1.15) translateX(-20%) translateY(20%);
+  transform: 2s;
+}
+
+.userInfo3>div>[class^=game]>div:nth-of-type(1)>button:active {
+  transform: scale(1) translateX(-20%) translateY(20%);
+  transform: 2s;
+  background-color: lightgray;
+}
+
+.userInfo3>div>button {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  width: 100%;
+  height: 80%;
+  background-color: red;
+  justify-self: center;
+  border: none;
+}
+
+/* ======================================================================= */
+/* pagination css */
+
+.userInfoBox+.pagination1 {
+  display: flex;
+  gap: 10px;
+  margin: auto;
+  margin-block: 20px;
+}
+
+.userInfoBox+.pagination1>button {
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  background: none;
+}
+
+.userInfoBox+.pagination1>button:hover {
+  transform: scale(1.2);
+}
+
+.userInfoBox+.pagination1>button.active {
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+/* ======================================================================= */
+/* modal css */
+
+/* Mypages.css */
+
+.Modal {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  width: 50%;
+  height: 43em;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.Modal>div {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  height: 100%;
+}
+
+.Modal>div>div:nth-of-type(1) {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  grid-row: 1 / 2;
+  /* height: 100%; */
+  justify-items: center;
+  align-items: center;
+}
+
+.Modal>div>div:nth-of-type(1)>div {
+  grid-column: 1 / 2;
+}
+
+.Modal>div>div:nth-of-type(1)>span {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-content: center;
+}
+
+.Modal>div>div:nth-of-type(1)>span>button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+}
+
+.Modal>div>div:nth-of-type(1)>span>button:hover {
+  transform: scale(1.2);
+}
+
+.Modal>div>div:nth-of-type(1)>span>button:active {
+  transform: scale(1);
+}
+
+.Modal>div>div:nth-of-type(2) {
+  display: grid;
+  /* grid-template-columns: 1fr 1.5fr; */
+  /* grid-template-rows: repeat(4, 1fr); */
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  height: 60%;
+}
+
+.Modal>div>div:nth-of-type(2)>div {
+  grid-column: 1 / 2;
+  justify-self: center;
+  align-content: center;
+}
+
+.Modal>div>div:nth-of-type(2)>p {
+  grid-column: 2 / 3;
+  align-self: center;
+  padding-left: 10%;
+}
+
+/* ============================================================================= */
+/* modal2 css */
+
+.Modal1 {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  width: 1160px;
+  height: 780px;
+}
+
+
+.Modal1>div {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: .3fr 1fr;
+}
+
+.Modal1>div>div:nth-of-type(1) {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  width: 100%;
+  justify-self: center;
+  align-content: center;
+}
+
+.Modal1>div>div:nth-of-type(1)>div {
+  position: relative;
+  grid-column: 1 / 3;
+  width: 100%;
+  height: 100%;
+}
+
+.Modal1>div>div:nth-of-type(1)>span {
+  /* position: absolute; */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-content: center;
+}
+
+.Modal1>div>div:nth-of-type(1)>span>button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+}
+
+.Modal1>div>div:nth-of-type(1)>span>button:hover {
+  transform: scale(1.2);
+}
+
+.Modal1>div>div:nth-of-type(1)>span>button:active {
+  transform: scale(1);
+}
+
+.downloadSection {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.downloadInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+}
+
+
+.downloadInfo>div {
+  width: 100%;
+}
+
+.downloadInfo>.downloadCom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 10px;
+}
+
+.downloadInfo>.downloadCom>button {
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  width: 20%;
+  height: 20%;
+  background: none;
+  border: none;
+}
+
+
+.downloadInfo>div>progress {
+  width: 80%;
+}
+
+.downloadActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100%;
+  gap: 10%;
+}
+
+.downloadActions>h3 {
+  font-size: 24px;
+}
+
+.downloadActions>button {
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  width: 100%;
+  height: 20%;
+  background: none;
+  border: none;
+}
+
+/* ================================================================ */
+/* media quary*/
+
+@media (width < 1270px) {
+  .Modal1 {
+    width: 80%;
+    height: 80%;
+  }
+}
+
+@media (width < 960px) {
+  .container_box {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+  }
+
+  .container_box>div {
+    width: 70%;
+  }
+
+  .myPageMain>.userInfoBox {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+  }
+
+  .myPageMain>.userInfoBox1 {
+    height: 90vh;
+  }
+
+  .myPageMain>.userInfoBox1>h1 {
+    flex: .1;
+  }
+
+  .myPageMain>.userInfoBox>h1 {
+    text-align: center;
+  }
+  
+  .myPageMain>.userInfoBox>.userInfo,
+  .myPageMain>.userInfoBox>.userInfo2,
+  .myPageMain>.userInfoBox>div {
+    margin: auto;
+  }
+
+  .myPageMain>.userInfoBox>div {
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .myPageMain>.userInfoBox>.userInfo {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .myPageMain>.userInfoBox>.userInfo>p {
+    grid-column: 3 / 6;
+  }
+  
+  .myPageMain>.userInfoBox>.userInfo>div {
+    grid-column: 1 / 6;
+  }
+  
+  .myPageMain>.userInfoBox>.userInfo>div>input {
+    width: 90%;
+    padding-left: 10px;
+  }
+
+  .myPageMain>.userInfoBox>.userInfo>div:nth-of-type(6) {
+    width: 40%;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .myPageMain>.userInfoBox>.userInfo>div:nth-of-type(6)>button {
+    width: 150px;
+  }
+
+  .userInfo3 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    height: 100%;
+  }
+
+  .userInfoBox>.pagination {
+    height: 5%;
+    margin: auto;
+  }
+
+  .userInfo2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .Modal1 {
+    width: 55%;
+    height: 50%;
+  }
+  
+}
+
+@media (width < 600px) {
+  .userInfo {
+    margin-bottom: 1%;
+  }
+  
+  .userInfo2 {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+  }
+  
+  .userInfo3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  .container_box {
+    height: 100%;
+  }
+
+  .container_box>div {
+    margin: 5% auto;
+    height: 20vh;
+  }
+}

@@ -1,0 +1,153 @@
+.btn_1container {
+    position: absolute;
+    /* display: flex; */
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    border: 1px solid white;
+    border-radius: 10px;
+    /* box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.637); */
+    background-color: #0a0a0a;
+    bottom: 40px
+}
+
+.btn_1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-radius: 10px;
+    /* border: 1px solid white; */
+    color: #fff;
+    background-color: #0a0a0a;
+    font-size: 1rem;
+
+
+}
+
+.btn_1container :hover {
+    background-color: #e7e6e6;
+    border: 1px solid rgba(247, 247, 247, 0.171);
+    color: #0a0a0a;
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 40px;
+    right: 60px;
+    z-index: 1000;
+}
+
+.scroll-button {
+    background-color: #080808f5;
+    color: #f5f1f1;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    /* z-index: 3939; */
+}
+
+.scroll-button:hover {
+    opacity: 1;
+}
+
+/*****더보기 버튼*******/
+.moreBtn_wrapper {
+    width: 60px;
+    height: 30px;
+    background-color: #0a0a0a83;
+    border-radius: 10px;
+    margin-top: 5px;
+    float: right;
+}
+
+.moreBtn {
+    display: block;
+    /* padding: 10px; */
+    width: 60px;
+    height: 30px;
+    font-size: 1rem;
+    color: #f5f1f1;
+    letter-spacing: 3px;
+    background-color: #555;
+    border: none;
+}
+
+.moreBtn_wrapper:hover {
+    background-color: rgba(255, 255, 255, 0.849);
+    transition: all .3s;
+}
+
+.moreBtn:hover {
+    color: #0a0a0ad2;
+    transition: all .3s;
+}
+
+
+/*결제하기 버튼*/
+
+/* btn 효과 - 3가지 */
+/* 1. btn_pc */
+.purchase_btn_cart {
+    width: 150px;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    color: #000;
+    font-weight: 700;
+    font-size: 15px;
+    /* background-color: #222; */
+    padding: 10px 10px;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.20);
+}
+
+.purchase_btn_cart span {
+    position: relative;
+    z-index: 1;
+    font-size: 15px;
+}
+
+.purchase_btn_cart:hover span {
+    color: #fff;
+}
+
+.purchase_btn_cart:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 490%;
+    width: 140%;
+    background: #000;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
+    transform: translateX(-98%) translateY(-25%) rotate(45deg);
+}
+
+.purchase_btn_cart:hover:after {
+    -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+    transform: translateX(-9%) translateY(-25%) rotate(45deg);
+    color: #fff;
+}
+/* 
+* {
+    background-color: aqua;
+    color: #b3ffff!important;
+} */
