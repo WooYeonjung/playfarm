@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.playfarmb.auth.entity.User;
-import com.example.playfarmb.auth.repository.UserRepository;
+import com.example.playfarmb.auth.repository.UserDSLRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class UserServiceImpl implements UserService{
 	
-	UserRepository urepository;
+	UserDSLRepository urepository;
 @Override
 public List<User> findUser() {
 	// TODO Auto-generated method stub
