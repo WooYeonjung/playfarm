@@ -47,11 +47,11 @@ public class Reply {
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post post;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "root", referencedColumnName = "reply_id", insertable = false, updatable = false)
     private Reply parentReply;
 }
