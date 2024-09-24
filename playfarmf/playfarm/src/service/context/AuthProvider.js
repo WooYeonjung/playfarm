@@ -12,7 +12,11 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
-        if (loginCheck && loginCheck.token) {
+        // if (loginCheck && loginCheck.token) {
+        //     setIsLoggedIn(true);
+        //     setLoginInfo(loginCheck);
+        // }
+        if (loginCheck) {
             setIsLoggedIn(true);
             setLoginInfo(loginCheck);
         }
@@ -34,7 +38,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const onLogout = async () => {
-        const url = "/auth/logout";
+        const url = "/user/logout";
         try {
             await apiCall(url, 'GET', null, loginInfo.token);
             sessionStorage.clear();
