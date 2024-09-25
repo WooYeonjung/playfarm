@@ -13,9 +13,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "reply")
+//
+//@Entity
+//@Table(name = "reply")
 public class Reply {
 
 	@Id
