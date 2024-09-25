@@ -6,5 +6,6 @@ import com.example.playfarmb.auth.entity.User;
 
 public interface UserService {
 	 List<User> findUser();
+	 User findById(String userId);
 	
 }

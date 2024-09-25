@@ -1,11 +1,11 @@
 
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomeMainPage from './pages/mainHome/HomeMainPage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Login from './pages/auth/Login';
 import Store from './pages/store/Store';
 import News from './pages/news/News';
@@ -108,53 +108,53 @@ function App() {
   }, []); // 빈 배열을 두 번째 인자로 전달하여 최초 렌더링 시에만 실행
 
   return (
-    // <AuthProvider>
-    <div className="App">
-      {!isLoginPage && <Header showOutLink={showOutLink} clickOutLink={clickOutLink} outLinkClose={outLinkClose} />}
+    <AuthProvider>
+      <div className="App">
+        {!isLoginPage && <Header showOutLink={showOutLink} clickOutLink={clickOutLink} outLinkClose={outLinkClose} />}
 
-      <Routes>
-        <Route path="/" element={<HomeMainPage />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/contact' element={<Board />} />
-        <Route path='/store/:storeNav' element={<Store />} />
-        <Route path='/store/detail/:id' element={<GameDetailsPage />} />
-        <Route path="/cart" element={
-          <PrivateRoute>
-            <Cart />
-          </PrivateRoute>} />
-        <Route path="/payment" element={
-          <PrivateRoute>
-            <Payment />
-          </PrivateRoute>} />
-        <Route path='/info' element={<News />} />
-        <Route path='/community/:commuNav' element={<Community />} />
-        <Route path='/community/detail/:postId' element={<CommunityDetail />} />
-        <Route path='/community/write' element={<WriteCommunity />} />
-        <Route path='/community/posts' element={<WrittenByMe />} />
-        <Route path='/community/editCommunity' element={<EditCommunity />} />
-        {/* <Route path='/news/:id' element={<News />} /> */}
-        <Route path="/info/detail/:id" element={<NewsDetail />} />
-        <Route path="/signup" element={<SignUp className="signUpCss" />} />
-        <Route path="/find" element={<Find />} />
-        <Route path="/mypages" element={
-          <PrivateRoute>
-            <Mypage />
-          </PrivateRoute>} />
-        <Route path="/list1" element={<List1 />} />
-        <Route path="/list2" element={<List2 />} />
-        <Route path="/list3" element={<List3 />} />
-        <Route path="/customerboard" element={<CustomerBoard />} />
-        <Route path="/InquiryForm" element={<InquiryForm />} />
-        <Route path="/inquiry-form" element={<InquiryForm />} />
-        <Route path="/inquiry-view" element={<InquiryView />} />
+        <Routes>
+          <Route path="/" element={<HomeMainPage />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/contact' element={<Board />} />
+          <Route path='/store/:storeNav' element={<Store />} />
+          <Route path='/store/detail/:id' element={<GameDetailsPage />} />
+          <Route path="/cart" element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>} />
+          <Route path="/payment" element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>} />
+          <Route path='/info' element={<News />} />
+          <Route path='/community/:commuNav' element={<Community />} />
+          <Route path='/community/detail/:postId' element={<CommunityDetail />} />
+          <Route path='/community/write' element={<WriteCommunity />} />
+          <Route path='/community/posts' element={<WrittenByMe />} />
+          <Route path='/community/editCommunity' element={<EditCommunity />} />
+          {/* <Route path='/news/:id' element={<News />} /> */}
+          <Route path="/info/detail/:id" element={<NewsDetail />} />
+          <Route path="/signup" element={<SignUp className="signUpCss" />} />
+          <Route path="/find" element={<Find />} />
+          <Route path="/mypages" element={
+            <PrivateRoute>
+              <Mypage />
+            </PrivateRoute>} />
+          <Route path="/list1" element={<List1 />} />
+          <Route path="/list2" element={<List2 />} />
+          <Route path="/list3" element={<List3 />} />
+          <Route path="/customerboard" element={<CustomerBoard />} />
+          <Route path="/InquiryForm" element={<InquiryForm />} />
+          <Route path="/inquiry-form" element={<InquiryForm />} />
+          <Route path="/inquiry-view" element={<InquiryView />} />
 
-      </Routes>
-      {!isLoginPage && <TopButton />}
-      {!isLoginPage && <Footer />}
+        </Routes>
+        {!isLoginPage && <TopButton />}
+        {!isLoginPage && <Footer />}
 
 
-    </div>
-    // </AuthProvider>
+      </div>
+    </AuthProvider>
   );
 }
 
