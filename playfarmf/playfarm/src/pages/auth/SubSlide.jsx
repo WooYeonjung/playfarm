@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 
 const BtInfoArr = [
-  { link: '/store/pc', title: 'PC', src: require('../../images/service_Nintendo_Switch_logo.jpg') },
-  { link: '/store/nintendo', title: 'Nintendo', src: require('../../images/service_pc_game_logo.jpg') },
-  { link: '/store/playstation', title: 'Playstation', src: require('../../images/service_playstation_logo.jpg') },
+  { link: '/store/pc', title: 'PC', src: '/images/logo/service_pc_logo.jpg' },
+  { link: '/store/nintendo', title: 'Nintendo', src: '/images/logo/service_nintendo_logo.jpg' },
+  { link: '/store/playstation', title: 'Playstation', src: '/images/logo/service_playstation_logo.jpg' },
 ]
 
 function SubSlide() {

@@ -8,13 +8,13 @@ import { useEffect, useRef, useState } from "react";
 export default function Slide() {
 
     const slideImgList = [
-        { id: 1, title: 'PUBG:BATTLEGROUNDS', src: require('../../images/store/gameitem1.jpg'), alt: 'battleground' },
-        { id: 2, title: 'Apex Legends', src: require('../../images/store/gameitem2.jpg'), alt: 'apex' },
-        { id: 3, title: 'GTFO', src: require('../../images/store/gameitem3.jpg'), alt: 'gtfo' },
-        { id: 4, title: 'Terraria', src: require('../../images/store/gameitem4.jpg'), alt: 'terraria' },
-        { id: 5, title: 'WorkdZWar', src: require('../../images/store/gameitem5.jpg'), alt: 'palworld' },
-        { id: 6, title: 'overwatch2', src: require('../../images/store/gameitem6.jpg'), alt: 'overcooked2' },
-        { id: 7, title: 'grandtheftauto5', src: require('../../images/store/gameitem7.jpg'), alt: 'superbunnyman' },
+        { id: 1, title: 'PUBG:BATTLEGROUNDS', src: '/images/game/gameitem1.jpg', alt: 'battleground' },
+        { id: 2, title: 'Apex Legends', src: '/images/game/gameitem2.jpg', alt: 'apex' },
+        { id: 3, title: 'GTFO', src: '/images/game/gameitem3.jpg', alt: 'gtfo' },
+        { id: 4, title: 'Terraria', src: '/images/game/gameitem4.jpg', alt: 'terraria' },
+        { id: 5, title: 'WorkdZWar', src: '/images/game/gameitem5.jpg', alt: 'palworld' },
+        { id: 6, title: 'overwatch2', src: '/images/game/gameitem6.jpg', alt: 'overcooked2' },
+        { id: 7, title: 'grandtheftauto5', src: '/images/game/gameitem7.jpg', alt: 'superbunnyman' },
     ];
 
 

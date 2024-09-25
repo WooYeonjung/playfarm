@@ -41,7 +41,7 @@ export default function Store() {
     // gameitem container click > details component
     const navigate = useNavigate();
     const onGameItemClick = (item) => {
-        navigate(`/store/detail/${item.id}`);
+        navigate(`/store/detail/${item.gameId}`);
     };
 
     return (
