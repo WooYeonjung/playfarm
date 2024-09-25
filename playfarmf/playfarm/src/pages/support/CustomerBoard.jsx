@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import '../../styles/CustomerBoard.css';
-import AccordionItem from './AccordionItem';
-import SearchBar from './SearchBar';
+import React, { useState } from 'react'; // React와 useState 훅을 임포트합니다.
+import '../../styles/CustomerBoard.css'; // CSS 파일을 임포트합니다.
+import AccordionItem from './AccordionItem'; // 아코디언 아이템 컴포넌트를 임포트합니다.
+import SearchBar from './SearchBar'; // 검색 바 컴포넌트를 임포트합니다.
 
-// 초기화된 아코디언 아이템 데이터
 const initialAccordionItems = [
   // 기타
   { title: '게임이 너무 재미없어요', content: '왜 그랬어요? 다음에는 꼭 잘 선택해요!', isOpen: false, category: '기타' },
@@ -34,65 +33,73 @@ const initialAccordionItems = [
   { title: '게임을 재설치해야 하나요?', content: '문제가 계속되면 재설치를 고려해보세요. 백업 후 진행하는 것을 추천합니다.', isOpen: false, category: '컴퓨터/기술' }
 ];
 
-
 const CustomerBoard = () => {
-  const [accordionItems] = useState(initialAccordionItems);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [openIndex, setOpenIndex] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  // 상태를 정의합니다.
+  const [accordionItems] = useState(initialAccordionItems); // 아코디언 아이템 상태
+  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
+  const [openIndex, setOpenIndex] = useState(null); // 현재 열린 아코디언 아이템의 인덱스
+  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리
 
+  // 아코디언 아이템을 토글하는 함수
   const toggleAccordion = index => {
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndex(openIndex === index ? null : index); // 현재 인덱스와 비교하여 열기/닫기 설정
   };
 
+  // 검색 입력 값 변경 시 호출되는 함수
   const handleSearchChange = event => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value); // 검색어 상태 업데이트
   };
 
+  // 카테고리 클릭 시 호출되는 함수
   const handleCategoryClick = category => {
-    setSelectedCategory(category);
+    setSelectedCategory(category); // 선택된 카테고리 상태 업데이트
   };
 
+  // 필터링된 아코디언 아이템 목록
   const filteredAccordionItems = accordionItems.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
-    return matchesSearch && matchesCategory;
+    // 검색어와 카테고리에 따라 필터링
+    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()); // 검색어 일치 여부
+    const matchesCategory = selectedCategory ? item.category === selectedCategory : true; // 카테고리 일치 여부
+    return matchesSearch && matchesCategory; // 두 조건이 모두 참일 때 해당 아이템 반환
   });
 
   return (
     <div className="customer-board">
+      {/* FAQ 제목 */}
       <div className="faq-title-container">
         <h1 className="faq-title">자주 묻는 질문 (FAQ)</h1>
       </div>
 
+      {/* 검색 바 컴포넌트 */}
       <SearchBar searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
 
+      {/* 카테고리 버튼들 */}
       <div className="button-container">
         <button className="query-button" onClick={() => handleCategoryClick('상품 문의')}>상품 문의</button>
         <button className="query-button" onClick={() => handleCategoryClick('결제/환불')}>결제/환불</button>
         <button className="query-button" onClick={() => handleCategoryClick('컴퓨터/기술')}>컴퓨터/기술</button>
         <button className="query-button" onClick={() => handleCategoryClick('기타')}>기타</button>
-        <button className="query-button" onClick={() => handleCategoryClick(null)}>모두 보기</button>
       </div>
 
+      {/* 필터링된 아코디언 아이템 목록 */}
       <div className="accordion-items-container">
         {filteredAccordionItems.length > 0 ? (
           filteredAccordionItems.map((item, index) => (
             <AccordionItem
-              key={index}
-              item={item}
-              index={index}
-              openIndex={openIndex}
-              setOpenIndex={setOpenIndex}
-              toggleAccordion={toggleAccordion}
+              key={index} // 각 아이템에 고유한 키를 부여
+              item={item} // 아이템 데이터 전달
+              index={index} // 현재 인덱스 전달
+              openIndex={openIndex} // 열린 인덱스 전달
+              setOpenIndex={setOpenIndex} // 인덱스 업데이트 함수 전달
+              toggleAccordion={toggleAccordion} // 토글 함수 전달
             />
           ))
         ) : (
-          <p className="no-results-message">검색 결과가 없습니다.</p>
+          <p className="no-results-message">검색 결과가 없습니다.</p> // 검색 결과가 없을 때 메시지 표시
         )}
       </div>
     </div>
   );
 };
 
-export default CustomerBoard;
+export default CustomerBoard; // 컴포넌트 내보내기
