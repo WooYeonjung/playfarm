@@ -1,11 +1,11 @@
 
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import AuthProvider from './context/AuthProvider'; // 로그인 정보 전달
+import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomeMainPage from './pages/mainHome/HomeMainPage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Login from './pages/auth/Login';
 import Store from './pages/store/Store';
 import News from './pages/news/News';
@@ -84,9 +84,9 @@ function App() {
         setData(result);
 
         // 로컬 스토리지에 데이터가 없을 때만 저장
-        if (!localStorage.getItem('usersJSON')) {
-          localStorage.setItem('usersJSON', JSON.stringify(result.users));
-        }
+        // if (!localStorage.getItem('usersJSON')) {
+        //   localStorage.setItem('usersJSON', JSON.stringify(result.users));
+        // }
         if (!localStorage.getItem('cartJSON')) {
           localStorage.setItem('cartJSON', JSON.stringify(result.cart));
         }
