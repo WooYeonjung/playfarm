@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate, useParams } from "react-router-dom";
 import games from "./gameListData";
 import '../../styles/GameDetailsPage.css';
 import LikedBtn from '../mypage/ItemLike';
+import axios from 'axios';
 
 /** inView 이벤트 처리를 위한 훅 */
 const useIntersectionObserver = (threshold) => {
@@ -38,7 +39,7 @@ const TagList = ({ tags }) => (
     </div>
 );
 
-export default function GameDetailsPage() {
+export default function GameDetailsPage({ gameId }) {
     // Scroll to top on first render
     useEffect(() => {
         window.scrollTo({
@@ -46,8 +47,24 @@ export default function GameDetailsPage() {
         })
     }, []);
 
+    const [gameDetail, setGameDetail] = useState([]);
+    useEffect(() => {
+        const fetchGameDetail = async () => {
+            try {
+                const response = await axios.get(`/game/gamedetail/${id}`);
+                setGameDetail(response.data);
+            } catch (error) {
+                console.error('게임 세부 정보를 가져오는 데 실패했습니다:', error);
+            }
+        };
+        fetchGameDetail();
+    }, [gameId]);
+
+    console.log(gameDetail);
     const { id } = useParams();
     const item = games.find((item) => item.id === parseInt(id));
+    // const item = gamedetail;
+    // console.log(item);
 
     const [ref, inView] = useIntersectionObserver(0.1);
     const navigatePayment = useNavigate();
@@ -125,9 +142,9 @@ export default function GameDetailsPage() {
     return (
         <>
             <section>
-                <img className="game_title_image" src={item.src_title} alt={item.title} />
+                <img className="game_title_image" src={`/images/game/title${gameDetail.gameId}.jpg`} alt={item.title} />
                 <div className={`game_title_content ${inView ? 'show' : ''}`} ref={ref}>
-                    {item.detailscontent}
+                    {gameDetail.detailCon}
                 </div>
             </section>
             <section className='detail_container'>
@@ -155,12 +172,12 @@ export default function GameDetailsPage() {
                     ))}
                 </div>
                 <div className='info_container'>
-                    <img className='info_img' src={require(`../../images/store/gameitem${item.id}.jpg`)} alt={item.title} />
+                    <img className='info_img' src={`/images/game/gameitem${gameDetail.gameId}.jpg`} alt={item.title} />
                     <div className='info_game_name_container'>
-                        <div className='info_game_name'>{item.title}</div>
+                        <div className='info_game_name'>{gameDetail.gameTitle}</div>
                         {userInfo && userInfo.userid && <LikedBtn item={item} />}
                     </div>
-                    <div className='info_releasedate'>출시일 : {item.releasedate}</div>
+                    <div className='info_releasedate'>출시일 : {gameDetail.releaseDate}</div>
                     <TagList tags={item.tag} />
                 </div>
             </section>
