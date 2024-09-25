@@ -11,25 +11,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-//
-//@Entity
-//@Table(name = "reply")
+
+@Entity
+@Table(name = "reply")
 public class Reply {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reply_id")
     private int replyId;
 
-    @Column(nullable = false)
-    private int postId;
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
-    @Column(length = 15, nullable = false)
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(length = 500, nullable = false)
-    private String replyCon;
+    @Column(name = "reply_con", length = 500, nullable = false)
+    private String replyContent;
 
     @Column(name = "reg_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime regDate;
@@ -37,21 +39,12 @@ public class Reply {
     @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime modDate;
 
-    @Column(length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'y'")
-    private String useyn;
+    @Column(name = "useyn", length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'y'")
+    private String useYn;
 
-    @Column(columnDefinition = "INT DEFAULT 0")
-    private int root;
+    @ManyToOne
+    @JoinColumn(name = "root", columnDefinition = "INT DEFAULT 0")
+    private Reply root;
 
-    @OneToOne
-    @JoinColumn(name = "post_id", insertable = false, updatable = false)
-    private Post post;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
-    
-    @OneToOne
-    @JoinColumn(name = "root", referencedColumnName = "reply_id", insertable = false, updatable = false)
-    private Reply parentReply;
+    // Getters and Setters
 }
