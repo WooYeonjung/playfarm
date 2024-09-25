@@ -1,10 +1,10 @@
 
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
 import Header from './components/Header';
-import Footer from './components/Footer';
 import HomeMainPage from './pages/mainHome/HomeMainPage';
+import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
+import Footer from './components/Footer';
 import { useEffect, useState } from 'react';
 import Login from './pages/auth/Login';
 import Store from './pages/store/Store';

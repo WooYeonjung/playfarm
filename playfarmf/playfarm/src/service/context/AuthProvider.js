@@ -1,12 +1,15 @@
 // src/context/AuthProvider.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { apiCall } from '../apiService';
 
 const AuthContext = createContext();
 
+
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
+    const loginNavi = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loginInfo, setLoginInfo] = useState(null);
 
@@ -23,46 +26,40 @@ const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // const onLoginSubmit = async (userId, userPassword) => {
-    //     const url = "/user/login";
-    //     const data = { id: userId, password: userPassword };
-    //     try {
-    //         const response = await apiCall(url, 'POST', data, null);
-    //         sessionStorage.setItem("loginInfo", JSON.stringify(response));
-    //         setIsLoggedIn(true);
-    //         setLoginInfo(response);
-    //     } catch (err) {
-    //         setIsLoggedIn(false);
-    //         setLoginInfo(null);
-    //         console.error("Login error:", err);
-    //     }
-    // };
 
-    const onLoginSubmit = (userId, userPassword) => {
+    const onLoginSubmit = async (userId, userPassword) => {
         const url = "/user/login";
-  
-        const data = { id: userId, password: userPassword };
-       
-        apiCall(url, 'POST', data)
-            .then((response) => {
-                sessionStorage.setItem("loginInfo", JSON.stringify(response));
-                setIsLoggedIn(true);
-                setLoginInfo(response);
-            }).catch((err) => {
-                setIsLoggedIn(false);
-                setLoginInfo('');
-                throw err; // 오류를 상위 호출로 전달
-            });
+
+        const data = { userId: userId, password: userPassword };
+
+        try {
+            const response = await apiCall(url, 'POST', data);
+            sessionStorage.setItem("loginInfo", JSON.stringify(response));
+            setIsLoggedIn(true);
+            setLoginInfo(response);
+            alert("로그인 성공!");
+            loginNavi('/');
+        } catch (err) {
+            setIsLoggedIn(false);
+            setLoginInfo('');
+            if (err.response.status === 502) {
+                alert("id 또는 password 가 다릅니다. 다시 시도해 주세요.");
+            } else {
+                alert("로그인 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        }
 
     };
 
     const onLogout = async () => {
         const url = "/user/logout";
         try {
-            await apiCall(url, 'GET', null, loginInfo.token);
+            const response = await apiCall(url, 'GET', null, loginInfo.token);
             sessionStorage.clear();
             setIsLoggedIn(false);
             setLoginInfo(null);
+            alert(response);
+            loginNavi('/');
         } catch (err) {
             console.error("Logout error:", err);
         }

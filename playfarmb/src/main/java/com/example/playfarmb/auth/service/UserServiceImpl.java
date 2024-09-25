@@ -10,9 +10,9 @@ import com.example.playfarmb.auth.repository.UserDSLRepository;
 import com.example.playfarmb.auth.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -33,5 +33,14 @@ public class UserServiceImpl implements UserService {
 		else return null;
 		
 	}
+	
+	public boolean idcheck(String userId) {
+		return urepository.existsById(userId);
+	};
+	
+	 public boolean isNicknameTaken(String nickname) {
+	        return urepository.existsByNickname(nickname);
+	    }
+	
 
 }

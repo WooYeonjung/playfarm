@@ -262,7 +262,7 @@
 .signUpCssBox {
   display: grid;
   grid-template-rows: .5fr 3fr;
-  grid-row: 2 / 9; 
+  grid-row: 2 / 9;
   grid-column: 2 / 3;
   height: 100%;
   box-shadow: 1px 1px 3px 1px #000;
@@ -325,7 +325,7 @@
   border-bottom: 1px solid;
   border-image: linear-gradient(to right, blue, white, black) 1;
   outline: none;
-  color: white;
+  color: rgb(20, 20, 20);
   background-color: rgb(255, 255, 255, 0);
 }
 
@@ -386,6 +386,10 @@
   grid-column: 1 / 4;
   padding-right: 5%;
 
+}
+
+.errorMsg {
+  font-size: x-small;
 }
 
 /*-----------약관 동의----------*/

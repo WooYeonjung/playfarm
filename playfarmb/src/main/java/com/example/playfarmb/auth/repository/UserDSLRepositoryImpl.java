@@ -20,5 +20,15 @@ public class UserDSLRepositoryImpl implements UserDSLRepository{
 	public List<User> findUser() {
 		return jpaQueryFactory.selectFrom(user).fetch();
 	}
+	
+//	@Override
+//	public User existByNickname(String nickname) {
+//		// TODO Auto-generated method stub
+//		return jpaQueryFactory.selectOne().
+//							.where(user.nickname.eq(nickname))
+//							.fetch();
+//	}
+
+
 }
  

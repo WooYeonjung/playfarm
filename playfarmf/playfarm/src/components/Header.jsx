@@ -6,15 +6,17 @@ import { faUser, faHeadset, faBars, faCartShopping } from '@fortawesome/free-sol
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import Outlink from '../pages/mainHome/OutLink';
 import OutLinkList from '../pages/mainHome/OutLinkList'
+import { useAuth } from '../service/context/AuthProvider';
 import { useState } from 'react';
 
 export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isLoggedIn, onLogout } = useAuth(); // useAuth 훅 사용
     const [loginId, setLoginId] = useState(''); // 추가
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 추가
+    //const [isLoggedIn, setIsLoggedIn] = useState(false); // 추가
     const [userData, setUserData] = useState(null); // 추가
-
-    const logOutNavi = useNavigate('/');
+    const navigate = useNavigate();
+    // const logOutNavi = useNavigate('/');
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -25,15 +27,12 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
 
     // 추가
     const handleLogout = () => {
-        logOutNavi('/')
-        setIsLoggedIn(false);
-        setUserData(null)
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userData');
+        onLogout();
+        navigate('/');
     }
     const Logedout = () => {
-        const loggedOut = localStorage.getItem('isLoggedIn');
-        if (loggedOut === 'true') {
+        // console.log(isLoggedIn);
+        if (isLoggedIn) {
             return (
                 <>
                     <Link to='/mypages'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>

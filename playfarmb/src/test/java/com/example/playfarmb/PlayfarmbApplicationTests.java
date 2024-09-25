@@ -13,18 +13,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.playfarmb.auth.domain.UserRole;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserRepository;
+import com.example.playfarmb.auth.service.UserService;
 
 import jakarta.transaction.Transactional;
-
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @SpringBootTest
 class PlayfarmbApplicationTests {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	UserService userService;
 	void date(String date) {
 		
 	}
 	@Transactional
-	@Test
 	void updateUser() {
 		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		    Date birthday = null;
@@ -47,6 +50,11 @@ class PlayfarmbApplicationTests {
 		user.addRole(UserRole.USER);
 		userRepository.save(user);
 		
+	}
+	@Test
+	void userselect() {
+	User entity = userService.findById("admin");
+	log.info("entity =>"+ entity.getUserId());
 	}
 
 }
