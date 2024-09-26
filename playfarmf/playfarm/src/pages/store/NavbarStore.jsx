@@ -31,10 +31,22 @@ function NavbarStore({ theme, setTheme, onSearchChange, categoryOnclick, tab }) 
 
     // tag주소 넣어주기
     const handleNavigation = (path) => {
-        setSearch(''); 
+        setSearch('');
         onSearchChange('');
-        navigate('/store' + path);
         categoryOnclick(path.slice(1)); // 슬래시를 제거한 후 카테고리 이름을 상위로 전달
+        switch (path) {
+            case '/nin':
+                path = '/nintendo';
+                break;
+            case '/ps':
+                path = '/playstation';
+                break;
+
+            default:
+                path = path;
+                break;
+        }
+        navigate('/store' + path);
     }
 
     return (
@@ -44,14 +56,14 @@ function NavbarStore({ theme, setTheme, onSearchChange, categoryOnclick, tab }) 
                 <li onClick={() => handleNavigation('/all')} className={`${tab.selectTab === 'all' ? 'visible' : ''}`}>
                     <span>All</span>
                 </li>
-                <li onClick={() => handleNavigation('/nintendo')} className={`${tab.selectTab === 'nintendo' ? 'visible' : ''}`}>
+                <li onClick={() => handleNavigation('/nin')} className={`${tab.selectTab === 'nin' ? 'visible' : ''}`}>
                     <span>Nintendo</span>
-                </li>
-                <li onClick={() => handleNavigation('/playstation')} className={`${tab.selectTab === 'playstation' ? 'visible' : ''}`}>
-                    <span>Playstation</span>
                 </li>
                 <li onClick={() => handleNavigation('/pc')} className={`${tab.selectTab === 'pc' ? 'visible' : ''}`}>
                     <span>PC</span>
+                </li>
+                <li onClick={() => handleNavigation('/ps')} className={`${tab.selectTab === 'ps' ? 'visible' : ''}`}>
+                    <span>Playstation</span>
                 </li>
             </ul>
 

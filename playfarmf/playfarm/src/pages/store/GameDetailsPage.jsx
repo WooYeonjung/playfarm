@@ -40,6 +40,11 @@ const TagList = ({ tags }) => (
 );
 
 export default function GameDetailsPage({ gameId }) {
+    const { id } = useParams();
+    const navigatePayment = useNavigate();
+    const [ref, inView] = useIntersectionObserver(0.1);
+    const [gameDetail, setGameDetail] = useState([]);
+    const [codeTag, setCodeTag] = useState([]);
     // Scroll to top on first render
     useEffect(() => {
         window.scrollTo({
@@ -47,12 +52,14 @@ export default function GameDetailsPage({ gameId }) {
         })
     }, []);
 
-    const [gameDetail, setGameDetail] = useState([]);
     useEffect(() => {
         const fetchGameDetail = async () => {
             try {
                 const response = await axios.get(`/game/gamedetail/${id}`);
+                const codetag = await axios.get(`code/codedv/${tag}`);
                 setGameDetail(response.data);
+                // setCodeTag(codeTag);
+
             } catch (error) {
                 console.error('게임 세부 정보를 가져오는 데 실패했습니다:', error);
             }
@@ -60,14 +67,21 @@ export default function GameDetailsPage({ gameId }) {
         fetchGameDetail();
     }, [gameId]);
 
-    console.log(gameDetail);
-    const { id } = useParams();
-    const item = games.find((item) => item.id === parseInt(id));
-    // const item = gamedetail;
+    if (!gameDetail) {
+        return <div>Loading...</div>; // 데이터가 없을 경우 로딩 메시지 표시
+    }
+
+    console.log(gameDetail)
+    console.log(codeTag)
+
+    const item = gameDetail;
+    console.log(item);
+    // const item = games.find((item) => item.id === parseInt(id));
+    // const item = gameDetail;
     // console.log(item);
 
-    const [ref, inView] = useIntersectionObserver(0.1);
-    const navigatePayment = useNavigate();
+
+
 
     const userInfo = JSON.parse(localStorage.getItem("userData"));
 
@@ -148,19 +162,19 @@ export default function GameDetailsPage({ gameId }) {
                 </div>
             </section>
             <section className='detail_container'>
-                {['detail1', 'detail2', 'detail3'].map((detail, index) => (
+                {['1', '2', '3'].map((detail, index) => (
                     <DetailItem
                         key={index}
                         src={item[`src_${detail}`]}
-                        name={item[`${detail}_name`]}
-                        content={item[`${detail}_content`]}
+                        name={item[`modeName${detail}`]}
+                        content={item.modeDesc}
                     />
                 ))}
             </section>
             <section className='main_container'>
-                <div className='purchase_container'>
-                    {['nintendo', 'playstation', 'pc'].map((type) => (
-                        item.playtype.includes(type) && (
+                {/* <div className='purchase_container'>
+                    {['nin', 'ps', 'pc'].map((type) => (
+                        item.playtype.indexOf(type) !== -1 && (
                             <div key={type} className='purchase_type_container'>
                                 <img className='purchase_type_img' src={`/images/logo/service_${type}_logo.jpg`} alt={`${type} Logo`} />
                                 <div className='btn_container'>
@@ -170,7 +184,7 @@ export default function GameDetailsPage({ gameId }) {
                             </div>
                         )
                     ))}
-                </div>
+                </div> */}
                 <div className='info_container'>
                     <img className='info_img' src={`/images/game/gameitem${gameDetail.gameId}.jpg`} alt={item.title} />
                     <div className='info_game_name_container'>
@@ -178,7 +192,7 @@ export default function GameDetailsPage({ gameId }) {
                         {userInfo && userInfo.userid && <LikedBtn item={item} />}
                     </div>
                     <div className='info_releasedate'>출시일 : {gameDetail.releaseDate}</div>
-                    <TagList tags={item.tag} />
+                    {/* <TagList tags={item.tag} /> */}
                 </div>
             </section>
             <section className='requirements_container'>
