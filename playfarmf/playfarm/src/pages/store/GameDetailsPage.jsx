@@ -29,15 +29,17 @@ const DetailItem = ({ src, name, content }) => {
 };
 
 /** 태그 리스트 컴포넌트 */
-const TagList = ({ tags }) => (
-    <div className='info_tag_list'>
-        {tags.map((t, idx) => (
-            <div key={idx} className='tag_item'>
-                <span>{t}</span>
-            </div>
-        ))}
-    </div>
-);
+// const TagList = ({ tags, codeIds }) => (
+//     <div className='info_tag_list'>
+//         {tags.map((t, idx) => (
+//             codeIds.indexOf(t) !== -1 && (
+//                 <div key={idx} className='tag_item'>
+//                     <span>{t}</span>
+//                 </div>
+//             )
+//         ))}
+//     </div>
+// );
 
 export default function GameDetailsPage({ gameId }) {
     const { id } = useParams();
@@ -46,36 +48,42 @@ export default function GameDetailsPage({ gameId }) {
     const [gameDetail, setGameDetail] = useState([]);
     const [codeTag, setCodeTag] = useState([]);
     // Scroll to top on first render
-    useEffect(() => {
-        window.scrollTo({
-            top: 0
-        })
-    }, []);
+    // useEffect(() => {
+    //     window.scrollTo({
+    //         top: 0
+    //     })
+    // }, []);
 
     useEffect(() => {
         const fetchGameDetail = async () => {
             try {
-                const response = await axios.get(`/game/gamedetail/${id}`);
-                const codetag = await axios.get(`code/codedv/${tag}`);
-                setGameDetail(response.data);
-                // setCodeTag(codeTag);
-
+                const gameResponse = await axios.get(`/game/gamedetail/${id}`);
+                setGameDetail(gameResponse.data);
             } catch (error) {
-                console.error('게임 세부 정보를 가져오는 데 실패했습니다:', error);
+                console.error('게임 세부 정보를 가져오는데 실패했습니다.', error);
+            }
+        };
+
+        const fetchCodeData = async () => {
+            try {
+                const codeResponse = await axios.get('/code/codedv/tag');
+                setCodeTag(codeResponse.data);
+            } catch (error) {
+                console.error('코드 데이터를 가져오는데 실패했습니다.', error);
             }
         };
         fetchGameDetail();
+        fetchCodeData();
+
     }, [gameId]);
 
-    if (!gameDetail) {
-        return <div>Loading...</div>; // 데이터가 없을 경우 로딩 메시지 표시
-    }
-
-    console.log(gameDetail)
-    console.log(codeTag)
-
+    const codeIds = codeTag.map((item) => item.codeId);
+    console.log(codeIds)
+    const gameTag = gameDetail.tag;
+    // const gameTag = gameDetail.tag.split(', ').map(tag => tag.trim());
+    // console.log(gameTag.split(', '));
+    // console.log(gameDetail)
     const item = gameDetail;
-    console.log(item);
     // const item = games.find((item) => item.id === parseInt(id));
     // const item = gameDetail;
     // console.log(item);
@@ -192,7 +200,7 @@ export default function GameDetailsPage({ gameId }) {
                         {userInfo && userInfo.userid && <LikedBtn item={item} />}
                     </div>
                     <div className='info_releasedate'>출시일 : {gameDetail.releaseDate}</div>
-                    {/* <TagList tags={item.tag} /> */}
+                    {/* <TagList tags={item.tag} codeIds={codeIds} /> */}
                 </div>
             </section>
             <section className='requirements_container'>

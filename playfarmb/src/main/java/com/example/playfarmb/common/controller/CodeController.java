@@ -32,8 +32,8 @@ public class CodeController {
 	}
 	
 	@GetMapping("/codedv/{code}")
-	public ResponseEntity<?> codedvdetail(@PathVariable("code") String code) {
-		List<Code> list = codeService.codedvDetail(code);
+	public ResponseEntity<?> codedvdetail(@PathVariable("code") String codeDv) {
+		List<Code> list = codeService.codedvDetail(codeDv);
 		if (list!=null) {
 			return ResponseEntity.ok(list);
 		} else {

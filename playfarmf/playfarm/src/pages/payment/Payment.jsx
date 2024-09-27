@@ -2,19 +2,30 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import InfoService from "../../service/infoService";
 import '../../styles/Payment.css';
+import axios from "axios";
 
 export default function Payment() {
     // Scroll to top on first render
     useEffect(() => {
         window.scrollTo({
             top: 0
-        })
+        });
+
+        // const fetchCodeData = async() => {
+        //     try {
+        //         const response = await axios.get('/code/codedv/payment');
+        //         setPaymentCode(response.data)
+        //     } catch (error) {
+        //         console.log('결제 코드 데이터를 가져오지 못했습니다.', error);
+        //     }
+        // };
     }, []);
 
     const [loginUserId, setLoginUserId] = useState('');
     const [payData, setPayData] = useState([]);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const [acknowledgeWarning, setAcknowledgeWarning] = useState(false);
+    const [paymentCode, setPaymentCode] = useState([]);
 
     const location = useLocation();
     const navigate = useNavigate();

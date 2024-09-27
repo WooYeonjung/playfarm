@@ -46,7 +46,6 @@ export default function Store() {
         // }
         setTab({ selectTab: playtype });
     };
-    console.log(category)
 
     // checkbox ischecked true 값 담아오기
     const [selectcheck, setSelectcheck] = useState({ playtype: [], tag: [] });
