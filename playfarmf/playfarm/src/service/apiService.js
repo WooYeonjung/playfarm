@@ -7,6 +7,8 @@ import axios from "axios";
 // => ACCESS_TOKEN 도 매개변수로 전달함
 export async function apiCall(url, method, requestData, token) {
 
+  // alert(requestData);
+
   // 1.1) headers & token
   // => indexOf('join')
   //  - JavasScript 의 문자열 확인함수
@@ -15,6 +17,13 @@ export async function apiCall(url, method, requestData, token) {
   let headers = '';
   headers = { 'Content-Type': 'application/json' }
   // 토큰 발행 후
+  if (url.indexOf('join') >= 0) {
+    headers = { 'Content-Type': 'multipart/form-data' };
+    //headers = { 'Content-Type': 'application/json' }
+    console.log('FORMDATA');
+  } else {
+    headers = { 'Content-Type': 'application/json' };
+  }
   // if (url.indexOf('join') >= 0  && token == null) {
   //     headers = { 'Content-Type': 'multipart/form-data' };  
   // }else if (token !== null) {

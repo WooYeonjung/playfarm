@@ -12,9 +12,13 @@ export default function TopButton() {
     // 스크롤 위치와 푸터 위치를 기반으로 버튼 가시성 및 위치를 조정하는 함수
     const topBtnVisibility = () => {
         const footer = document.querySelector('footer'); // 푸터 요소 선택
+
+        if (!footer) {
+            console.error('Footer element not found');
+            return;
+        }
         const footerRect = footer.getBoundingClientRect(); // 푸터의 위치 및 크기 정보 가져오기
         const scrollTop = window.scrollY; // 현재 스크롤 위치 가져오기
-
         // 스크롤 위치가 300 이상일 때 버튼 보이기
         if (scrollTop > 300) {
             setTopVisible(true);
@@ -29,13 +33,7 @@ export default function TopButton() {
         }
     };
 
-    // 페이지 최상단으로 스크롤하는 함수
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // 부드럽게 스크롤
-        });
-    };
+
 
     // 컴포넌트가 마운트되었을 때 스크롤 이벤트 리스너 추가
     useEffect(() => {
@@ -44,6 +42,14 @@ export default function TopButton() {
             window.removeEventListener('scroll', topBtnVisibility); // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
         };
     }, []);
+
+    // 페이지 최상단으로 스크롤하는 함수
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 부드럽게 스크롤
+        });
+    };
     return (
         <div className="scroll-to-top" style={{ bottom: `${bottomOffset}px` }}>
             {topVisible &&

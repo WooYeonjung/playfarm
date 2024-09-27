@@ -389,7 +389,8 @@
 }
 
 .errorMsg {
-  font-size: x-small;
+  font-size: small;
+  color: brown;
 }
 
 /*-----------약관 동의----------*/

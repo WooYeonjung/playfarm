@@ -55,6 +55,10 @@ const PageNation = () => {
         <div className='conItem3' onClick={handlePage3} />
         <span>WishList</span>
       </div>
+      <div className='containerItem4'>
+        <div className='conItem4' onClick={handlePage3} />
+        <span>Shopping List</span>
+      </div>
     </div>
   )
 }

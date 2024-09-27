@@ -1,13 +1,15 @@
 package com.example.playfarmb.auth.repository;
 
+import static com.example.playfarmb.auth.entity.QUser.user;
+
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.example.playfarmb.auth.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
-import static com.example.playfarmb.auth.entity.QUser.user;
 
 
 @RequiredArgsConstructor

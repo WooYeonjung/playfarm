@@ -1,10 +1,10 @@
 package com.example.playfarmb;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ class PlayfarmbApplicationTests {
 	}
 	@Transactional
 	void updateUser() {
-		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		    Date birthday = null;
-		    try {
-		        birthday = formatter.parse("1990-01-01");
-		    } catch (ParseException e) {
-		        e.printStackTrace();
-		    }
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate birthday = null;
+		try {
+		    birthday = LocalDate.parse("1990-01-01", formatter);
+		} catch (DateTimeParseException e) {
+		    e.printStackTrace();
+		}
 		User user = User.builder()
 				.userId("admin")
 				.password("12345!")
