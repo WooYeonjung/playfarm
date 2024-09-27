@@ -13,7 +13,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState(null);
 
-  const loginNavi = useNavigate();
+  // const loginNavi = useNavigate();
 
   // useEffect(() => {
   //   const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
@@ -29,21 +29,15 @@ function Login() {
   // const users = JSON.parse(localStorage.getItem('usersJSON'));
 
   // provider 로 하기 추가
-  const handleLogin = async (event) => {
-    console.log(loginId);
+  const handleLogin = (event) => {
     event.preventDefault();
-    try {
-      await onLoginSubmit(loginId, loginPw);
-      alert("로그인 성공!");
-      loginNavi('/');
-    } catch (error) {
-      if (error === 502) {
-        alert("id 또는 password 가 다릅니다, 다시하세요 ~~");
-      } else {
-        alert("로그인 중 오류가 발생했습니다. 다시 시도해 주세요.");
-      }
-      console.error("Login error in Login component:", error);
-    }
+    onLoginSubmit(loginId, loginPw)
+      .then(() => {
+        console.log(loginId);
+      })
+      .catch((error) => {
+        console.error("Login error in Login component:", error);
+      });
   };
 
   // const handleLogin = (event) => {
@@ -97,7 +91,7 @@ function Login() {
             type='text'
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
-          />
+            required />
           <label htmlFor='loginId'><span>ID</span></label>
         </div>
         <div className='box_pw'>
@@ -107,7 +101,7 @@ function Login() {
             name='password'
             value={loginPw}
             onChange={(e) => setLoginPw(e.target.value)}
-          />
+            required />
           <label htmlFor='loginPw'><span>Password</span></label>
         </div>
         <div>

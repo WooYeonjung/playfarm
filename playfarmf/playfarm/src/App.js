@@ -1,15 +1,15 @@
 
 import { Route, Routes, useLocation } from 'react-router-dom';
-import './App.css';
-import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomeMainPage from './pages/mainHome/HomeMainPage';
 import { useEffect, useState } from 'react';
+import './App.css';
+import Header from './components/Header';
+import HomeMainPage from './pages/mainHome/HomeMainPage';
+import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
+import Footer from './components/Footer';
+import TopButton from './components/TopButton';
 import Login from './pages/auth/Login';
 import Store from './pages/store/Store';
 import News from './pages/news/News';
-import TopButton from './components/TopButton';
 import NewsDetail from './pages/news/NewsDetail';
 import SignUp from './pages/auth/SignUp';
 import Find from './pages/auth/Find';

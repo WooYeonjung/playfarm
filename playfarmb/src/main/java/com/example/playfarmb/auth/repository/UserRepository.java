@@ -7,5 +7,6 @@ import com.example.playfarmb.auth.entity.User;
 public interface UserRepository extends JpaRepository<User, String>{
 
 	
-
+	 boolean existsByNickname(String nickname);
+	 boolean existsByEmail(String email);
 }

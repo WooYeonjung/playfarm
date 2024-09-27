@@ -255,11 +255,12 @@
 
 .container_box>div>.conItem1:hover,
 .container_box>div>.conItem2:hover,
-.container_box>div>.conItem3:hover {
+.container_box>div>.conItem3:hover .container_box>div>.conItem4:hover {
   transition-duration: 150ms;
   box-shadow: 0 5px 20px 5px #00000044;
   filter: blur(3px);
   transform: rotate3d(0, 1, 2, .01rad);
+  cursor: pointer;
   /* transform: rotate3d(0, 1, 0.5, 3.142rad); */
 }
 
@@ -296,6 +297,11 @@
 .container_box>div>.conItem3 {
   background: url(../images/store/PUBG/battlegrounds-squad.jpg) no-repeat 0/100% 100%;
 }
+
+.container_box>div>.conItem4 {
+  background: url(../images/store/PUBG/battlegrounds-squad.jpg) no-repeat 0/100% 100%;
+}
+
 
 
 /* ========================================================================== */
@@ -731,7 +737,7 @@
   .myPageMain>.userInfoBox>h1 {
     text-align: center;
   }
-  
+
   .myPageMain>.userInfoBox>.userInfo,
   .myPageMain>.userInfoBox>.userInfo2,
   .myPageMain>.userInfoBox>div {
@@ -743,7 +749,7 @@
     align-items: center;
     gap: 10px;
   }
-  
+
   .myPageMain>.userInfoBox>.userInfo {
     width: 100%;
     margin-bottom: 10px;
@@ -752,11 +758,11 @@
   .myPageMain>.userInfoBox>.userInfo>p {
     grid-column: 3 / 6;
   }
-  
+
   .myPageMain>.userInfoBox>.userInfo>div {
     grid-column: 1 / 6;
   }
-  
+
   .myPageMain>.userInfoBox>.userInfo>div>input {
     width: 90%;
     padding-left: 10px;
@@ -792,19 +798,19 @@
     width: 55%;
     height: 50%;
   }
-  
+
 }
 
 @media (width < 600px) {
   .userInfo {
     margin-bottom: 1%;
   }
-  
+
   .userInfo2 {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, 1fr);
   }
-  
+
   .userInfo3 {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, 1fr);

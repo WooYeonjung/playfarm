@@ -12,7 +12,6 @@ import com.example.playfarmb.auth.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -26,12 +25,37 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findById(String userId) {
+	public User findById(String userId) { 
 		Optional<User> result = urepository.findById(userId);
 		if (result.isPresent())
 			return result.get();
 		else return null;
 		
 	}
+	
+	
+	
+	
+	//---------------회줭가입시 중복체크들
+
+	public boolean idcheck(String userId) {
+		return urepository.existsById(userId);
+	};
+	
+	 public boolean isNicknameTaken(String nickname) {
+	        return urepository.existsByNickname(nickname);
+	    }
+	 
+	 @Override
+	public boolean emailCheck(String email) {
+		// TODO Auto-generated method stub
+		return urepository.existsByEmail(email);
+	}
+	
+	// 회원가입
+	 public User save(User entity) {
+		 return urepository.save(entity);
+	 }
+	 
 
 }
