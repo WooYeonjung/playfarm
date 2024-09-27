@@ -2,6 +2,7 @@ package com.example.playfarmb.store.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +30,15 @@ public class GameController {
 	}
 	
 	@GetMapping("/gamedetail/{id}")
-	public ResponseEntity<Game> gamedetail(@PathVariable("id") int gameId) {
+	public ResponseEntity<?> gamedetail(@PathVariable("id") int gameId) {
 	    // 게임 ID로 상세 정보를 조회
-	    Game game = gservice.gameDetail(gameId);
+		Game game = gservice.gameDetail(gameId);
 	    log.info(game); 
 	    
 	    if (game != null) {
 	        return ResponseEntity.ok(game);
 	    } else {
-	        return ResponseEntity.notFound().build();
+	        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("codeDv 데이터가 없습니다.");
 	    }
 	}
 	

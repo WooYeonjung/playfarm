@@ -25,18 +25,17 @@ function GameListItem({ search, category, selectcheck, onGameItemClick }) {
         const fetchGames = async () => {
             try {
                 const response = await axios.get('/game/gamelist');
-                console.log(response);
                 setGameList(response.data);
-
             } catch (error) {
                 console.error('게임 데이터를 가져오지 못했습니다', error);
             }
         };
         fetchGames();
-        console.log(gameList);
     }, []);
 
+
     console.log(gameList);
+
     // filter 적용
     const getFilteredGames = () => {
         let filteredGames = gameList;
@@ -62,7 +61,7 @@ function GameListItem({ search, category, selectcheck, onGameItemClick }) {
 
         // search bar 
         if (search !== '') {
-            filteredGames = filteredGames.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()));
+            filteredGames = filteredGames.filter((item) => item.gameTitle.toLowerCase().includes(search.toLowerCase()));
         }
 
         return filteredGames;

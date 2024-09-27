@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,8 +17,9 @@ public class Requirement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reqId;
     
-    @Column(name = "game_id", nullable = false)
-    private int gameId;
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     @Column(length = 100)
     private String opsys;
@@ -43,9 +44,5 @@ public class Requirement {
 
     @Column(length = 3)
     private String division;
-    
-    @OneToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id", insertable = false, updatable = false)
-    private Game game;  // 외래 키로 연결된 Game 엔티티
 
 }

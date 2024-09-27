@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -18,28 +17,23 @@ import jakarta.persistence.Table;
 @Table(name = "post")
 public class Post {
 
-	
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "post_id")
+    @Column(name = "post_id")
     private int postId;
-	
-	@Column(name = "user_id", length = 15, nullable = false)
-	private String userId;
 
-    @Column(name = "post_title", length = 255, nullable = false)
+    @Column(name = "post_title", nullable = false, length = 255)
     private String postTitle;
 
-    @Column(name = "post_type", length = 50, nullable = false)
+    @Column(name = "post_type", nullable = false, length = 50)
     private String postType;
 
-    @Column(length = 255)
+    @Column(name = "link", length = 255)
     private String link;
 
     @Column(name = "post_upimg", length = 255)
     private String postUpimg;
 
-    @Lob
     @Column(name = "post_content", nullable = false)
     private String postContent;
 
@@ -49,16 +43,19 @@ public class Post {
     @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime modDate;
 
-    @Column(columnDefinition = "INT DEFAULT 0")
+    @Column(name = "views", columnDefinition = "INT DEFAULT 0")
     private int views;
 
-    @Column(columnDefinition = "INT DEFAULT 0")
+    @Column(name = "reply_cnt", columnDefinition = "INT DEFAULT 0")
     private int replyCnt;
 
-    @Column(length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'y'")
+    @Column(name = "useyn", columnDefinition = "VARCHAR(1) DEFAULT 'y'")
     private String useyn;
 
-	@ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    // Getters and Setters
 }
+
