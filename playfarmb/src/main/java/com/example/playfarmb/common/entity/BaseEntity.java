@@ -14,15 +14,15 @@ import lombok.Getter;
 @MappedSuperclass
 @EntityListeners(value= {AuditingEntityListener.class})
 @Getter
-abstract class BaseEntity {
+public abstract class BaseEntity {
 
 	@CreatedDate
-	@Column(name="regdate", updatable=false) // updatable의 default => true 수정이 일어나지않기를 원하면 false
-	private LocalDateTime regdate;
+	@Column(name="reg_date", updatable=false) // updatable의 default => true 수정이 일어나지않기를 원하면 false
+	private LocalDateTime regDate;
 	
 	@LastModifiedDate
-	@Column(name="moddate") //수정가능
-	private LocalDateTime moddate;
+	@Column(name="mod_date") //수정가능
+	private LocalDateTime modDate;
 	
 	
 	

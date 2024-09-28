@@ -49,7 +49,7 @@ public class UserController {
     	//1) 요청 분석
     	// password를 비교하기 위해 입력한 값 보관
     	String password = entity.getPassword();
-    	
+    	log.info("로그인 직후"+entity.getUserId());
     	//2) Service 처리 & 결과 전송
     	entity = uservice.findById(entity.getUserId());
     /*	if(entity!=null && passwordEncoder.matches(password, entity.getPassword())) {*/
