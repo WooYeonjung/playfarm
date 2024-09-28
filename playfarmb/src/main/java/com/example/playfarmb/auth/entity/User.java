@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.playfarmb.auth.domain.UserRole;
+import com.example.playfarmb.common.entity.BaseEntity;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
