@@ -15,15 +15,11 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
-        // if (loginCheck && loginCheck.token) {
-        //     setIsLoggedIn(true);
-        //     setLoginInfo(loginCheck);
-        // }
-
-        if (loginCheck) {
+        if (loginCheck && loginCheck.token && isTokenValid(loginCheck.token)) {
             setIsLoggedIn(true);
             setLoginInfo(loginCheck);
         }
+
     }, []);
 
 
@@ -73,3 +69,15 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
+
+
+const isTokenValid = (token) => {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const expiry = payload.exp;
+        const now = Math.floor(Date.now() / 1000);
+        return now < expiry;
+    } catch (e) {
+        return false;
+    }
+};

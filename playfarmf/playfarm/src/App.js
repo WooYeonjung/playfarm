@@ -1,10 +1,10 @@
 
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import HomeMainPage from './pages/mainHome/HomeMainPage';
-import AuthProvider from './service/context/AuthProvider'; // 로그인 정보 전달
+import AuthProvider, { useAuth } from './service/context/AuthProvider'; // 로그인 정보 전달
 import Footer from './components/Footer';
 import TopButton from './components/TopButton';
 import Login from './pages/auth/Login';
@@ -22,7 +22,6 @@ import Board from './pages/support/Board';
 import CustomerBoard from './pages/support/CustomerBoard';
 import GameDetailsPage from './pages/store/GameDetailsPage';
 import InquiryForm from './pages/support/InquiryForm';
-
 import Cart from './pages/cart/Cart';
 import Payment from './pages/payment/Payment';
 import InquiryView from './pages/support/InquiryView';
@@ -31,6 +30,7 @@ import Community from './pages/community/Community';
 import WrittenByMe from './pages/community/WrittenByMe';
 import EditCommunity from './pages/community/EditCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
+import Membership from './pages/mypage/Membership';
 
 // export const wholeVariable = React.createContext();
 
@@ -96,9 +96,9 @@ function App() {
         if (!localStorage.getItem('payJSON')) {
           localStorage.setItem('payJSON', JSON.stringify(result.pay));
         }
-        if (!localStorage.getItem('posts')) {
-          localStorage.setItem('postsJSON', JSON.stringify(result.posts));
-        }
+        // if (!localStorage.getItem('posts')) {
+        //   localStorage.setItem('postsJSON', JSON.stringify(result.posts));
+        // }
       } catch (error) {
         console.error('JSON 데이터를 가져오는 중 에러 발생:', error);
       }
@@ -118,10 +118,12 @@ function App() {
           <Route path='/contact' element={<Board />} />
           <Route path='/store/:storeNav' element={<Store />} />
           <Route path='/store/detail/:id' element={<GameDetailsPage />} />
+
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
-            </PrivateRoute>} />
+            </PrivateRoute>
+          } />
           <Route path="/payment" element={
             <PrivateRoute>
               <Payment />
@@ -140,6 +142,7 @@ function App() {
             <PrivateRoute>
               <Mypage />
             </PrivateRoute>} />
+          <Route path="/membership" element={<Membership />} />
           <Route path="/list1" element={<List1 />} />
           <Route path="/list2" element={<List2 />} />
           <Route path="/list3" element={<List3 />} />
@@ -156,6 +159,7 @@ function App() {
       </div>
     </AuthProvider>
   );
+
 }
 
 

@@ -123,7 +123,7 @@ function List1() {
             <h4>ID</h4>
             <span style={{ paddingRight: '40%', fontWeight: '500' }}>{formData.userid}</span>
           </div>
-          <div>
+          {/* <div>
             <h4>Pw</h4>
             <input
               id='password'
@@ -143,7 +143,7 @@ function List1() {
               onChange={handleChange}
               required
             />
-          </div>
+          </div> */}
           <div>
             <h4>E-mail</h4>
             <input

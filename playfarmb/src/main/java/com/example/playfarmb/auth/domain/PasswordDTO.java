@@ -1,7 +1,6 @@
 package com.example.playfarmb.auth.domain;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,13 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDTO {
-	private String userId;
+public class PasswordDTO {
 	private String password;
-	private String nickname;
-	private String email;
-	private LocalDate birthday;
-	private String token;
-	private MultipartFile profilef; 
-	private List<UserRole> roleList = new ArrayList<>();
+	private String newPassword;
 }

@@ -30,11 +30,15 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
         onLogout();
         navigate('/');
     }
+    const mypageClick = () => {
+        navigate('/mypages');
+    }
     const Logedout = () => {
         // console.log(isLoggedIn);
         if (isLoggedIn) {
             return (
                 <>
+                    {/* <li><button onClick={mypageClick} style={{ width: '100%' }}><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</button></li> */}
                     <Link to='/mypages'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>
                     <Link to='/cart'><li><FontAwesomeIcon className="arcodianIcon" icon={faCartShopping} size='sm' />Cart</li></Link>
                     <li onClick={handleLogout}><FontAwesomeIcon className="arcodianIcon" icon={faHeadset} size='sm' />LogOut</li>

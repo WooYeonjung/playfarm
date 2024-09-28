@@ -3,7 +3,9 @@ package com.example.playfarmb.auth.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,4 +86,15 @@ public class User extends BaseEntity {
 		roleList.clear();
 	}
 	// Getters and Setters
+	
+	 // => JWT token 발행시 사용됨
+    //    로그인 성공 후 createToken() 에 인자로 사용됨
+    public Map<String, Object> claimList() {
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("userId", this.userId);
+        //dataMap.put("pw",this.password);
+        dataMap.put("roleList", this.roleList);
+
+        return dataMap;
+    }
 }

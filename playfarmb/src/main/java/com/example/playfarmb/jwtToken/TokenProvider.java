@@ -72,7 +72,7 @@ public class TokenProvider {
 			// => payload에 들어갈 내용
 			.setClaims(claimList) 
 			// -> 메서드 인자로 전달 받으며, Map에 id 와 roleList 를 가지고 있음 (Member.java 참고)
-			.setIssuer("demo app") 	    
+			.setIssuer("PlayfarmbApplication") 	    
 			.setIssuedAt(new Date())    
 			.setExpiration(expiryDate)  
 			.compact();
@@ -82,7 +82,6 @@ public class TokenProvider {
 	// => 토큰을 디코딩 및 파싱 하여 토크의 위조여부 확인 후 
 	// => Claims 를 return 함.
 	public Map<String, Object> validateToken(String token) {
-		 
 		return Jwts.parser()
 						.setSigningKey(SECRET_KEY)
 						.parseClaimsJws(token)
