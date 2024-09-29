@@ -54,6 +54,35 @@ export default function GameDetailsPage({ gameId }) {
     //     })
     // }, []);
 
+    // useEffect(() => {
+    //     const fetchGameDetail = async () => {
+    //       try {
+    //         const gameResponse = await axios.get(`/game/gamedetail/${id}`);
+    //         if (JSON.stringify(gameDetail) !== JSON.stringify(gameResponse.data)) {
+    //           setGameDetail(gameResponse.data);
+    //         }
+    //       } catch (error) {
+    //         console.error('게임 세부 정보를 가져오는데 실패했습니다.', error);
+    //       }
+    //     };
+      
+    //     const fetchCodeData = async () => {
+    //       try {
+    //         const codeResponse = await axios.get('/code/codedv/tag');
+    //         if (JSON.stringify(codeTag) !== JSON.stringify(codeResponse.data)) {
+    //           setCodeTag(codeResponse.data);
+    //         }
+    //       } catch (error) {
+    //         console.error('코드 데이터를 가져오는데 실패했습니다.', error);
+    //       }
+    //     };
+      
+    //     fetchGameDetail();
+    //     fetchCodeData();
+    //     console.log(gameDetail)
+    //   }, [gameId, gameDetail, codeTag]);
+      
+
     useEffect(() => {
         const fetchGameDetail = async () => {
             try {
@@ -79,7 +108,23 @@ export default function GameDetailsPage({ gameId }) {
 
     const codeIds = codeTag.map((item) => item.codeId);
     console.log(codeIds)
-    const gameTag = gameDetail.tag;
+    console.log(gameDetail)
+    // const [gameTag, setGameTag] = useState([]);
+    let gameTag;
+    if(gameDetail !== null && gameDetail.length > 0) {
+        // setGameTag(gameDetail.tag.split(', '));
+        return gameTag = gameDetail.tag
+    }
+    console.log(gameTag)
+    // let gameTag = gameDetail.tag;
+    // if (!gameTag) {
+    //     return;
+    // } else {
+    //     gameTag = gameTag.split(', ');
+    //     return;
+    //     // return gameTag;
+    // }
+
     // const gameTag = gameDetail.tag.split(', ').map(tag => tag.trim());
     // console.log(gameTag.split(', '));
     // console.log(gameDetail)
@@ -182,7 +227,7 @@ export default function GameDetailsPage({ gameId }) {
             <section className='main_container'>
                 {/* <div className='purchase_container'>
                     {['nin', 'ps', 'pc'].map((type) => (
-                        item.playtype.indexOf(type) !== -1 && (
+                        item.playtype.split(', ').include(type) && (
                             <div key={type} className='purchase_type_container'>
                                 <img className='purchase_type_img' src={`/images/logo/service_${type}_logo.jpg`} alt={`${type} Logo`} />
                                 <div className='btn_container'>

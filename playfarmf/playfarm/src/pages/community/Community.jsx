@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/Community.css'
 import CommunityList from './CommunityList';
 import CommunityAdvertising from './CommunityAdvertising';
 import NavbarCommu from './NavbarCommu';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function Community() {
 
     const { commuNav } = useParams();
+    const [postData, setPostData] = useState([]);
+
+    useEffect(() => {
+        const fetchPostData = async () => {
+            await axios.get('/commu/postlist')
+                .then(response => {
+                    console.log(response)
+                    // const postlist = ;
+
+                    setPostData(response.data);
+                })
+                .catch(error => console.error('코드데이터를 찾지 못했습니다', error)
+                )
+        };
+        fetchPostData();
+    }, [])
+    console.log(postData)
 
     // navbar_category(playtype)
     const [posttype, setPosttype] = useState(commuNav);
@@ -46,8 +64,9 @@ function Community() {
                     onSearchChange={handleSearchChange}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
+                    postData={postData}
                 />
-                
+
                 <CommunityAdvertising />
             </div>
         </div>

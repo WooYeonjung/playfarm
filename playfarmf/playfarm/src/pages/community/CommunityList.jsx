@@ -17,7 +17,10 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
     const formatDate = (date) => {
         if (!date) return '';
         const now = new Date();
+        console.log(date)
         const postTime = new Date(date);
+        console.log(now)
+        console.log(postTime)
         // if (isNaN(postTime.getTime())) return '';
 
         const betweenTime = Math.floor(
@@ -61,7 +64,7 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
     );
 }
 
-function CommunityList({ posttype, onPostListClick, search, onSearchChange, currentPage, setCurrentPage }) {
+function CommunityList({ posttype, onPostListClick, search, onSearchChange, currentPage, setCurrentPage, postData }) {
     const [loginUserId, setLoginUserId] = useState('');
     // const [search, setSearch] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -83,6 +86,7 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
         } else {
             navigate('/community/write');
         }
+        // navigate('/community/write');
     };
 
     useEffect(() => {
@@ -108,13 +112,13 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
     };
 
     const commuFilteredposts = () => {
-        let filteredPosts = userposts;
+        let filteredPosts = postData;
         // navbar
         if (posttype !== 'all') {
             filteredPosts = filteredPosts.filter((item) => item.postType && item.postType.includes(posttype));
         }
         if (search !== '') {
-            filteredPosts = filteredPosts.filter((item) => item.title && item.title.toLowerCase().includes(search.toLowerCase()));
+            filteredPosts = filteredPosts.filter((item) => item.postTitle && item.postTitle.toLowerCase().includes(search.toLowerCase()));
         }
         // 게시물을 날짜 기준으로 정렬 (최신 순)
         filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -135,6 +139,7 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
         setSearchTerm(search);
     }, [search]);
 
+    console.log(postData.regDate)
     return (
         <div className='commuList_container'>
             <div className='commuList_wrapper'>
@@ -168,10 +173,10 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
                             <div className='commuItem_container' key={idx} onClick={() => { onPostListClick(post) }}>
                                 <CommuListItem
                                     userId={post.userId}
-                                    title={post.title}
-                                    content={post.content}
+                                    title={post.postTitle}
+                                    content={post.postContent}
                                     type={post.postType}
-                                    date={post.date}
+                                    date={post.regDate}
                                 />
                             </div>
                         )
