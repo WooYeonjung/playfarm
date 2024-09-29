@@ -3,7 +3,11 @@ package com.example.playfarmb.community.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,4 +30,19 @@ public class CommunityController {
 		return cservice.getPostList();
 	}
 	
+	@PostMapping("/uploadpost")
+    public ResponseEntity<?> uploadPost(@RequestBody Post post) {
+		/*
+		MultipartFile uploadFile = entity.getPostUpimg();
+		if (uploadFile!=null && !uploadFile.isEmpty()) {
+			//이미지 경로 저장 관련 코드 (멤버컨트롤러 259 참고)
+		}
+		*/
+        try {
+            Post savedPost = cservice.save(post);
+            return new ResponseEntity<>(savedPost, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("게시글 저장 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

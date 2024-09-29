@@ -19,4 +19,8 @@ public class CommunityServiceImpl implements CommunityService {
 		return repository.findAll();
 	}
 	
+	public Post save(Post entity) {
+		return repository.save(entity);
+	}
+	
 }

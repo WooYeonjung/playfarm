@@ -86,6 +86,7 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
         } else {
             navigate('/community/write');
         }
+        // navigate('/community/write');
     };
 
     useEffect(() => {
