@@ -31,7 +31,7 @@ public class GameController {
 	
 	@GetMapping("/gamedetail/{id}")
 	public ResponseEntity<?> gamedetail(@PathVariable("id") int gameId) {
-	    // 게임 ID로 상세 정보를 조회
+	    
 		Game game = gservice.gameDetail(gameId);
 	    log.info(game); 
 	    
