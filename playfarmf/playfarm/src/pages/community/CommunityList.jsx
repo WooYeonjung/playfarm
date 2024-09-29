@@ -4,6 +4,7 @@ import { faComments, faMagnifyingGlass, faHandshake, faCircleQuestion, faPalette
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Pagination from '../Pagination';
+import { useAuth } from '../../service/context/AuthProvider';
 
 const CommuListItem = ({ title, date, userId, type, content }) => {
     const formatUserId = (userId) => {
@@ -65,7 +66,6 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
 }
 
 function CommunityList({ posttype, onPostListClick, search, onSearchChange, currentPage, setCurrentPage, postData }) {
-    const [loginUserId, setLoginUserId] = useState('');
     // const [search, setSearch] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     // const [currentPage, setCurrentPage] = useState(1);
@@ -75,9 +75,10 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
 
     const userposts = JSON.parse(localStorage.getItem("postsJSON"));
 
+    const { isLoggedIn, loginInfo, onLogout } = useAuth();
     // CommunityWrite 이동
     const onWriteClick = () => {
-        if (!userInfo || !userInfo.userid) {
+        if (!isLoggedIn || !loginInfo || !loginInfo.userId) {
             let loginConfirm = window.confirm('로그인 후 이용 가능. 로그인 하시겠습니까?');
             if (loginConfirm) {
                 navigate('/login');
@@ -87,13 +88,18 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
             navigate('/community/write');
         }
         // navigate('/community/write');
+        console.log(sessionStorage.getItem("loginInfo"));
     };
 
     useEffect(() => {
-        if (userInfo && userInfo.userid) {
-            setLoginUserId(userInfo.userid);
-        }
-    }, [userInfo]);
+        console.log("isLoggedIn: ", isLoggedIn);
+        console.log("loginInfo: ", loginInfo);
+    }, [isLoggedIn, loginInfo]);
+    // useEffect(() => {
+    //     if (userInfo && userInfo.userid) {
+    //         setLoginUserId(userInfo.userid);
+    //     }
+    // }, [userInfo]);
 
     const handleChange = (e) => {
         setSearchTerm(e.target.value);
@@ -146,8 +152,8 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
                 <section className='commuList_top'>
                     <div className='write_Btn_container'>
                         <button className='write_Btn' onClick={onWriteClick}>글쓰기</button>
-                        {loginUserId && <Link to='/community/posts' >
-                            <div>내가 쓴 글보기</div>
+                        {isLoggedIn && <Link to='/community/posts' >
+                            <button className='write_Btn'>내가 쓴 글보기</button>
                         </Link>}
                     </div>
                     <div className='commu_search_box'>

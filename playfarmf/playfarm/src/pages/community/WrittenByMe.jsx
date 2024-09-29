@@ -7,8 +7,11 @@ import { faCircleQuestion, faComments, faHandshake, faMagnifyingGlass, faPalette
 import { useNavigate } from "react-router-dom";
 import '../../styles/WrittenByMe.css';
 import CommunityAdvertising from "./CommunityAdvertising";
+import { useAuth } from '../../service/context/AuthProvider';
+import axios from 'axios';
 
 const WrittenByMe = () => {
+    const { isLoggedIn, loginInfo, onLogout } = useAuth();
     const [posts, setPosts] = useState([]); // 모든 게시글을 저장하는 상태
     const [postsList, setPostsList] = useState([]); // 필터된 게시글을 저장하는 상태
     const [loginUserId, setLoginUserId] = useState(''); // 로그인된 사용자의 ID를 저장하는 상태
@@ -16,25 +19,31 @@ const WrittenByMe = () => {
     const [filteredPostsList, setFilteredPostsList] = useState([]); // 검색된 게시글을 저장하는 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호를 저장하는 상태
 
+    console.log("로그인 사용자 ID:", loginInfo);
+
+
     const postsPerPage = 9; // 한 페이지에 표시할 게시글 수
-    const userInfo = JSON.parse(localStorage.getItem("userData")); // 로컬 스토리지에서 사용자 정보 가져오기
     const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 함수
 
     useEffect(() => {
-        if (userInfo && userInfo.userid) {
-            setLoginUserId(userInfo.userid); // 사용자 정보가 있으면 로그인된 사용자 ID 설정
-        }
-
-        const savedPosts = JSON.parse(localStorage.getItem('postsJSON')) || []; // 로컬 스토리지에서 게시글 데이터 가져오기
-
-        setPosts(savedPosts); // 모든 게시글 상태 설정
-
-        const filterById = savedPosts.filter((post) => post.userId === loginUserId); // 로그인된 사용자가 작성한 게시글 필터링
+        const fetchPost = async () => {
+            if (isLoggedIn && loginInfo.userId) {
+                setLoginUserId(loginInfo.userId); // 로그인된 사용자 ID 설정
+                console.log(loginUserId)
+                try {
+                    const response = await axios.get(`/commu/mypost/${loginInfo.userId}`);
+                    console.log(response.data);
+                    setPosts(response.data);
+                } catch (error) {
+                    console.error('게시글을 찾지 못했습니다.', error);
+                }
+            }
+        };
         // 최신 게시글이 맨 위에 오도록 정렬
-        const sortDate = filterById.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setPostsList(sortDate); // 필터된 게시글 상태 설정
-        setFilteredPostsList(sortDate); // 검색된 게시글 상태 초기 설정
-    }, [loginUserId]); // loginUserId가 변경될 때마다 useEffect 실행
+        // const sortDate = filterById.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // setPostsList(sortDate); // 필터된 게시글 상태 설정
+        // setFilteredPostsList(sortDate); // 검색된 게시글 상태 초기 설정
+    }, [isLoggedIn, loginInfo]); // loginUserId가 변경될 때마다 useEffect 실행
 
     // 게시글 삭제 핸들러
     const handleDelete = (postId) => {

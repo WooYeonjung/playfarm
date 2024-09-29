@@ -4,22 +4,22 @@ import axios from 'axios';
 import '../../styles/WriteCommunity.css';
 import CommunitySelect from './CommunitySelect';
 import CommunityAdvertising from './CommunityAdvertising';
+import { useAuth } from '../../service/context/AuthProvider';
 
 const WriteCommunity = () => {
     const [loginUserId, setLoginUserId] = useState(''); // 로그인 되어있는 userId 담기
     const [postType, setPostType] = useState(null);
     const [link, setLink] = useState('');
-    const [content, setContent] = useState('');
-    const [title, setTitle] = useState('');
+    const [postContent, setPostContent] = useState('');
+    const [postTitle, setPostTitle] = useState('');
     const navigate = useNavigate();
-
-    const userInfo = JSON.parse(localStorage.getItem("userData"));
+    const { isLoggedIn, loginInfo, onLogout } = useAuth();
 
     useEffect(() => {
-        if (userInfo && userInfo.userid) {
-            setLoginUserId(userInfo.userid);
+        if (isLoggedIn && loginInfo.userId) {
+            setLoginUserId(loginInfo.userId);
         }
-    }, [userInfo]);
+    }, [loginInfo]);
 
     const handlePostTypeChange = (selectedOption) => {
         setPostType(selectedOption);
@@ -30,29 +30,21 @@ const WriteCommunity = () => {
     };
 
     const handleContentChange = (e) => {
-        setContent(e.target.value);
+        setPostContent(e.target.value);
     };
 
     const handleCancel = (e) => {
         e.preventDefault();
         setPostType(null);
         setLink('');
-        setContent('');
-        setTitle('');
+        setPostContent('');
+        setPostTitle('');
         navigate('/community/all');
     };
 
     const handleTitleChange = (e) => {
-        setTitle(e.target.value);
+        setPostTitle(e.target.value);
     };
-
-    const date = new Date();
-    const formattedDate = date.getFullYear() + '-' +
-        String(date.getMonth() + 1).padStart(2, '0') + '-' +
-        String(date.getDate()).padStart(2, '0') + ' ' +
-        String(date.getHours()).padStart(2, '0') + ':' +
-        String(date.getMinutes()).padStart(2, '0') + ':' +
-        String(date.getSeconds()).padStart(2, '0');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,29 +55,40 @@ const WriteCommunity = () => {
 
         const newPost = {
             userId: loginUserId,
-            title,
+            postTitle,
             postType: postType.value, // postType이 null이 아닌 경우에만 접근
             link,
-            content,
-            regDate: formattedDate
+            postContent,
+
         };
 
         try {
-            const response = await axios.post('/uploadpost', newPost);
+            const response = await axios.post('/commu/uploadpost', newPost, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
             if (response.status === 200) {
                 alert('게시글이 작성되었습니다.');
                 setPostType(null);
                 setLink('');
-                setContent('');
-                setTitle('');
+                setPostContent('');
+                setPostTitle('');
                 navigate('/community/all');
             } else {
                 alert('게시글 작성에 실패했습니다.');
             }
         } catch (error) {
-            console.error('Error posting the data', error);
+            if (error.response) {
+                console.error('Response error:', error.response.data);
+                console.error('Status:', error.response.status);
+                console.error('Headers:', error.response.headers);
+            } else {
+                console.error('Error message:', error.message);
+            }
             alert('게시글 작성 중 오류가 발생했습니다.');
         }
+        console.log(newPost);
     };
 
     return (
@@ -106,12 +109,12 @@ const WriteCommunity = () => {
                             />
                         </div>
                         <div className="write_community_section">
-                            <label className="write_community_label" htmlFor="title">제목</label>
+                            <label className="write_community_label" htmlFor="postTitle">제목</label>
                             <input
                                 className="write_community_input"
                                 type="text"
                                 id="title"
-                                value={title}
+                                value={postTitle}
                                 onChange={handleTitleChange}
                                 placeholder="글의 제목을 입력하세요"
                                 required
@@ -131,11 +134,11 @@ const WriteCommunity = () => {
                             </div>
                         </div>
                         <div className="write_community_section">
-                            <label className="write_community_label" htmlFor="content">내용</label>
+                            <label className="write_community_label" htmlFor="postContent">내용</label>
                             <textarea
                                 className="write_community_textarea"
                                 id="content"
-                                value={content}
+                                value={postContent}
                                 onChange={handleContentChange}
                                 rows="10"
                                 required
