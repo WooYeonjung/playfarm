@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.playfarmb.store.entity.Game;
 import com.example.playfarmb.store.repository.GameRepository;
 
-@Service
+@Service("GameService")
 public class GameServiceImpl implements GameService {
 	
 	@Autowired

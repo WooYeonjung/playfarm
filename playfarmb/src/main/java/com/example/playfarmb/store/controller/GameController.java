@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.playfarmb.store.entity.Game;
 import com.example.playfarmb.store.service.GameService;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/game")
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Log4j2
 public class GameController {
 	
-	private final GameService gservice;
+	@Resource(name = "GameService")
+	private GameService gservice;
 	
 	@GetMapping("/gamelist")
 	public List<Game> gamelist() {
