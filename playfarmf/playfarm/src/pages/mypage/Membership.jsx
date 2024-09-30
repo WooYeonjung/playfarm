@@ -14,7 +14,13 @@ const Membership = () => {
     const [confirmPassword, setConfirmPassword] = useState(''); //새비밀번호 확인
     const [pwErrMsg, setPwErrMsg] = useState('');
     const openPasswordModal = () => setIsPasswordModalOpen(true);
-    const closePasswordModal = () => setIsPasswordModalOpen(false);
+    const closePasswordModal = () => {
+        setIsPasswordModalOpen(false);
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setPwErrMsg('');
+    };
     const navigate = useNavigate();
     const { loginInfo } = useAuth();
     const customStyles = { // 모달 커스터마이징
@@ -48,26 +54,36 @@ const Membership = () => {
         }
         if (newPassword !== confirmPassword) {
             alert("새 비밀번호가 일치하지 않습니다.");
+            setNewPassword('')
+            setConfirmPassword('');
             return;
         }
-        const formData = new FormData(document.getElementById('changePw'));
+        const formData = new FormData();
+        formData.append('password', currentPassword);
+        formData.append('newPassword', newPassword);
+
         const token = loginInfo.token;
+        console.log(formData);
         try {
 
             const response = await apiCall('/user/updatepw', 'POST', formData, token);
-            if (response.ok) {
-                alert("비밀번호가 변경되었습니다. 다시 로그인 후 이용하세요.");
+            debugger;
+            if (response) {
+
+                alert(response);
                 closePasswordModal();
                 sessionStorage.clear();
                 navigate('/login');
             }
 
-
         } catch (err) {
             if (err.response.status === 502) {
                 alert('비밀번호 변경에 실패하였습니다. 다시 시도해 주세요.')
             } else {
-                alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해 주세요.')
+                alert(err.response.data);
+                setCurrentPassword('')
+                setNewPassword('')
+                setConfirmPassword('');
             }
         }
 

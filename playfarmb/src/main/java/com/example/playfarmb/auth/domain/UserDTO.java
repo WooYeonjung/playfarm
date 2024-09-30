@@ -23,5 +23,6 @@ public class UserDTO {
 	private LocalDate birthday;
 	private String token;
 	private MultipartFile profilef; 
+	private String profile;
 	private List<UserRole> roleList = new ArrayList<>();
 }

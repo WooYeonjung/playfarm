@@ -32,6 +32,7 @@ import EditCommunity from './pages/community/EditCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import Membership from './pages/mypage/Membership';
 
+
 // export const wholeVariable = React.createContext();
 
 function App() {
@@ -82,11 +83,6 @@ function App() {
         const response = await fetch('/data/db.json'); // JSON 파일 경로
         const result = await response.json();
         setData(result);
-
-        // 로컬 스토리지에 데이터가 없을 때만 저장
-        // if (!localStorage.getItem('usersJSON')) {
-        //   localStorage.setItem('usersJSON', JSON.stringify(result.users));
-        // }
         if (!localStorage.getItem('cartJSON')) {
           localStorage.setItem('cartJSON', JSON.stringify(result.cart));
         }
@@ -96,9 +92,9 @@ function App() {
         if (!localStorage.getItem('payJSON')) {
           localStorage.setItem('payJSON', JSON.stringify(result.pay));
         }
-        // if (!localStorage.getItem('posts')) {
-        //   localStorage.setItem('postsJSON', JSON.stringify(result.posts));
-        // }
+        if (!localStorage.getItem('posts')) {
+          localStorage.setItem('postsJSON', JSON.stringify(result.posts));
+        }
       } catch (error) {
         console.error('JSON 데이터를 가져오는 중 에러 발생:', error);
       }

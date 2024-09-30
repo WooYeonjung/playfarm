@@ -61,8 +61,13 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    // return (
+    //     <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout }}>
+    //         {children}
+    //     </AuthContext.Provider>
+    // );
     return (
-        <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout }}>
+        <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout, setLoginInfo }}>
             {children}
         </AuthContext.Provider>
     );

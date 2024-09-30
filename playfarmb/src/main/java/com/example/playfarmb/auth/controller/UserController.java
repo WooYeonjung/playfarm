@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +24,7 @@ import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.domain.UserRole;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.service.UserService;
+import com.example.playfarmb.common.util.DateUtil;
 import com.example.playfarmb.jwtToken.TokenProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,6 +41,7 @@ public class UserController {
 	UserService uservice;
 	PasswordEncoder passwordEncoder;
 	TokenProvider tokenProvider;
+	DateUtil dateUtil;
 
 	// 그냥 테스트
 	@GetMapping("/finduser")
@@ -62,6 +63,9 @@ public class UserController {
 			 */
 			if (entity != null && passwordEncoder.matches(password, entity.getPassword())) {
 				// => 성공 : 로그인 정보 session에 보관 & Front로 전달
+				entity.setLastLogin(dateUtil.getLocalDateTime());
+				// 최종 로그인 시간 업데잌트
+				uservice.save(entity);
 				session.setAttribute("loginId", entity.getUserId());
 				session.setAttribute("loginNickname", entity.getNickname());
 				// => Token
@@ -70,7 +74,7 @@ public class UserController {
 				// => 전송할 UserDTO 객체생성
 				// 빌더패턴 적용, 값변경을 예방을 위해 final 적용
 				final UserDTO userDTO = UserDTO.builder().token(token).userId(entity.getUserId())
-						.nickname(entity.getNickname()).roleList(entity.getRoleList()).build();
+						.nickname(entity.getNickname()).roleList(entity.getRoleList()).email(entity.getEmail()).profile(entity.getProfile()).build();
 				log.info("login 성공=> " + HttpStatus.OK);
 				return ResponseEntity.ok(userDTO);
 			} else {
@@ -156,6 +160,7 @@ public class UserController {
 		}
 
 		entity.setProfile(tfile);
+		entity.setUseyn("y");
 		entity.addRole(UserRole.USER);
 		// Service 통해서 처리
 		try {
@@ -173,27 +178,48 @@ public class UserController {
 
 	// 비밀번호 변경
 	@PostMapping("/updatepw")
-	public ResponseEntity<?> updatePw(@AuthenticationPrincipal String userId , PasswordDTO dto,User entity,HttpSession session){
-		//dto로 받아!
+	public ResponseEntity<?> updatePw(@AuthenticationPrincipal String userId, @RequestBody PasswordDTO dto, User entity,
+			HttpSession session) {
+		// dto로 받아!
+		log.info(userId);
 		String password = dto.getPassword();
 		String newPassword = dto.getNewPassword();
-		
+
 		entity = uservice.findById(userId);
-		if(entity!=null && passwordEncoder.matches(password, entity.getPassword())) {
+		if (entity != null && passwordEncoder.matches(password, entity.getPassword())) {
 			try {
 				entity.setPassword(passwordEncoder.encode(newPassword));
-				uservice.updatePassword(entity.getUserId(),entity.getPassword());
+				uservice.updatePassword(entity.getUserId(), entity.getPassword());
 				session.invalidate();
+				log.info("비밀번호 수정 성공");
 				return ResponseEntity.ok("비밀변호가 수정되었습니다. 재로그인 후 이용하세요.");
-			}catch(Exception e) {
+			} catch (Exception e) {
 				log.error("updatePw Exception => " + e.toString());
 				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("비밀번호 수정을 실패하였습니다. 다시 시도하세요.");
 			}
-		}else {
+		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("현재 비밀번호가 일치하지 않거나 사용자가 존재하지 않습니다.");
 		}
 		// 패스워드가 db의 패스워드와 같은 지 확인
-		
+
+	}
+
+	// ** 회원정보불러오기
+	@GetMapping("/user/userdetail")
+	public ResponseEntity<?> userDetail(@AuthenticationPrincipal String userId, User entity) {
+		entity = uservice.findById(userId);
+		if (entity != null) {
+			try {
+				final UserDTO dto = UserDTO.builder().
+									userId(entity.getUserId()).email(entity.getEmail()).profile(entity.getProfile())
+						.nickname(entity.getNickname()).build();
+				return ResponseEntity.ok(dto);
+			} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("회원정보를 불러오는 것에 실패하였습니다. 다시 시도하세요.");
+			}
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원정보가 존재하지 않습니다.");
+		}
 	}
 
 	// 로그아웃
