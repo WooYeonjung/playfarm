@@ -15,5 +15,7 @@ public interface UserService {
 	 
 	 // 회원가입
 	 User save(User entity);
+	 //비밀번호 변경
+	 void updatePassword(String id,String passowrd);
 	
 }

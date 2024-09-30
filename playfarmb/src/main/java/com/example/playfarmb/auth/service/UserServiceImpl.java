@@ -33,9 +33,6 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
-	
-	
-	
 	//---------------회줭가입시 중복체크들
 
 	public boolean idcheck(String userId) {
@@ -53,9 +50,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	// 회원가입
+	 @Override
 	 public User save(User entity) {
 		 return urepository.save(entity);
 	 }
 	 
+	 
+	 //password 수정하기
+	 @Override
+	 public void updatePassword(String id,String password) {
+		 urepository.updatePassword(id,password);
+	 }
 
 }

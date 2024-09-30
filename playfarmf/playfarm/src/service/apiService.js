@@ -7,7 +7,7 @@ import axios from "axios";
 // => ACCESS_TOKEN 도 매개변수로 전달함
 export async function apiCall(url, method, requestData, token) {
 
-  // alert(requestData);
+
 
   // 1.1) headers & token
   // => indexOf('join')

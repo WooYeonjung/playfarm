@@ -1,109 +1,137 @@
+
 import React, { useEffect, useState } from 'react';
 import '../../styles/Mypages.css';
 import { NavBarW } from "./Mypages";
-import { useNavigate } from 'react-router-dom';
-
-const inputList = [
-  { id: 'name', title: 'Name', contents: '- 특수문자 금지 / 변경 후 60일 뒤에 재변경 가능' },
-  { id: 'userid', title: 'ID' },
-  { id: 'password', title: 'Pw', contents: '- 변경 후 60일 뒤에 재변경 가능 / 8 ~ 16 자' },
-  { id: 'userPwCh', title: 'Pw Check' },
-  { id: 'email', title: 'E-mail' },
-];
+import { Navigate, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../service/app-config';
+import { useAuth } from '../../service/context/AuthProvider';
+import { apiCall } from '../../service/apiService';
 
 function List1() {
+  const [nickNameErrMsg, setNickNameErrMsg] = useState('');
+  const [emailErrMsg, setEmailErrMsg] = useState('');
+  const { loginInfo, setLoginInfo } = useAuth();
+  const [preview, setPreview] = useState('');
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: '',
-    userid: '',
-    password: '',
+    userId: '',
+    profilef: '',
     email: '',
-    name: '',
+    nickname: '',
+    profile: ''
   });
 
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [passwordError, setPasswordError] = useState('비밀번호는 8자 이상 16자 이하이며, 숫자, 특수문자를 포함해야 합니다.');
-  const [emailError, setEmailError] = useState('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value.replace(/\s/g, '') });
+  }
+  // 사진 변경 시 미리 보여주기 위함
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, profilef: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
+  // 새로고침해도 정보 그대로 있음
   useEffect(() => {
-    const userData = localStorage.getItem('userData');
-    if (userData !== null) {
-      const user = JSON.parse(userData);
-      setFormData({
-        id: user.id || '',
-        userid: user.userid || '',
-        password: '',
-        email: user.email || '',
-        name: user.name || '',
-      });
-      console.log(user);
+    const storedLoginInfo = sessionStorage.getItem('loginInfo');
+    if (storedLoginInfo) {
+
+      setLoginInfo(JSON.parse(storedLoginInfo));
     }
   }, []);
-
-  const containsWhitespace = /\s/;
-
-  const validataPassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-    return passwordRegex.test(password) && !containsWhitespace.test(password);
-  };
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email) && !containsWhitespace.test(email);
-  };
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    if (id === 'passwordCheck') {
-      setPasswordCheck(value);
-    } else if (id !== 'userid') { // userid는 변경하지 않도록 설정
+ 
+  useEffect(() => {
+    if (loginInfo) {
       setFormData({
-        ...formData,
-        [id]: value,
+        userId: loginInfo.userId || '',
+        email: loginInfo.email || '',
+        nickname: loginInfo.nickname || '',
+        profile: loginInfo.profile || ''
       });
+      setPreview(`${API_BASE_URL}/resources/images/user/${loginInfo.profile || 'basicman.png'}`);
+    }
+
+  }, [loginInfo])
+  const containsWhitespace = /\s/;
+  // 닉네임
+  const handleCheckDupName = async (e) => {
+    const url = `/user/nickcheck/${formData.nickname}`;
+    console.log(formData.nickname);
+    if (!formData.nickname || formData.nickname.length < 3 || formData.nickname.length > 10) {
+      setNickNameErrMsg('닉네임은 3자 이상 10자 이하로 입력해주세요.');
+      return false;
+    }
+
+    const specialCharOrSpace = /[!@#$%^&*(),.?":{}|<> ]/;
+    if (specialCharOrSpace.test(formData.nickname)) {
+      setNickNameErrMsg('닉네임에는 특수문자나 공백을 사용할 수 없습니다.');
+      return false;
+    }
+    try {
+      const response = await apiCall(url, 'GET');
+      console.log(response);
+      if (!response) {
+        setNickNameErrMsg('사용 가능한 닉네임입니다.');
+        return true;
+      } else {
+        setNickNameErrMsg('이미 사용 중인 닉네임입니다.');
+      }
+    } catch (err) {
+      setNickNameErrMsg('닉네임 중복 확인 중 오류 발생');
+      console.error('닉네임 중복 확인 중 오류 발생:', err);
+      return false;
     }
   };
 
+  //email 중복 체크 
+  const handleCheckDupEm = async (e) => {
+    const emailCk = formData.email;
+    const validateEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email) && !containsWhitespace.test(email);
+    };
+
+    if (!validateEmail(emailCk)) {
+      setEmailErrMsg('유효한 이메일 주소를 입력해주세요.');
+
+      return false;
+    }
+    const url = `/user/emailcheck/${formData.email}`;
+    try {
+      const response = await apiCall(url, 'GET',);
+      console.log(response);
+      if (!response) {
+        setEmailErrMsg('사용 가능한 이메일니다.');
+        return true;
+      } else {
+        setEmailErrMsg('이미 사용 중인 이메일입니다.');
+      }
+    } catch (err) {
+      setEmailErrMsg('이메일 중복 확인 중 오류 발생');
+      console.error('이메일 중복 확인 중 오류 발생:', err);
+      return false;
+    }
+
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.password !== passwordCheck) {
-      alert('비밀번호가 맞지 않습니다.');
-      return;
-    }
-
-    if (!validataPassword(formData.password)) {
-      alert('비밀번호는 8자 이상 16자 이하이며, 숫자, 특수문자를 포함해야 합니다.');
-      return;
-    }
-
-    if (!validateEmail(formData.email)) {
-      setEmailError('유효한 이메일 주소를 입력하세요.');
-      return;
-    }
-
-    setPasswordError('');
-    setEmailError('');
 
     // Update localStorage
     localStorage.setItem('usersJSON', JSON.stringify(formData));
     alert('회원 정보가 수정되었습니다.');
   };
 
-  const removeLog = useNavigate();
-
-  const handleDelete = () => {
-    if (!window.confirm('정말로 탈퇴하시겠습니까?')) {
-      return;
-    }
-
-    // Remove from localStorage
-    localStorage.removeItem('userData');
-    localStorage.removeItem('isLoggedIn');
-    alert('탈퇴 처리가 완료되었습니다.');
-    removeLog('/');
-    // Redirect or perform any other actions after successful deletion
-  };
-
+  function cancleCilck() {
+    navigate(-1);
+  }
   return (
     <div className='myPageMain'>
       <NavBarW />
@@ -111,58 +139,58 @@ function List1() {
         <h1>MEMBERSHIP</h1>
         <form className='userInfo' onSubmit={handleSubmit}>
           <div>
-            <h4>Name</h4>
+            {/* <label htmlFor="profilef">Profile</label> */}
+            <img src={preview} />
             <input
-              id='name'
+              name='profilef'
+              id='profilef'
+              type="file"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="userId" style={{ fontWeight: 'bold' }}>ID</label>
+            <input
+              name='userId'
+              id='userId'
               type="text"
-              value={formData.name}
+              value={formData.userId}
+              readOnly
               onChange={handleChange}
             />
           </div>
           <div>
-            <h4>ID</h4>
-            <span style={{ paddingRight: '40%', fontWeight: '500' }}>{formData.userid}</span>
-          </div>
-          <div>
-            <h4>Pw</h4>
+            <label htmlFor="nickname" style={{ fontWeight: 'bold' }}>Nickname</label>
             <input
-              id='password'
-              type="password"
-              value={formData.password}
+              name='nickname'
+              id='nickname'
+              type="text"
+              value={formData.nickname}
               onChange={handleChange}
               required
+              minLength={3} maxLength={10}
             />
-            
+            <div className='errorMsg'>{nickNameErrMsg}</div>
           </div>
           <div>
-            <h4>Pw-Check</h4>
+            <label htmlFor="email" style={{ fontWeight: 'bold' }}>E-mail</label>
             <input
-              id='passwordCheck'
-              type="password"
-              value={passwordCheck}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <h4>E-mail</h4>
-            <input
+              name='email'
               id='email'
               type="text"
               value={formData.email}
-              onChange={handleChange}
+              onChange={handleChange} readOnly
             />
+            <div className='errorMsg'>{emailErrMsg}</div>
           </div>
-          <p>{inputList[0].contents}</p>
-          <p>{passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}</p>
+
           <div className="userInfoBtn">
             <button type='submit'>수정</button>
-            <button type='button' onClick={handleDelete}>탈퇴</button>
+            <button type='button' onClick={cancleCilck}>취소</button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
 export default List1;
