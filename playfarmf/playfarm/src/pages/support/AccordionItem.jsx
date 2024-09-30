@@ -1,27 +1,29 @@
 import React from 'react';
-import '../../styles/AccordionItem.css'; // 아코디언 아이템에 사용될 CSS 파일을 임포트합니다.
+import '../../styles/AccordionItem.css';
 
+// 아코디언 아이템 컴포넌트
 const AccordionItem = ({ item, index, openIndex, setOpenIndex }) => {
-  // 현재 아이템이 열려 있는지 여부를 확인합니다.
+  // 현재 아코디언 아이템이 열려 있는지 확인
   const isOpen = openIndex === index;
 
-  // 아코디언을 토글하는 함수입니다.
-  const toggleAccordion = () => {
-    setOpenIndex(isOpen ? null : index); // 클릭한 아이템이 열려 있으면 닫고, 닫혀 있으면 열도록 설정합니다.
+  // 아코디언 열기/닫기 토글 함수
+  const toggleOpen = () => {
+    setOpenIndex(isOpen ? null : index); // 현재 상태에 따라 인덱스 변경
   };
 
   return (
     <div className="accordion-item">
-      {/* 아코디언 아이템의 제목 부분입니다. 클릭 시 토글 기능이 동작합니다. */}
-      <div className={`accordion-title ${isOpen ? 'open' : ''}`} onClick={toggleAccordion}>
-        <span>{item.title}</span>
+      {/* 아코디언 제목: 클릭 시 열기/닫기 */}
+      <div className={`accordion-title ${isOpen ? 'open' : ''}`} onClick={toggleOpen}>
+        {item.title}
       </div>
-      {/* 아코디언 아이템이 열려 있을 때 보여지는 내용 부분입니다. */}
+
+      {/* 아코디언 내용: 열렸을 때만 표시 */}
       <div className={`accordion-content ${isOpen ? 'active' : ''}`}>
-        <p>{item.content}</p>
+        {item.content}
       </div>
     </div>
   );
 };
 
-export default AccordionItem;
+export default AccordionItem; // 컴포넌트 내보내기
