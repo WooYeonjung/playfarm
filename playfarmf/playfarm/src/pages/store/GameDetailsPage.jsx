@@ -29,68 +29,40 @@ const DetailItem = ({ src, name, content }) => {
 };
 
 /** 태그 리스트 컴포넌트 */
-// const TagList = ({ tags, codeIds }) => (
-//     <div className='info_tag_list'>
-//         {tags.map((t, idx) => (
-//             codeIds.indexOf(t) !== -1 && (
-//                 <div key={idx} className='tag_item'>
-//                     <span>{t}</span>
-//                 </div>
-//             )
-//         ))}
-//     </div>
-// );
+const TagList = ({ tags, codeTag }) => (
+    <div className='info_tag_list'>
+        {codeTag.map((t, idx) => (
+            tags.includes(t.codeId) && (
+                <div key={idx} className='tag_item'>
+                    <span>{t.codeInfo}</span>
+                </div>
+            )
+        ))}
+    </div>
+);
 
 export default function GameDetailsPage({ gameId }) {
     const { id } = useParams();
     const navigatePayment = useNavigate();
     const [ref, inView] = useIntersectionObserver(0.1);
     const [gameDetail, setGameDetail] = useState([]);
+    const [rqmData, setRqmData] = useState([]);
     const [codeTag, setCodeTag] = useState([]);
     const [codePlaytype, setCodePlaytype] = useState([]);
     const [imageData, setImageData] = useState([]);
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
-    // Scroll to top on first render
-    // useEffect(() => {
-    //     window.scrollTo({
-    //         top: 0
-    //     })
-    // }, []);
-
-    // useEffect(() => {
-    //     const fetchGameDetail = async () => {
-    //       try {
-    //         const gameResponse = await axios.get(`/game/gamedetail/${id}`);
-    //         if (JSON.stringify(gameDetail) !== JSON.stringify(gameResponse.data)) {
-    //           setGameDetail(gameResponse.data);
-    //         }
-    //       } catch (error) {
-    //         console.error('게임 세부 정보를 가져오는데 실패했습니다.', error);
-    //       }
-    //     };
-
-    //     const fetchCodeData = async () => {
-    //       try {
-    //         const codeResponse = await axios.get('/code/codedv/tag');
-    //         if (JSON.stringify(codeTag) !== JSON.stringify(codeResponse.data)) {
-    //           setCodeTag(codeResponse.data);
-    //         }
-    //       } catch (error) {
-    //         console.error('코드 데이터를 가져오는데 실패했습니다.', error);
-    //       }
-    //     };
-
-    //     fetchGameDetail();
-    //     fetchCodeData();
-    //     console.log(gameDetail)
-    //   }, [gameId, gameDetail, codeTag]);
-
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0
+        })
+
         const fetchGameDetail = async () => {
             try {
                 const gameResponse = await axios.get(`/game/gamedetail/${id}`);
+                const requirementResponse = await axios.get(`/game/requirement/${id}`);
                 setGameDetail(gameResponse.data);
+                setRqmData(requirementResponse.data);
             } catch (error) {
                 console.error('게임 세부 정보를 가져오는데 실패했습니다.', error);
             }
@@ -121,41 +93,15 @@ export default function GameDetailsPage({ gameId }) {
 
     }, [gameId]);
 
-    const codeIds = codeTag.map((item) => item.codeId);
     const imgName = imageData.map(image => image.originName);
+    // console.log(rqmData);
     console.log(codePlaytype);
     console.log(imageData);
-    console.log(codeIds)
+    console.log(codeTag);
     console.log(gameDetail)
     console.log(gameDetail[`modeDesc${id}`])
-    console.log(`${gameDetail.modeDesc}${id}`)
-    // const [gameTag, setGameTag] = useState([]);
-    let gameTag;
-    if (gameDetail !== null && gameDetail.length > 0) {
-        // setGameTag(gameDetail.tag.split(', '));
-        return gameTag = gameDetail.tag
-    }
-    console.log(gameTag)
-    // let gameTag = gameDetail.tag;
-    // if (!gameTag) {
-    //     return;
-    // } else {
-    //     gameTag = gameTag.split(', ');
-    //     return;
-    //     // return gameTag;
-    // }
 
-    // const gameTag = gameDetail.tag.split(', ').map(tag => tag.trim());
-    // console.log(gameTag.split(', '));
-    // console.log(gameDetail)
     const item = gameDetail;
-    // const item = games.find((item) => item.id === parseInt(id));
-    // const item = gameDetail;
-    // console.log(item);
-
-
-
-
 
     const addToCart = (item, type) => {
         if (!isLoggedIn || !loginInfo.userId) {
@@ -163,18 +109,19 @@ export default function GameDetailsPage({ gameId }) {
             if (loginConfirm) {
                 navigatePayment('/login')
             }
-            return; // 로그인 페이지로 이동하는 경우 함수 종료
+            return;
         }
 
         let data = {
             "gameId": item.gameId,
-            "userid": loginInfo.userId,
-            "title": item.title,
-            "playtype": type,
-            "src": item.src_title,
+            "userId": loginInfo.userId,
+            "title": item.gameTitle,
+            "playtype": type.codeInfo,
+            "src": item.titleImg,
             "price": item.price
         };
 
+        //이거를 엑시오스 post 로 cart entity에 데이터 담고 그 담긴데이터 비교하는 걸로 수정해야함
         const cartJSON = localStorage.getItem('cartJSON');
         let cartItems = cartJSON ? JSON.parse(cartJSON) : [];
 
@@ -199,18 +146,19 @@ export default function GameDetailsPage({ gameId }) {
             if (loginConfirm) {
                 navigatePayment('/login')
             }
-            return; // 로그인 페이지로 이동하는 경우 함수 종료
+            return;
         }
 
         let data = {
-            "gameId": item.id,
-            "userid": loginInfo.userId,
-            "title": item.title,
-            "playtype": type,
-            "src": item.src_title,
+            "gameId": item.gameId,
+            "userId": loginInfo.userId,
+            "title": item.gameTitle,
+            "playtype": type.codeInfo,
+            "src": item.titleImg,
             "price": item.price
         };
 
+        //바로 payment페이지로 보내야함. 
         let payData = JSON.parse(localStorage.getItem('pay')) || [];
         const existingIndex = payData.findIndex(pay => pay.userid === loginInfo.userId);
 
@@ -244,19 +192,6 @@ export default function GameDetailsPage({ gameId }) {
                 ))}
             </section>
             <section className='main_container'>
-                {/* <div className='purchase_container'>
-                    {['nin', 'ps', 'pc'].map((type) => (
-                        item.playtype.split(', ').include(type) && (
-                            <div key={type} className='purchase_type_container'>
-                                <img className='purchase_type_img' src={`/images/logo/service_${type}_logo.jpg`} alt={`${type} Logo`} />
-                                <div className='btn_container'>
-                                    <button className={`purchase_btn_${type}`} onClick={() => addToCart(item, type)}><span>장바구니</span></button>
-                                    <button className={`purchase_btn_${type}`} onClick={() => goPayment(item, type)}><span>구매하기</span></button>
-                                </div>
-                            </div>
-                        )
-                    ))}
-                </div> */}
                 <div className='purchase_container'>
                     {codePlaytype.map((type) => (
                         gameDetail.playtype.includes(type.codeId) && (
@@ -277,20 +212,23 @@ export default function GameDetailsPage({ gameId }) {
                         {/* {isLoggedIn && loginInfo.userId && <LikedBtn item={item} />} */}
                     </div>
                     <div className='info_releasedate'>출시일 : {gameDetail.releaseDate}</div>
-                    {/* <TagList tags={item.tag} codeIds={codeIds} /> */}
+                    <TagList tags={item.tag} codeTag={codeTag} />
                 </div>
             </section>
             <section className='requirements_container'>
                 <h3>최소 요구 사항</h3>
                 <hr />
                 <div className='system_requirements_container'>
-                    {['minimum', 'recommended'].map((type, index) => (
-                        <div key={index} className={`system_requirements_${type}`}>
-                            <div>{type === 'minimum' ? '최소' : '권장'}</div>
-                            {item.OS && item.OS[index] && <div>운영 체제 : {item.OS[index]}</div>}
-                            {item.Processor && item.Processor[index] && <div>프로세서 : {item.Processor[index]}</div>}
-                            {item.Memory && item.Memory[index] && <div>메모리 : {item.Memory[index]}</div>}
-                            {item.Graphics && item.Graphics[index] && <div>그래픽 : {item.Graphics[index]}</div>}
+                    {rqmData.map((type, index) => (
+                        <div key={index} className={`system_requirements_${type.division}`}>
+                            <div style={{ fontWeight: 'bold' }}>{type.division === 'min' ? '최소' : '권장'}</div>
+                            {type.opsys && <div>운영 체제 : {type.opsys}</div>}
+                            {type.proc && <div>프로세서 : {type.proc}</div>}
+                            {type.memory && <div>메모리 : {type.memory}</div>}
+                            {type.graphics && <div>그래픽 : {type.graphics}</div>}
+                            {type.scard && <div>사운드 카드 : {type.scard}</div>}
+                            {type.dver && <div>DirectX 버전 : {type.dver}</div>}
+                            {type.storage && <div>저장 공간 : {type.storage}</div>}
                         </div>
                     ))}
                 </div>

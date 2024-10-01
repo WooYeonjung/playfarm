@@ -82,7 +82,7 @@ public class Game extends BaseEntity {
 //    @Column(name = "mod_date", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 //    private LocalDateTime modDate;
     
-    @OneToMany(mappedBy = "game")
-    private List<Requirement> requirements;
-	
+//    @OneToMany(mappedBy = "game")
+//    private List<Requirement> requirements;
+//	
 }
