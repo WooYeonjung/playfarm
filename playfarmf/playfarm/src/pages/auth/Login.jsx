@@ -6,55 +6,84 @@ import MainSlide from './MainSlide';
 import SubSlide from './SubSlide';
 
 function Login() {
-  const { onLoginSubmit } = useAuth();
+  const { onLoginSubmit, reassignContext } = useAuth();
   const [loginId, setLoginId] = useState('');
   const [loginPw, setLoginPw] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
+  const { reassign, setReassign, reassignData, setReassignData, handleReassignSubmit } = reassignContext;
 
-  // const loginNavi = useNavigate();
 
-  // useEffect(() => {
-  //   const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
-  //   const storedUserData = localStorage.getItem('userData');
-
-  //   if (storedIsLoggedIn === 'true' && storedUserData) {
-  //     setIsLoggedIn(true);
-  //     setUserData(JSON.parse(storedUserData));
-  //     setUsername(JSON.parse(storedUserData).name); // 사용자 이름 설정
-  //   }
-  // }, []);
-
-  // const users = JSON.parse(localStorage.getItem('usersJSON'));
-
-  // provider 로 하기 추가
   const handleLogin = (event) => {
     event.preventDefault();
     onLoginSubmit(loginId, loginPw)
       .then(() => {
-        console.log(loginId);
       })
       .catch((error) => {
         console.error("Login error in Login component:", error);
       });
   };
 
-  // const handleLogin = (event) => {
-  //   event.preventDefault();
-  //   const user = users.find((u) => u.userid === loginId && u.password === loginPw);
-  //   if (user) {
-  //     alert("로그인 성공!");
-  //     loginNavi('/');
-  //     setIsLoggedIn(true);
-  //     setUsername(user.name); // 사용자의 이름을 저장
-  //     setUserData(user);
-  //     localStorage.setItem('isLoggedIn', 'true');
-  //     localStorage.setItem('userData', JSON.stringify(user));
-  //   } else {
-  //     alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-  //   }
-  // };
+
+  const modalStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
+
+  const modalContentStyle = {
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '5px',
+    width: '300px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
+
+  const formGroupStyle = {
+    marginBottom: '15px',
+    marginTop: '15px',
+    width: '100%'
+
+  };
+
+  const labelStyle = {
+    display: 'inline-block',
+    width: '70px',
+    fontWeight: 'bold'
+  };
+
+  const inputStyle = {
+    // width: 'calc(100% - 80px)',
+    padding: '5px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #ccc',
+    borderRadius: '3px'
+  };
+
+  const buttonStyle = {
+    backgroundColor: '#ccc',
+    border: 'none',
+    padding: '10px 15px',
+    marginRight: '10px',
+    cursor: 'pointer',
+    borderRadius: '3px'
+  };
+  const formGroupStyle2 = {
+    display: 'flex',
+    marginBottom: '15px',
+    marginTop: '15px',
+    width: '100%',
+    justifyContent: 'space-between'
+
+  }
+
 
   return (
     <div className='LoginMain'>
@@ -112,6 +141,43 @@ function Login() {
           <Link to='/find'>Find ID/PW</Link>
         </div>
       </form>
+      {reassign && (
+        <div style={modalStyle}>
+
+          <div style={modalContentStyle}>
+
+            <form onSubmit={(e) => handleReassignSubmit(e)}>
+              <h2>계정 확인</h2>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>ID</label>
+                <input
+                  type="text"
+                  name="userId"
+                  value={reassignData.userId}
+                  onChange={(e) => setReassignData({ ...reassignData, userId: e.target.value })}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={reassignData.email}
+                  onChange={(e) => setReassignData({ ...reassignData, email: e.target.value })}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+              <div style={formGroupStyle2}>
+                <button type="submit" style={buttonStyle}>확인</button>
+                <button type="button" style={buttonStyle} onClick={() => setReassign(false)}>닫기</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

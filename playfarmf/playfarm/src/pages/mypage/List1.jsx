@@ -6,11 +6,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../service/app-config';
 import { useAuth } from '../../service/context/AuthProvider';
 import { apiCall } from '../../service/apiService';
+import axios from 'axios';
 
 function List1() {
   const [nickNameErrMsg, setNickNameErrMsg] = useState('');
   const [emailErrMsg, setEmailErrMsg] = useState('');
   const { loginInfo, setLoginInfo } = useAuth();
+  const [myInfo, setMyInfo] = useState();
   const [preview, setPreview] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -18,12 +20,23 @@ function List1() {
     profilef: '',
     email: '',
     nickname: '',
-    profile: ''
+    profile: '',
+    birthday: ''
   });
 
+  //css 
+  const spanStyle = {
+    // display: 'inline-block',
+    width: '80%',
+    gridColumn: '3 / 4',
+    textAlign: 'right',
+    color: ''
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value.replace(/\s/g, '') });
+
+
   }
   // 사진 변경 시 미리 보여주기 위함
   const handleFileChange = (e) => {
@@ -38,100 +51,155 @@ function List1() {
     }
   };
 
+  const userInfo = async (token) => {
+
+    try {
+      const response = await apiCall("/user", "GET", '', token);
+      if (response) {
+        setMyInfo(response);
+        debugger;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // 새로고침해도 정보 그대로 있음
   useEffect(() => {
-    const storedLoginInfo = sessionStorage.getItem('loginInfo');
-    if (storedLoginInfo) {
+    const storedLoginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+    // if (storedLoginInfo) {
+    //   setLoginInfo(JSON.parse(storedLoginInfo));
+    // }
+    const token = storedLoginInfo.token;
+    userInfo(token);
 
-      setLoginInfo(JSON.parse(storedLoginInfo));
-    }
   }, []);
- 
+
+
+
   useEffect(() => {
-    if (loginInfo) {
+    if (myInfo) {
       setFormData({
-        userId: loginInfo.userId || '',
-        email: loginInfo.email || '',
-        nickname: loginInfo.nickname || '',
-        profile: loginInfo.profile || ''
+        userId: myInfo.userId || '',
+        email: myInfo.email || '',
+        nickname: myInfo.nickname || '',
+        profile: myInfo.profile || ''
       });
-      setPreview(`${API_BASE_URL}/resources/images/user/${loginInfo.profile || 'basicman.png'}`);
+      setPreview(`${API_BASE_URL}/resources/images/user/${myInfo.profile || 'basicman.png'}`);
     }
 
-  }, [loginInfo])
+  }, [myInfo])
   const containsWhitespace = /\s/;
   // 닉네임
-  const handleCheckDupName = async (e) => {
-    const url = `/user/nickcheck/${formData.nickname}`;
-    console.log(formData.nickname);
-    if (!formData.nickname || formData.nickname.length < 3 || formData.nickname.length > 10) {
+  const handleCheckDupName = (nickname) => {
+    // const url = `/user/nickcheck/${formData.nickname}`;
+    // console.log(formData.nickname);
+    if (!nickname || nickname.length < 3 || nickname.length > 10) {
       setNickNameErrMsg('닉네임은 3자 이상 10자 이하로 입력해주세요.');
+
       return false;
     }
 
     const specialCharOrSpace = /[!@#$%^&*(),.?":{}|<> ]/;
-    if (specialCharOrSpace.test(formData.nickname)) {
+    if (specialCharOrSpace.test(nickname)) {
       setNickNameErrMsg('닉네임에는 특수문자나 공백을 사용할 수 없습니다.');
+
       return false;
-    }
-    try {
-      const response = await apiCall(url, 'GET');
-      console.log(response);
-      if (!response) {
-        setNickNameErrMsg('사용 가능한 닉네임입니다.');
-        return true;
-      } else {
-        setNickNameErrMsg('이미 사용 중인 닉네임입니다.');
-      }
-    } catch (err) {
-      setNickNameErrMsg('닉네임 중복 확인 중 오류 발생');
-      console.error('닉네임 중복 확인 중 오류 발생:', err);
-      return false;
-    }
+    } return true;
   };
 
   //email 중복 체크 
-  const handleCheckDupEm = async (e) => {
-    const emailCk = formData.email;
+  const handleCheckDupEm = (email) => {
+    // const emailCk = formData.email;
     const validateEmail = (email) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email) && !containsWhitespace.test(email);
     };
 
-    if (!validateEmail(emailCk)) {
+    if (!validateEmail(email)) {
       setEmailErrMsg('유효한 이메일 주소를 입력해주세요.');
-
       return false;
+    } else {
+      return true;
     }
-    const url = `/user/emailcheck/${formData.email}`;
-    try {
-      const response = await apiCall(url, 'GET',);
-      console.log(response);
-      if (!response) {
-        setEmailErrMsg('사용 가능한 이메일니다.');
-        return true;
-      } else {
-        setEmailErrMsg('이미 사용 중인 이메일입니다.');
-      }
-    } catch (err) {
-      setEmailErrMsg('이메일 중복 확인 중 오류 발생');
-      console.error('이메일 중복 확인 중 오류 발생:', err);
-      return false;
-    }
-
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-
-    // Update localStorage
-    localStorage.setItem('usersJSON', JSON.stringify(formData));
-    alert('회원 정보가 수정되었습니다.');
-  };
 
   function cancleCilck() {
     navigate(-1);
   }
+
+  // 정보 수정을 위한 엑시오스 설정
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const url = 'http://localhost:8080/user/update';
+    const token = loginInfo.token;
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer ' + token
+    };
+
+    if (!handleCheckDupEm(formData.email)) {
+      alert(emailErrMsg)
+      return;
+    }
+    if (!handleCheckDupName(formData.nickname)) {
+      alert(nickNameErrMsg)
+      return;
+    }
+    try {
+      const response = await axios.post(url, formData, { headers: headers });
+      if (response.status === 409) {
+        // alert(response.data);
+        // navigate('/list1');
+      }
+      const result = response.data;
+
+      setMyInfo({
+        ...myInfo,
+        nickname: result.nickname,
+        email: result.email,
+        profile: result.profile
+      });
+      sessionStorage.setItem("loginInfo", JSON.stringify(loginInfo));
+      alert('회원 정보가 성공적으로 수정되었습니다.');
+
+      // navigate('/membership');
+    } catch (err) {
+      if (err.response.status === 502) {
+        alert(err.response.data);
+      }
+      if (err.response.status === 409) {
+        alert(err.response.data);
+      }
+    }
+
+
+  };
+
+
+  // 탈퇴 
+  const withdraw = async () => {
+    const storedLoginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+    // if (storedLoginInfo) {
+    //   setLoginInfo(JSON.parse(storedLoginInfo));
+    // }
+    const token = storedLoginInfo.token;
+    try {
+      const response = await apiCall("/user/withdraw", "GET", '', token);
+      if (response) {
+        setMyInfo(response);
+        alert(response);
+        sessionStorage.clear();
+        navigate("/")
+        debugger;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className='myPageMain'>
       <NavBarW />
@@ -140,16 +208,17 @@ function List1() {
         <form className='userInfo' onSubmit={handleSubmit}>
           <div>
             {/* <label htmlFor="profilef">Profile</label> */}
-            <img src={preview} />
-            <input
+            <img style={{ width: '100px', height: '100px' }} src={preview} />
+            <input style={{ height: '30px' }}
               name='profilef'
               id='profilef'
               type="file"
               onChange={handleFileChange}
+              placeholder={formData.profile ? formData.profile : ''}
             />
           </div>
-          <div>
-            <label htmlFor="userId" style={{ fontWeight: 'bold' }}>ID</label>
+          <div >
+            <h4 style={{ fontWeight: 'bold' }}>ID</h4>
             <input
               name='userId'
               id='userId'
@@ -157,10 +226,11 @@ function List1() {
               value={formData.userId}
               readOnly
               onChange={handleChange}
+
             />
           </div>
           <div>
-            <label htmlFor="nickname" style={{ fontWeight: 'bold' }}>Nickname</label>
+            <h4 style={{ fontWeight: 'bold' }}>Nickname</h4>
             <input
               name='nickname'
               id='nickname'
@@ -169,28 +239,46 @@ function List1() {
               onChange={handleChange}
               required
               minLength={3} maxLength={10}
+            // onBlur={handleCheckDupName}
             />
-            <div className='errorMsg'>{nickNameErrMsg}</div>
           </div>
           <div>
-            <label htmlFor="email" style={{ fontWeight: 'bold' }}>E-mail</label>
+            <h4 style={{ fontWeight: 'bold' }}>E-mail</h4>
             <input
               name='email'
               id='email'
-              type="text"
+              type="email"
               value={formData.email}
-              onChange={handleChange} readOnly
+              onChange={handleChange}
+              //onBlur={handleCheckDupEm}
+              required
             />
-            <div className='errorMsg'>{emailErrMsg}</div>
+            {/* <div style={{ height: '0px' }}></div> */}
           </div>
-
-          <div className="userInfoBtn">
+          {/* <div>
+            <h4 style={{ fontWeight: 'bold' }}>Birthday</h4>
+            <input
+              name='birthday'
+              id='birthday'
+              type="birthday"
+              value={formData.birthday}
+              // onChange={handleChange}
+              //onBlur={handleCheckDupEm}
+              required
+              readOnly
+            />
+            {/* <div style={{ height: '0px' }}></div> 
+          </div> */}
+          <div>
+            <span style={spanStyle} onClick={() => withdraw()}>탈퇴하기</span>
+          </div>
+          <div className="userInfoBtn" >
             <button type='submit'>수정</button>
             <button type='button' onClick={cancleCilck}>취소</button>
           </div>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 export default List1;
