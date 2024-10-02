@@ -34,7 +34,7 @@ const Membership = () => {
     };
 
     const memberInfo = () => {
-        navigate('/list1');
+        navigate('/myInfo');
     }
     const handlePasswordChange = async (e) => {
         e.preventDefault();

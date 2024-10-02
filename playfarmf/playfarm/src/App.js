@@ -38,13 +38,19 @@ import Membership from './pages/mypage/Membership';
 function App() {
 
   const nav = useNavigate();
-  // Scroll to top on first render
+  //Scroll to top on first render
   useEffect(() => {
     window.scrollTo({
       top: 0,
     })
-    console.log("호출초출")
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    })
   }, [nav]);
+
 
   const location = useLocation();
   const paths = ['/login', '/find'];
@@ -140,7 +146,7 @@ function App() {
               <Mypage />
             </PrivateRoute>} />
           <Route path="/membership" element={<Membership />} />
-          <Route path="/list1" element={<List1 />} />
+          <Route path="/myInfo" element={<List1 />} />
           <Route path="/list2" element={<List2 />} />
           <Route path="/list3" element={<List3 />} />
           <Route path="/customerboard" element={<CustomerBoard />} />

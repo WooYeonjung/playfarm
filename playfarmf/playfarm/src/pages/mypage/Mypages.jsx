@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/Mypages.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -55,6 +55,7 @@ const NavBarW = () => {
 
 const PageNation = () => {
   const { isLoggedIn, onLogout } = useAuth(); // useAuth 훅 사용
+  const [myInfo, setMyInfo] = useState();
   const history = useNavigate();
 
 
@@ -62,9 +63,9 @@ const PageNation = () => {
 
     try {
       const response = await apiCall("/user", "GET", '', token);
-      // if (response) {
-      //   setMyInfo(response);
-      // }
+      if (response) {
+        setMyInfo(response);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -75,10 +76,11 @@ const PageNation = () => {
     // if (storedLoginInfo) {
     //   setLoginInfo(JSON.parse(storedLoginInfo));
     // }
+
     const token = storedLoginInfo.token;
     userInfo(token);
 
-  }, [isLoggedIn]);
+  }, []);
 
 
 
