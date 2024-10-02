@@ -8,4 +8,5 @@ public interface CommunityService {
 	
 	List<Post> getPostList();
 	Post save(Post entity);
+	List<Post> mypostlist(String userId);
 }

@@ -19,8 +19,14 @@ public class CommunityServiceImpl implements CommunityService {
 		return repository.findAll();
 	}
 	
+	@Override
 	public Post save(Post entity) {
 		return repository.save(entity);
+	}
+	
+	@Override
+	public List<Post> mypostlist(String userId) {
+		return repository.findByUserId(userId);
 	}
 	
 }
