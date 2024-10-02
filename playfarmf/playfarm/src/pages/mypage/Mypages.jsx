@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faReceipt, faGamepad, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
 import { useAuth } from '../../service/context/AuthProvider';
+import { apiCall } from '../../service/apiService';
 
 // const NavBarW = () => {
 
@@ -55,14 +56,29 @@ const NavBarW = () => {
 const PageNation = () => {
   const { isLoggedIn, onLogout } = useAuth(); // useAuth 훅 사용
   const history = useNavigate();
-  // debugger;
-  // useEffect(() => {
-  //   console.log(isLoggedIn);
-  //   if (!isLoggedIn) {
-  //     history('/login')
-  //   }
 
-  // }, [isLoggedIn, history]);
+
+  const userInfo = async (token) => {
+
+    try {
+      const response = await apiCall("/user", "GET", '', token);
+      // if (response) {
+      //   setMyInfo(response);
+      // }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  // 새로고침해도 정보 그대로 있음
+  useEffect(() => {
+    const storedLoginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+    // if (storedLoginInfo) {
+    //   setLoginInfo(JSON.parse(storedLoginInfo));
+    // }
+    const token = storedLoginInfo.token;
+    userInfo(token);
+
+  }, [isLoggedIn]);
 
 
 

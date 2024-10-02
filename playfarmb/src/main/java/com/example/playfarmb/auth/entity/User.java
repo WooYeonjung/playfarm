@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.domain.UserRole;
 import com.example.playfarmb.common.entity.BaseEntity;
 
@@ -21,6 +23,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -64,6 +67,9 @@ public class User extends BaseEntity {
 
 	@Column(name = "last_login")
 	private LocalDateTime lastLogin;
+	
+	@Column(name="profilec")
+	private String profilec;
 
 	@Transient
 	// => SQL 구문처리시 제외시켜줌
@@ -96,5 +102,22 @@ public class User extends BaseEntity {
         dataMap.put("roleList", this.roleList);
 
         return dataMap;
+    }
+    @PrePersist
+    public void init() {
+    	this.useyn = this.useyn != null ? this.useyn : "y"; 
+    }
+    
+    public void update (UserDTO req) {
+    	this.nickname = !ObjectUtils.isEmpty(req.getNickname()) ? req.getNickname(): this.nickname;
+    	this.email = !ObjectUtils.isEmpty(req.getEmail())?req.getEmail(): this.email;
+    }
+    
+    public void reSign() {
+    	this.useyn = "y";
+    }
+    
+    public void withdraw() {
+    	this.useyn = "n";
     }
 }

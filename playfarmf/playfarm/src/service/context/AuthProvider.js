@@ -13,6 +13,10 @@ const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loginInfo, setLoginInfo] = useState(null);
 
+    // 계정 활성화 하기
+    const [reassign, setReassign] = useState(false);
+    const [reassignData, setReassignData] = useState({ userId: '', email: '' });
+
     useEffect(() => {
         const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
         if (loginCheck && loginCheck.token && isTokenValid(loginCheck.token)) {
@@ -40,11 +44,51 @@ const AuthProvider = ({ children }) => {
             setLoginInfo('');
             if (err.response.status === 502) {
                 alert("id 또는 password 가 다릅니다. 다시 시도해 주세요.");
+            } else if (err.response.status === 500) {
+                /* eslint-disable no-restricted-globals */
+                if (confirm('이미 탈퇴한 회원입니다. 재가입 하시겠습니까?')) {
+                    setReassign(true);
+                }
             } else {
                 alert("로그인 중 오류가 발생했습니다. 다시 시도해 주세요.");
             }
         }
 
+    };
+
+    //   계정 활성화 하기
+    const handleReassignSubmit = async (e) => {
+        //e.preventDefailt();
+
+        setReassignData({ userId: reassignData.userId, email: reassignData.email });
+        console.log(reassignData);
+        try {
+
+            const response = await apiCall('/user/reassign', 'POST', reassignData, null);
+            console.log(response);
+
+            alert(response);
+            setReassign(false);
+            setLoginInfo(null);
+            sessionStorage.clear();
+            navigator("/login");
+
+        } catch (err) {
+            alert(err.response.data);
+            setLoginInfo(null);
+            navigator("/login");
+            setReassign(true);
+        }
+
+    };
+
+
+    const reassignContext = {
+        reassign,
+        setReassign,
+        reassignData,
+        setReassignData,
+        handleReassignSubmit
     };
 
     const onLogout = async () => {
@@ -61,13 +105,9 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    // return (
-    //     <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout }}>
-    //         {children}
-    //     </AuthContext.Provider>
-    // );
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout, setLoginInfo }}>
+        <AuthContext.Provider value={{ isLoggedIn, loginInfo, onLoginSubmit, onLogout, setLoginInfo, reassignContext }}>
             {children}
         </AuthContext.Provider>
     );

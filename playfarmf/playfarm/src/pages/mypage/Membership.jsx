@@ -13,6 +13,7 @@ const Membership = () => {
     const [newPassword, setNewPassword] = useState(''); // 새비밀번호 확인
     const [confirmPassword, setConfirmPassword] = useState(''); //새비밀번호 확인
     const [pwErrMsg, setPwErrMsg] = useState('');
+
     const openPasswordModal = () => setIsPasswordModalOpen(true);
     const closePasswordModal = () => {
         setIsPasswordModalOpen(false);

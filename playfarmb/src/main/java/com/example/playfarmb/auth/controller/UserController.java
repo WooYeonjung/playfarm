@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ import com.example.playfarmb.auth.service.UserService;
 import com.example.playfarmb.common.util.DateUtil;
 import com.example.playfarmb.jwtToken.TokenProvider;
 
+import io.jsonwebtoken.lang.Objects;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -54,15 +56,19 @@ public class UserController {
 		// 1) 요청 분석
 		// password를 비교하기 위해 입력한 값 보관
 		String password = entity.getPassword();
-		log.info("로그인 직후" + entity.getUserId());
 		// 2) Service 처리 & 결과 전송
 		try {
 			entity = uservice.findById(entity.getUserId());
 			/*
 			 * if(entity!=null && passwordEncoder.matches(password, entity.getPassword())) {
 			 */
+			if (entity.getUseyn().equals("n")) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미 탈퇴한 회원입니다.");
+			}
+
 			if (entity != null && passwordEncoder.matches(password, entity.getPassword())) {
 				// => 성공 : 로그인 정보 session에 보관 & Front로 전달
+
 				entity.setLastLogin(dateUtil.getLocalDateTime());
 				// 최종 로그인 시간 업데잌트
 				uservice.save(entity);
@@ -73,10 +79,11 @@ public class UserController {
 
 				// => 전송할 UserDTO 객체생성
 				// 빌더패턴 적용, 값변경을 예방을 위해 final 적용
-				final UserDTO userDTO = UserDTO.builder().token(token).userId(entity.getUserId())
-						.nickname(entity.getNickname()).roleList(entity.getRoleList()).email(entity.getEmail()).profile(entity.getProfile()).build();
+				UserDTO userDTO = UserDTO.of(entity);
+				userDTO.setToken(token);
 				log.info("login 성공=> " + HttpStatus.OK);
 				return ResponseEntity.ok(userDTO);
+
 			} else {
 				throw new Exception("정보를 찾을 수 없습니다.");
 			}
@@ -205,21 +212,71 @@ public class UserController {
 	}
 
 	// ** 회원정보불러오기
-	@GetMapping("/user/userdetail")
-	public ResponseEntity<?> userDetail(@AuthenticationPrincipal String userId, User entity) {
-		entity = uservice.findById(userId);
+	@GetMapping("")
+	public ResponseEntity<?> userDetail(@AuthenticationPrincipal String userId) {
+		User entity = uservice.findById(userId);
 		if (entity != null) {
 			try {
-				final UserDTO dto = UserDTO.builder().
-									userId(entity.getUserId()).email(entity.getEmail()).profile(entity.getProfile())
-						.nickname(entity.getNickname()).build();
+				final UserDTO dto = UserDTO.of(entity);
 				return ResponseEntity.ok(dto);
 			} catch (Exception e) {
 				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("회원정보를 불러오는 것에 실패하였습니다. 다시 시도하세요.");
 			}
-		}else {
+		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원정보가 존재하지 않습니다.");
 		}
+	}
+
+	// 회원정보 수정
+	@PostMapping("/update")
+	public ResponseEntity<?> userUpdate(@AuthenticationPrincipal String userId, HttpServletRequest request,
+			UserDTO req) {
+
+		try {
+			UserDTO res = uservice.updateUser(request, userId, req);
+			if (res != null) {
+				log.info("회원정보 수정 성공");
+				return ResponseEntity.ok(res);
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("회원정보 수정을 실패하였습니다. 다시 시도하세요.");
+			}
+		} catch (IOException ex) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+		} catch (RuntimeException ex) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("회원 정보 수정 중 오류가 발생하였습니다.");
+		}
+
+	}
+
+	@GetMapping("/withdraw")
+	public ResponseEntity<?> withdraw(@AuthenticationPrincipal String userId) {
+		try {
+			uservice.withdraw(userId);
+			return ResponseEntity.ok("탈퇴되었습니다.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("탈퇴에 실패하였습니다. 다시 시도해주세요.");
+		}
+
+	}
+
+	// 게정 활성화
+	@PostMapping("/reassign")
+	public ResponseEntity<?> reassign(@RequestBody UserDTO dto) {
+		System.out.println("*********" + dto);
+		try {
+			log.info("try진입!");
+			User entity = uservice.findByIdAndEmail(dto.getUserId(), dto.getEmail());
+			if (entity != null) {
+				return ResponseEntity.ok("계정이 활성화 되었습니다. 로그인 후 이용해주세요.");
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("일치하는 사용자가 없습니다.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("계정활성화를 실패하였습니다. 다시 시도하세요.");
+		}
+
 	}
 
 	// 로그아웃
