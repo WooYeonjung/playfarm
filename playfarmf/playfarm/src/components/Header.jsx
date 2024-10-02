@@ -28,7 +28,7 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     // 추가
     const handleLogout = () => {
         onLogout();
-        navigate('/');
+
     }
     const mypageClick = () => {
         navigate('/mypages');

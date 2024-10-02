@@ -12,6 +12,7 @@ function MainVideo() {
     useEffect(() => {
         // Intersection Observer 설정
         const observer = new IntersectionObserver(
+
             ([entry]) => {
                 if (entry.isIntersecting) { // 요소가 뷰포트에 들어올 때
                     setIsVisible(true); // 상태를 true로 설정
