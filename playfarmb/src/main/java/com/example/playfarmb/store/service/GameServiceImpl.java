@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserRepository;
 import com.example.playfarmb.store.domain.BuyDTO;
-import com.example.playfarmb.store.entity.Cart;
+import com.example.playfarmb.store.entity.Buy;
 import com.example.playfarmb.store.entity.Game;
 import com.example.playfarmb.store.entity.Requirement;
-import com.example.playfarmb.store.repository.CartRepository;
+import com.example.playfarmb.store.repository.BuyRepository;
 import com.example.playfarmb.store.repository.GameRepository;
 import com.example.playfarmb.store.repository.RequirementRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service("GameService")
 public class GameServiceImpl implements GameService {
@@ -28,7 +26,7 @@ public class GameServiceImpl implements GameService {
 	RequirementRepository rqmRepository;
 
 	@Autowired
-	CartRepository buyRepository;
+	BuyRepository buyRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -50,6 +48,42 @@ public class GameServiceImpl implements GameService {
 		Optional<Game> result = gRepository.findById(gameId);
 		if (result.isPresent())  return rqmRepository.findByGame(result.get());
 		else return null;
+	}
+	
+	@Override
+	public Buy saveBuy(BuyDTO buyDTO) {
+//		User user = userRepository.findById(buyDTO.getUserId())
+//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+//		
+//		Game game = gRepository.findById(buyDTO.getGameId())
+//				.orElseThrow(() -> new RuntimeException("게임을 찾을 수 없습니다."));
+//		
+//		Buy buy = new Buy();
+//        buy.setUser(user);
+//        buy.setGame(game);
+//        buy.setPlaytype(buyDTO.getPlaytype());
+//        
+//        return buyRepository.save(buy);
+		
+		// 1. User와 Game을 조회 (예외 처리 포함)
+	    User user = userRepository.findById(buyDTO.getUserId())
+	            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+	    Game game = gRepository.findById(buyDTO.getGameId())
+	            .orElseThrow(() -> new RuntimeException("게임을 찾을 수 없습니다."));
+
+	    // 2. 기존의 Buy 데이터가 있는지 확인 (userId 기준으로 조회)
+	    Buy buy = buyRepository.findByUserId(user.getUserId())
+	            .orElseGet(() -> new Buy()); // 존재하지 않으면 새로운 Buy 객체 생성
+
+	    // 3. 게임과 플레이 타입을 설정 (기존 데이터가 있다면 업데이트, 없다면 insert)
+	    buy.setUser(user);         // 항상 user 정보는 설정
+	    buy.setGame(game);         // game 정보 업데이트 또는 새로 설정
+	    buy.setPlaytype(buyDTO.getPlaytype()); // playtype 업데이트 또는 새로 설정
+
+	    // 4. 데이터 저장 (기존 데이터는 업데이트, 새로운 데이터는 insert)
+	    return buyRepository.save(buy);
+		
 	}
 	/*
 	@Override
