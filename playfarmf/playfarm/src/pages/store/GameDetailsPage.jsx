@@ -32,7 +32,7 @@ const DetailItem = ({ src, name, content }) => {
 const TagList = ({ tags, codeTag }) => (
     <div className='info_tag_list'>
         {codeTag.map((t, idx) => (
-            tags.includes(t.codeId) && (
+            tags && tags.includes(t.codeId) && (
                 <div key={idx} className='tag_item'>
                     <span>{t.codeInfo}</span>
                 </div>
@@ -112,32 +112,29 @@ export default function GameDetailsPage({ gameId }) {
             return;
         }
 
-        let data = {
-            "gameId": item.gameId,
+        let cartData = {
             "userId": loginInfo.userId,
-            "title": item.gameTitle,
-            "playtype": type.codeInfo,
-            "src": item.titleImg,
-            "price": item.price
+            "gameId": item.gameId,
+            "playtype": type
         };
 
         //이거를 엑시오스 post 로 cart entity에 데이터 담고 그 담긴데이터 비교하는 걸로 수정해야함
-        const cartJSON = localStorage.getItem('cartJSON');
-        let cartItems = cartJSON ? JSON.parse(cartJSON) : [];
+        // const cartJSON = localStorage.getItem('cartJSON');
+        // let cartItems = cartJSON ? JSON.parse(cartJSON) : [];
 
-        const itemExists = cartItems.some(cartItem => cartItem.gameId === data.gameId && cartItem.playtype === data.playtype);
+        // const itemExists = cartItems.some(cartItem => cartItem.gameId === data.gameId && cartItem.playtype === data.playtype);
 
-        if (itemExists) {
-            alert('이미 동일한 상품이 장바구니에 담겨 있습니다.');
-        } else {
-            cartItems.push(data);
-            localStorage.setItem('cartJSON', JSON.stringify(cartItems));
+        // if (itemExists) {
+        //     alert('이미 동일한 상품이 장바구니에 담겨 있습니다.');
+        // } else {
+        //     cartItems.push(data);
+        //     localStorage.setItem('cartJSON', JSON.stringify(cartItems));
 
-            let cartConfirm = window.confirm('장바구니에 상품을 담았습니다! 장바구니로 이동 하시겠습니까?');
-            if (cartConfirm) {
-                navigatePayment('/cart');
-            }
-        }
+        //     let cartConfirm = window.confirm('장바구니에 상품을 담았습니다! 장바구니로 이동 하시겠습니까?');
+        //     if (cartConfirm) {
+        //         navigatePayment('/cart');
+        //     }
+        // }
     };
 
     const goPayment = (item, type) => {
@@ -149,26 +146,28 @@ export default function GameDetailsPage({ gameId }) {
             return;
         }
 
-        let data = {
-            "gameId": item.gameId,
+        let buyData = {
             "userId": loginInfo.userId,
-            "title": item.gameTitle,
-            "playtype": type.codeInfo,
-            "src": item.titleImg,
-            "price": item.price
+            "gameId": item.gameId,
+            "playtype": type
         };
 
-        //바로 payment페이지로 보내야함. 
-        let payData = JSON.parse(localStorage.getItem('pay')) || [];
-        const existingIndex = payData.findIndex(pay => pay.userid === loginInfo.userId);
-
-        if (existingIndex === -1) {
-            payData.push(data);
-        } else {
-            payData[existingIndex] = data;
+        try {
+            const response = axios.post('/game/buy', buyData);
+        } catch (error) {
+            console.error('구매 정보를 알 수 없습니다', error.message);
         }
+        //바로 payment페이지로 보내야함. 
+        // let payData = JSON.parse(localStorage.getItem('pay')) || [];
+        // const existingIndex = payData.findIndex(pay => pay.userid === loginInfo.userId);
 
-        localStorage.setItem('pay', JSON.stringify(payData));
+        // if (existingIndex === -1) {
+        //     payData.push(data);
+        // } else {
+        //     payData[existingIndex] = data;
+        // }
+
+        // localStorage.setItem('pay', JSON.stringify(payData));
 
         navigatePayment('/payment');
     };
@@ -194,12 +193,12 @@ export default function GameDetailsPage({ gameId }) {
             <section className='main_container'>
                 <div className='purchase_container'>
                     {codePlaytype.map((type) => (
-                        gameDetail.playtype.includes(type.codeId) && (
+                        gameDetail.playtype && gameDetail.playtype.includes(type.codeId) && (
                             <div key={type.codeDv} className='purchase_type_container'>
                                 <img className='purchase_type_img' src={`/images/logo/service_${type.codeInfo}_logo.jpg`} alt={`${type.codeInfo} Logo`} />
                                 <div className='btn_container'>
                                     <button className={`purchase_btn_${type.codeInfo}`} onClick={() => addToCart(item, type.codeDv)}><span>장바구니</span></button>
-                                    <button className={`purchase_btn_${type.codeInfo}`} onClick={() => goPayment(item, type.codeDv)}><span>구매하기</span></button>
+                                    <button className={`purchase_btn_${type.codeInfo}`} onClick={() => goPayment(item, type.codeId)}><span>구매하기</span></button>
                                 </div>
                             </div>
                         )

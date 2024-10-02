@@ -1,8 +1,5 @@
 package com.example.playfarmb.common.entity;
 
-import java.time.LocalDateTime;
-
-import com.example.playfarmb.auth.entity.Info;
 import com.example.playfarmb.store.entity.Game;
 
 import jakarta.persistence.Column;

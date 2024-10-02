@@ -1,8 +1,7 @@
 package com.example.playfarmb.community.entity;
 
-import java.time.LocalDateTime;
-
 import com.example.playfarmb.auth.entity.User;
+import com.example.playfarmb.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,15 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "post")
 @Data
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,11 +43,11 @@ public class Post {
     @Column(name = "post_content", nullable = false)
     private String postContent;
 
-    @Column(name = "reg_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime regDate;
-
-    @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime modDate;
+//    @Column(name = "reg_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+//    private LocalDateTime regDate;
+//
+//    @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+//    private LocalDateTime modDate;
 
     @Column(name = "views", columnDefinition = "INT DEFAULT 0")
     private int views;
@@ -65,5 +63,10 @@ public class Post {
     private User user;
 
     // Getters and Setters
+    @PrePersist
+    public void init() {
+    	this.useyn = this.useyn != null ? this.useyn : "y";
+    }
+    
 }
 

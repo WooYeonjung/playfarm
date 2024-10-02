@@ -41,9 +41,9 @@ public class CommunityController {
 			//이미지 경로 저장 관련 코드 (멤버컨트롤러 259 참고)
 		}
 		*/
-		post.setRegDate(LocalDateTime.now());
-		post.setModDate(LocalDateTime.now());
-		post.setUseyn("y");
+//		post.setRegDate(LocalDateTime.now());
+//		post.setModDate(LocalDateTime.now());
+//		post.setUseyn("y");
 		log.info(post);
         try {
             Post savedPost = cservice.save(post);
