@@ -1,4 +1,4 @@
-import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { json, Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import '../styles/Header.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,16 +7,25 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import Outlink from '../pages/mainHome/OutLink';
 import OutLinkList from '../pages/mainHome/OutLinkList'
 import { useAuth } from '../service/context/AuthProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { isLoggedIn, onLogout } = useAuth(); // useAuth 훅 사용
+    const { isLoggedIn, onLogout, loginInfo } = useAuth(); // useAuth 훅 사용
     const [loginId, setLoginId] = useState(''); // 추가
     //const [isLoggedIn, setIsLoggedIn] = useState(false); // 추가
     const [userData, setUserData] = useState(null); // 추가
     const navigate = useNavigate();
     // const logOutNavi = useNavigate('/');
+
+
+    // useEffect(() => {
+    //     const loginUser = sessionStorage.getItem(JSON.stringify('loginInfo'));
+    //     if (loginUser != null) {
+    //         setLoginId(loginUser.userId);
+    //         console.log(loginId);
+    //     }
+    // }, []);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -33,12 +42,17 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     const mypageClick = () => {
         navigate('/mypages');
     }
+
+
+
     const Logedout = () => {
         // console.log(isLoggedIn);
         if (isLoggedIn) {
+
             return (
                 <>
                     {/* <li><button onClick={mypageClick} style={{ width: '100%' }}><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</button></li> */}
+                    {loginInfo.userId === 'admin' && <Link to='http://localhost:8080/admin'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />AdminPage</li></Link>}
                     <Link to='/mypages'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>
                     <Link to='/cart'><li><FontAwesomeIcon className="arcodianIcon" icon={faCartShopping} size='sm' />Cart</li></Link>
                     <li onClick={handleLogout}><FontAwesomeIcon className="arcodianIcon" icon={faHeadset} size='sm' />LogOut</li>
