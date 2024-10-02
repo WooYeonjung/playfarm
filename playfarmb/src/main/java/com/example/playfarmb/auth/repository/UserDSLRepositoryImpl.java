@@ -44,8 +44,10 @@ public class UserDSLRepositoryImpl implements UserDSLRepository{
 	
 	
 	@Override
-	public User findByIdAndEmail(String userId, String email) {
-		return (User) jpaQueryFactory.selectFrom(user).where(user.userId.eq(userId).and(user.email.eq(email))).fetch();
+	public Integer findByIdAndEmail(String userId, String email) {
+		Integer result= jpaQueryFactory.selectOne().from(user).where(user.userId.eq(userId).and(user.email.eq(email))).fetchFirst();
+			
+		return result ;
 	}
 //	@Override
 //	public User existByNickname(String nickname) {

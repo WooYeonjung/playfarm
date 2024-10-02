@@ -155,10 +155,20 @@ public class UserServiceImpl implements UserService {
 	//계정활성화
 	@Transactional
 	@Override
-	public void findByIdAndEmail(String userId, String email) {
-		User user = udrepository.findByIdAndEmail(userId, email);
+	public User findByIdAndEmail(String userId, String email) {
+		User user=urepository.findByUserIdAndEmail(userId, email);
 		if(user!=null) {
 			user.reSign();
+			return user;
+		}else {
+			return null;
 		}
-	}
+			
+//			urepository.findById(userId).orElseThrow(()-> new RuntimeException("일치하는 사용자가 없습니다."));
+			
+			
+			
+		}
+
+	
 }

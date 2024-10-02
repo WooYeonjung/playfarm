@@ -27,6 +27,6 @@ public interface UserService {
 	 boolean findSameEmail(String email, String userId);
 	 UserDTO updateUser(HttpServletRequest request,String userId,UserDTO req) throws IOException;
 	 void withdraw(String userId);
-	 void findByIdAndEmail(String userId,String email);
+	 User findByIdAndEmail(String userId,String email);
 		
 }

@@ -1,5 +1,5 @@
 import '../../styles/Login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../service/context/AuthProvider';  //--로그인 프로바이더 추가
 import MainSlide from './MainSlide';
@@ -10,6 +10,23 @@ function Login() {
   const [loginId, setLoginId] = useState('');
   const [loginPw, setLoginPw] = useState('');
   const { reassign, setReassign, reassignData, setReassignData, handleReassignSubmit } = reassignContext;
+
+  // useEffect(()=>{
+
+  // });
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    // 세션 스토리지나 로컬 스토리지에서 불필요한 데이터 제거
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('email');
+
+    // URL 파라미터 제거
+    if (location.search) {
+      navigate('/login', { replace: true });
+    }
+  }, [location, navigate]);
+
 
 
   const handleLogin = (event) => {

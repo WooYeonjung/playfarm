@@ -10,6 +10,7 @@ import com.example.playfarmb.auth.entity.User;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User, String> {
@@ -37,7 +38,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 	User findByNickname(String nickname);
 	User findByEmail(String email);
 	
-	
+	User findByUserIdAndEmail(String userId, String email); 
+
 
 	
 	

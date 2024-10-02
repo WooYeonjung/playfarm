@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
             setLoginInfo('');
             if (err.response.status === 502) {
                 alert("id 또는 password 가 다릅니다. 다시 시도해 주세요.");
-            } else if (err.response.status === 401) {
+            } else if (err.response.status === 500) {
                 /* eslint-disable no-restricted-globals */
                 if (confirm('이미 탈퇴한 회원입니다. 재가입 하시겠습니까?')) {
                     setReassign(true);
@@ -58,16 +58,25 @@ const AuthProvider = ({ children }) => {
 
     //   계정 활성화 하기
     const handleReassignSubmit = async (e) => {
-        // e.preventDefailt();
-        setReassignData({ userId: reassignData.userId, email: reassignData.email })
+        //e.preventDefailt();
+
+        setReassignData({ userId: reassignData.userId, email: reassignData.email });
+        console.log(reassignData);
         try {
+
             const response = await apiCall('/user/reassign', 'POST', reassignData, null);
-            if (response) {
-                alert('계정이 활성화 되었습니다. 로그인 후 이용해주세요.');
-                setReassign(false);
-            }
+            console.log(response);
+
+            alert(response);
+            setReassign(false);
+            setLoginInfo(null);
+            sessionStorage.clear();
+            navigator("/login");
+
         } catch (err) {
-            alert('계정활성화를 실패하였습니다. 다시 시도하세요.');
+            alert(err.response.data);
+            setLoginInfo(null);
+            navigator("/login");
             setReassign(true);
         }
 

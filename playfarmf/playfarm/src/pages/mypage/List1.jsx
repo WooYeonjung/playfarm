@@ -11,7 +11,7 @@ import axios from 'axios';
 function List1() {
   const [nickNameErrMsg, setNickNameErrMsg] = useState('');
   const [emailErrMsg, setEmailErrMsg] = useState('');
-  const { loginInfo, setLoginInfo } = useAuth();
+  const { loginInfo, setLoginInfo, onLogout } = useAuth();
   const [myInfo, setMyInfo] = useState();
   const [preview, setPreview] = useState('');
   const navigate = useNavigate();
@@ -57,7 +57,6 @@ function List1() {
       const response = await apiCall("/user", "GET", '', token);
       if (response) {
         setMyInfo(response);
-        debugger;
       }
     } catch (err) {
       console.log(err);
@@ -189,11 +188,12 @@ function List1() {
     try {
       const response = await apiCall("/user/withdraw", "GET", '', token);
       if (response) {
-        setMyInfo(response);
+        // setMyInfo(response);
+        setLoginInfo(null);
         alert(response);
         sessionStorage.clear();
-        navigate("/")
-        debugger;
+        navigate("/");
+        // onLogout();
       }
     } catch (err) {
       console.log(err);

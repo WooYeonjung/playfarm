@@ -1,5 +1,5 @@
 
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
@@ -37,13 +37,14 @@ import Membership from './pages/mypage/Membership';
 
 function App() {
 
-
+  const nav = useNavigate();
   // Scroll to top on first render
   useEffect(() => {
     window.scrollTo({
-      top: 0
+      top: 0,
     })
-  }, []);
+    console.log("호출초출")
+  }, [nav]);
 
   const location = useLocation();
   const paths = ['/login', '/find'];
