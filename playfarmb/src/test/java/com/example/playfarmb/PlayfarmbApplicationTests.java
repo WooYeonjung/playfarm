@@ -27,6 +27,7 @@ class PlayfarmbApplicationTests {
 	void date(String date) {
 		
 	}
+	@Test
 	@Transactional
 	void updateUser() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -38,7 +39,7 @@ class PlayfarmbApplicationTests {
 		}
 		User user = User.builder()
 				.userId("admin")
-				.password("12345!")
+				.password("$10$eLUd0QyIe/sOLi2XmWZmRuwLVQ14EdZKJ.3.bHd8V6ZlMYiDw3P.S")
 				.birthday(birthday)
 				.email("admin@gmail.com")
 				.profile("basicman.gif")

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../service/context/AuthProvider';
 
 const useLikedGames = () => {
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  const userId = userData.userid;
+  const { isLoggedIn, loginInfo, onLogout } = useAuth();
+  const userId = loginInfo.userId;
 
   const [likedGames, setLikedGames] = useState(() => {
     const storedData = JSON.parse(localStorage.getItem('likedGames')) || {};

@@ -32,13 +32,13 @@ const WrittenByMe = () => {
                 console.log(loginUserId)
                 try {
                     const response = await axios.get(`/commu/mypost/${loginInfo.userId}`);
-                    console.log(response.data);
                     setPosts(response.data);
                 } catch (error) {
                     console.error('게시글을 찾지 못했습니다.', error);
                 }
             }
         };
+        fetchPost();
         // 최신 게시글이 맨 위에 오도록 정렬
         // const sortDate = filterById.sort((a, b) => new Date(b.date) - new Date(a.date));
         // setPostsList(sortDate); // 필터된 게시글 상태 설정

@@ -208,7 +208,7 @@ export default function GameDetailsPage({ gameId }) {
                     <img className='info_img' src={`/images/game/${gameDetail.titleImg}`} alt={item.titleImg} />
                     <div className='info_game_name_container'>
                         <div className='info_game_name'>{gameDetail.gameTitle}</div>
-                        {/* {isLoggedIn && loginInfo.userId && <LikedBtn item={item} />} */}
+                        {isLoggedIn && loginInfo.userId && <LikedBtn item={item} />}
                     </div>
                     <div className='info_releasedate'>출시일 : {gameDetail.releaseDate}</div>
                     <TagList tags={item.tag} codeTag={codeTag} />
