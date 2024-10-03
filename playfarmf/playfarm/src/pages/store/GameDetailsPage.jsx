@@ -113,12 +113,29 @@ export default function GameDetailsPage({ gameId }) {
         }
 
         let cartData = {
-            "userId": loginInfo.userId,
+            // "userId": loginInfo.userId,
             "gameId": item.gameId,
             "playtype": type
         };
 
         //이거를 엑시오스 post 로 cart entity에 데이터 담고 그 담긴데이터 비교하는 걸로 수정해야함
+        const token = loginInfo.token;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }; console.log(type);
+        axios.post("/cart", cartData, { headers: headers }, token)
+            .then(res => {
+                let cartConfirm = window.confirm(res.data);
+                if (cartConfirm) {
+                    navigatePayment('/cart');
+                }
+            }).catch(err => {
+                alert(err.response.data);
+            });
+
+
+
         // const cartJSON = localStorage.getItem('cartJSON');
         // let cartItems = cartJSON ? JSON.parse(cartJSON) : [];
 
@@ -197,7 +214,7 @@ export default function GameDetailsPage({ gameId }) {
                             <div key={type.codeDv} className='purchase_type_container'>
                                 <img className='purchase_type_img' src={`/images/logo/service_${type.codeInfo}_logo.jpg`} alt={`${type.codeInfo} Logo`} />
                                 <div className='btn_container'>
-                                    <button className={`purchase_btn_${type.codeInfo}`} onClick={() => addToCart(item, type.codeDv)}><span>장바구니</span></button>
+                                    <button className={`purchase_btn_${type.codeInfo}`} onClick={() => addToCart(item, type.codeId)}><span>장바구니</span></button>
                                     <button className={`purchase_btn_${type.codeInfo}`} onClick={() => goPayment(item, type.codeId)}><span>구매하기</span></button>
                                 </div>
                             </div>

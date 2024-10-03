@@ -90,9 +90,9 @@ function App() {
         const response = await fetch('/data/db.json'); // JSON 파일 경로
         const result = await response.json();
         setData(result);
-        if (!localStorage.getItem('cartJSON')) {
-          localStorage.setItem('cartJSON', JSON.stringify(result.cart));
-        }
+        // if (!localStorage.getItem('cartJSON')) {
+        //   localStorage.setItem('cartJSON', JSON.stringify(result.cart));
+        // }
         if (!localStorage.getItem('infoDataJSON')) {
           localStorage.setItem('infoDataJSON', JSON.stringify(result.infoData));
         }

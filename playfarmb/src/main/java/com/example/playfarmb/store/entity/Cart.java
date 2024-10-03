@@ -1,16 +1,9 @@
 package com.example.playfarmb.store.entity;
 
-import com.example.playfarmb.auth.entity.User;
+import com.example.playfarmb.common.entity.BaseEntity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,26 +16,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@IdClass(CartId.class)
-public class Cart {
-	private static final long serialVersionUID = 1L;
+public class Cart extends BaseEntity{
+
+	@EmbeddedId
+	private CartId cartId;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cart_id")
-	private int cartId;
-	
-    @Id
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
-    
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
-    private Game game;
-    
-    @Id
-    @Column(length = 3)
-    private String playtype;
+
 }
