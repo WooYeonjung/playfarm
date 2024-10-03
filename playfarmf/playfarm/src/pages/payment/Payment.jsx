@@ -3,24 +3,37 @@ import { useEffect, useState } from "react";
 import InfoService from "../../service/infoService";
 import '../../styles/Payment.css';
 import axios from "axios";
+import { useAuth } from '../../service/context/AuthProvider';
 
 export default function Payment() {
+    const { isLoggedIn, loginInfo, onLogout } = useAuth();
+    const [buyData, setBuyData] = useState();
     // Scroll to top on first render
     useEffect(() => {
         window.scrollTo({
             top: 0
         });
 
-        // const fetchCodeData = async() => {
+        const fetchCodeData = async() => {
+            try {
+                const response = await axios.get('/code/codedv/paytype');
+                setPaymentCode(response.data)
+            } catch (error) {
+                console.log('결제 코드 데이터를 가져오지 못했습니다.', error);
+            }
+        };
+        fetchCodeData();
+        // const fetchBuyData = async () => {
         //     try {
-        //         const response = await axios.get('/code/codedv/payment');
-        //         setPaymentCode(response.data)
+        //         const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
+        //         setPayData(buyResponse.data);
         //     } catch (error) {
-        //         console.log('결제 코드 데이터를 가져오지 못했습니다.', error);
+        //         console.log('구매 정보를 찾을 수 없습니다.', error);
         //     }
         // };
-    }, []);
 
+    }, []);
+    
     const [loginUserId, setLoginUserId] = useState('');
     const [payData, setPayData] = useState([]);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -29,25 +42,31 @@ export default function Payment() {
 
     const location = useLocation();
     const navigate = useNavigate();
-
+    console.log(paymentCode);
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userInfo = JSON.parse(localStorage.getItem("userData"));
-                if (userInfo && userInfo.userid) {
-                    setLoginUserId(userInfo.userid);
+                // const userInfo = JSON.parse(localStorage.getItem("userData"));
+                if (isLoggedIn && loginInfo.userId) {
+                    // setLoginUserId(userInfo.userid);
 
                     if (location.state?.selectedGames && location.state.selectedGames.length > 0) {
                         // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
-                        const cartData = await InfoService.getCartData(userInfo.userid);
+                        // const cartData = await InfoService.getCartData(userInfo.userid);
                         const selectedGames = location.state.selectedGames.map(game => ({ gameId: game.gameId, playtype: game.playtype }));
-                        const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
-                        setPayData(filteredData);
-                        console.log(filteredData);
+                        // const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
+                        // setPayData(filteredData);
+                        // console.log(filteredData);
                     } else {
                         // pay data 가져오는 로직
-                        const payData = await InfoService.getPayData(userInfo.userid);
-                        setPayData(payData);
+                        // const payData = await InfoService.getPayData(userInfo.userid);
+                        // setPayData(payData);
+                        try {
+                            const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
+                            setPayData([buyResponse.data]);
+                        } catch (error) {
+                            console.log('구매 정보를 찾을 수 없습니다.', error);
+                        }
                     }
                 }
             } catch (err) {
@@ -58,6 +77,7 @@ export default function Payment() {
         fetchUserData();
     }, [location.state]);
 
+    console.log(payData)
     const handlePayment = () => {
         // eslint-disable-next-line no-restricted-globals
         let paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
@@ -86,12 +106,12 @@ export default function Payment() {
                         </div>
                         {payData.map((item) => (
                             <div key={item.id} className="paymentList_body">
-                                <div className="paymentList_img"><img src={require(`../../images/store/gameitem${parseInt(item.gameId)}.jpg`)} alt={item.title} /></div>
-                                <div className="paymentList_title">{item.title}</div>
+                                <div className="paymentList_img"><img src={`/images/game/${item.game.titleImg}`} alt={item.title} /></div>
+                                <div className="paymentList_title">{item.game.gameTitle}</div>
                                 <div className="paymentList_playtype">
                                     <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt="" />
                                 </div>
-                                <div className="paymentList_price">{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+                                <div className="paymentList_price">{item.game.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                             </div>
                         ))}
                     </div>
@@ -104,7 +124,7 @@ export default function Payment() {
                             <p>수량</p><p>{payData.length}</p>
                         </div>
                         <div>
-                            <p>총 금액</p><p>{payData.reduce((total, item) => total + item.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                            <p>총 금액</p><p>{payData.reduce((total, item) => total + item.game.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
                         </div>
 
                     </div>
@@ -120,11 +140,15 @@ export default function Payment() {
                                 onChange={(e) => setSelectedPaymentMethod(e.target.value)}
                             >
                                 <option value="payment method" disabled={selectedPaymentMethod !== ''}>결제 방식</option>
-                                <option value="visa">Visa</option>
+                                {paymentCode.map((item) => (
+                                    <option value={item.codeInfo}>{item.codeInfo}</option>
+                                ))}
+
+                                {/* <option value="visa">Visa</option>
                                 <option value="mastercard">MasterCard</option>
                                 <option value="mobile">Mobile Payment</option>
                                 <option value="toss">Toss</option>
-                                <option value="kakaopay">KakaoPay</option>
+                                <option value="kakaopay">KakaoPay</option> */}
                             </select>
                         </div>
                         <div className="warning_message">

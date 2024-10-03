@@ -74,14 +74,20 @@ public class GameServiceImpl implements GameService {
 
 	    // 2. 기존의 Buy 데이터가 있는지 확인 (userId 기준으로 조회)
 	    Buy buy = buyRepository.findByUserId(user.getUserId())
-	            .orElseGet(() -> new Buy()); // 존재하지 않으면 새로운 Buy 객체 생성
+	            .orElse(null); 
 
-	    // 3. 게임과 플레이 타입을 설정 (기존 데이터가 있다면 업데이트, 없다면 insert)
-	    buy.setUser(user);         // 항상 user 정보는 설정
-	    buy.setGame(game);         // game 정보 업데이트 또는 새로 설정
-	    buy.setPlaytype(buyDTO.getPlaytype()); // playtype 업데이트 또는 새로 설정
+	    if (buy != null) {
+	        // 3. 기존 데이터가 있으면 gameId와 playtype만 업데이트
+	        buy.setGame(game);     
+	        buy.setPlaytype(buyDTO.getPlaytype()); 
+	    } else {
+	        // 4. 새로운 Buy 객체 생성 및 설정 (없으면 새로운 객체 삽입)
+	        buy = new Buy();
+	        buy.setUser(user);      
+	        buy.setGame(game);        
+	        buy.setPlaytype(buyDTO.getPlaytype());
+	    }
 
-	    // 4. 데이터 저장 (기존 데이터는 업데이트, 새로운 데이터는 insert)
 	    return buyRepository.save(buy);
 		
 	}
