@@ -43,6 +43,9 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
         navigate('/mypages');
     }
 
+    const withoutLogin = () => {
+        alert("로그인 후 이용가능합니다.")
+    }
 
 
     const Logedout = () => {
@@ -63,8 +66,8 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
                 <>
 
                     <Link to='/login'><li><FontAwesomeIcon className="arcodianIcon" icon={faHeadset} size='sm' />Login</li></Link>
-                    <Link to='/mypages'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>
-                    <Link to='/cart'> <li><FontAwesomeIcon className="arcodianIcon" icon={faCartShopping} size='sm' />Cart</li></Link>
+                    <Link to='/login' onClick={() => { withoutLogin() }}> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>
+                    <Link to='/login' onClick={() => { withoutLogin() }}> <li ><FontAwesomeIcon className="arcodianIcon" icon={faCartShopping} size='sm' />Cart</li></Link>
                 </>
             )
         }
