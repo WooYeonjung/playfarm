@@ -183,7 +183,7 @@
 //     );
 // }
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import InfoService from "../../service/infoService";
 import "../../styles/Cart.css";
 import "../../styles/button.css";
@@ -195,19 +195,22 @@ import { API_BASE_URL } from "../../service/app-config";
 
 
 export default function Cart() {
-    useEffect(() => {
-        window.scrollTo({
-            top: 0
-        })
-    }, []);
-    const { loginInfo, setLoginInfo } = useAuth();
+
+    const { loginInfo, isLoggedIn, setLoginInfo } = useAuth();
     const [loginUserId, setLoginUserId] = useState('');
     const [cartData, setCartData] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const navigate = useNavigate();
+    // useEffect(() => {
 
+
+    // }, []);
     useEffect(() => {
 
+        window.scrollTo({
+            top: 0
+        });
         const fetchCartData = async () => {
             try {
                 const token = loginInfo.token
@@ -237,8 +240,8 @@ export default function Cart() {
         };
         // if()
         fetchCartData();
-    }, []);
-    console.log(selectedItems);
+    }, [loginInfo]);
+
 
     // const fetchUserData = async () => {
     //     const userInfo = JSON.parse(localStorage.getItem("userData"));
@@ -323,7 +326,7 @@ export default function Cart() {
         }
     }
 
-    const navigate = useNavigate();
+
 
     const onPay = () => {
         if (selectedItems === null || selectedItems.length === 0) {

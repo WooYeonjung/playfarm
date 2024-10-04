@@ -43,7 +43,23 @@ public class CartServiceImpl implements CartService {
 		}else {
 			return null;
 		}
+	}
+	
+	// 카트에서 삭제!
+	@Override
+	public void cartDelete(String userId, CartDTO[] dto) {
 		
+		for(CartDTO c : dto) {
+			CartId cartId = CartId.builder()
+					.gameId(c.getGameId())
+					.userId(userId)
+					.playtype(c.getPlaytype())
+					.build();
+			repository.deleteById(cartId);
+		}
+		
+		//repository.findById(cartId).orElseThrow(()->throw new RuntimeException("일치하는 상품을 찾을 수 없습니다."));
+
 		
 	}
 }

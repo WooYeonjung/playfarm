@@ -122,11 +122,12 @@ function App() {
           <Route path='/store/:storeNav' element={<Store />} />
           <Route path='/store/detail/:id' element={<GameDetailsPage />} />
 
-          <Route path="/cart" element={
+          {/* <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
             </PrivateRoute>
-          } />
+          } /> */}
+          <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={
             <PrivateRoute>
               <Payment />

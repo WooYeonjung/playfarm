@@ -11,5 +11,7 @@ public interface CartService {
 	void save(CartDTO dto, String userId);
 	
 	List<CartDTO> cartList(String userId);
+	
+	void cartDelete(String userId, CartDTO[] dto);
 
 }

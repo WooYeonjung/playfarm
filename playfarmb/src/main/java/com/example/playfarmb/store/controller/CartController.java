@@ -41,7 +41,6 @@ public class CartController {
 	@GetMapping("/cartlist")
 	public ResponseEntity<?> cartList(@AuthenticationPrincipal String userId) {
 		
-		log.info("cartList 진입!!!!");
 		try {
 			List<CartDTO> dto = cservice.cartList(userId);
 //			System.out.println("#######"+dto);
@@ -50,5 +49,20 @@ public class CartController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 정보를 불러오는 것에 오류가 발생하였습니다.");
 		}
+	}
+	
+	@GetMapping("/cartdelete")
+	public ResponseEntity<?>  cartDelete(@AuthenticationPrincipal String userId,@RequestBody CartDTO[] dto){
+		
+		try {
+			for(CartDTO c : dto) {
+				cservice.cartDelete(userId, dto);
+			}
+			
+			return ResponseEntity.ok("");
+		}catch(Exception err) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 정보 수정하는 것에 실패하였습니다.");
+		}
+		
 	}
 }
