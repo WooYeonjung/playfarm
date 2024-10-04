@@ -1,5 +1,6 @@
 package com.example.playfarmb.store.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class PurchaseController {
 	@Resource(name = "PurchaseService")
 	private PurchaseService pservice;
 	
-	@GetMapping("/buy/{id}")
-	public Buy buyingonegame(@PathVariable("id") String userId) {
+	@GetMapping("/buy")
+	public Buy buyingonegame(@AuthenticationPrincipal String userId) {
 		return pservice.getBuyData(userId);
 	}
 }

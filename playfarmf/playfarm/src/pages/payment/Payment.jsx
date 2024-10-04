@@ -14,7 +14,7 @@ export default function Payment() {
             top: 0
         });
 
-        const fetchCodeData = async() => {
+        const fetchCodeData = async () => {
             try {
                 const response = await axios.get('/code/codedv/paytype');
                 setPaymentCode(response.data)
@@ -33,7 +33,7 @@ export default function Payment() {
         // };
 
     }, []);
-    
+
     const [loginUserId, setLoginUserId] = useState('');
     const [payData, setPayData] = useState([]);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -53,7 +53,7 @@ export default function Payment() {
                     if (location.state?.selectedGames && location.state.selectedGames.length > 0) {
                         // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
                         // const cartData = await InfoService.getCartData(userInfo.userid);
-                        const selectedGames = location.state.selectedGames.map(game => ({ gameId: game.gameId, playtype: game.playtype }));
+                        // const selectedGames = location.state.selectedGames.map(game => ({ gameId: game.gameId, playtype: game.playtype }));
                         // const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
                         // setPayData(filteredData);
                         // console.log(filteredData);
@@ -62,7 +62,14 @@ export default function Payment() {
                         // const payData = await InfoService.getPayData(userInfo.userid);
                         // setPayData(payData);
                         try {
-                            const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
+                            // const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
+                            const buyResponse = await axios.get('/purchase/buy', {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ' + loginInfo.token,
+                                }
+                            });
+                            console.log(buyResponse)
                             setPayData([buyResponse.data]);
                         } catch (error) {
                             console.log('구매 정보를 찾을 수 없습니다.', error);
@@ -77,6 +84,7 @@ export default function Payment() {
         fetchUserData();
     }, [location.state]);
 
+    console.log(loginInfo)
     console.log(payData)
     const handlePayment = () => {
         // eslint-disable-next-line no-restricted-globals
