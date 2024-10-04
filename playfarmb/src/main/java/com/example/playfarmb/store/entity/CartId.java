@@ -21,16 +21,14 @@ public class CartId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-//	private int cartId;
-//	@Column(name = "user_id")
+
 	@EqualsAndHashCode.Include
 	private String userId;
 
-//	@Column(name = "game_id")
 	@EqualsAndHashCode.Include
 	private int gameId;
 
-//	@Column(name = "playtype")
+
 	@EqualsAndHashCode.Include
 	private String playtype;
 }

@@ -30,9 +30,9 @@ public class CartController {
 		try {
 			cservice.save(dto, userId);
 			return ResponseEntity.ok("장바구니에 상품이 담았습니다. 장바구니로 이동하시겠습니까?");
-		} catch (RuntimeException e) {
-			log.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+//		} catch (RuntimeException e) {
+//			log.error(e.getMessage());
+//			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 담기 중 오류가 발생하였습니다. 다시 시도하세요.");
 		}
@@ -40,9 +40,11 @@ public class CartController {
 
 	@GetMapping("/cartlist")
 	public ResponseEntity<?> cartList(@AuthenticationPrincipal String userId) {
+		
+		log.info("cartList 진입!!!!");
 		try {
 			List<CartDTO> dto = cservice.cartList(userId);
-
+//			System.out.println("#######"+dto);
 			return ResponseEntity.ok(dto);
 
 		} catch (Exception e) {

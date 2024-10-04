@@ -191,6 +191,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '../../service/context/AuthProvider';
 import axios from "axios";
+import { API_BASE_URL } from "../../service/app-config";
 
 
 export default function Cart() {
@@ -210,42 +211,57 @@ export default function Cart() {
         const fetchCartData = async () => {
             try {
                 const token = loginInfo.token
-                const response = await axios.get("/cart/cartlist", token);
-                setCartData(response);
-                console.log(response);
+                const response = await axios.get("/cart/cartlist", {
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                        // 'Host': '<calculated when request is sent>',
+                        // 'User-Agent': 'PostmanRuntime/7.42.0',
+                        // 'Accept': '*/*',
+                        // 'Accept-Encoding': 'gzip, deflate, br',
+                        // 'Connection': 'keep-alive'
+
+
+
+                    }
+                });
+                console.log(response.data);
+                setCartData(response.data);
                 const selectedItems = response.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
                 setSelectedItems(selectedItems);
             } catch (err) {
-                alert('장바구니 정보를 가져오지 못했습니다.');
+                console.log('장바구니 정보를 가져오지 못했습니다.');
             }
-            fetchCartData();
+
         };
-
-
-        // const fetchUserData = async () => {
-        //     const userInfo = JSON.parse(localStorage.getItem("userData"));
-        //     if (userInfo && userInfo.userid) {
-        //         setLoginUserId(userInfo.userid);
-        //         const cartJSON = localStorage.getItem('cartJSON');
-        //         if (cartJSON) {
-        //             const parsedCartData = JSON.parse(cartJSON);
-        //             setCartData(parsedCartData);
-        //             const selectedItems = parsedCartData.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
-        //             setSelectedItems(selectedItems);
-        //         } else {
-        //             await InfoService.getCartData(userInfo.userid)
-        //                 .then(res => {
-        //                     setCartData(res);
-        //                     const selectedItems = res.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
-        //                     setSelectedItems(selectedItems);
-        //                     localStorage.setItem('cartJSON', JSON.stringify(res));
-        //                 })
-        //                 .catch(err => console.log(err));
-        //         }
-        //     }
-        // };
+        // if()
+        fetchCartData();
     }, []);
 
+
+    // const fetchUserData = async () => {
+    //     const userInfo = JSON.parse(localStorage.getItem("userData"));
+    //     if (userInfo && userInfo.userid) {
+    //         setLoginUserId(userInfo.userid);
+    //         const cartJSON = localStorage.getItem('cartJSON');
+    //         if (cartJSON) {
+    //             const parsedCartData = JSON.parse(cartJSON);
+    //             setCartData(parsedCartData);
+    //             const selectedItems = parsedCartData.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
+    //             setSelectedItems(selectedItems);
+    //         } else {
+    //             await InfoService.getCartData(userInfo.userid)
+    //                 .then(res => {
+    //                     setCartData(res);
+    //                     const selectedItems = res.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
+    //                     setSelectedItems(selectedItems);
+    //                     localStorage.setItem('cartJSON', JSON.stringify(res));
+    //                 })
+    //                 .catch(err => console.log(err));
+    //         }
+    //     }
+    // };
     const allCheckHandler = (checked) => {
         if (checked) {
             setSelectedItems(cartData.map(item => ({ gameId: item.gameId, playtype: item.playtype })));
@@ -340,12 +356,12 @@ export default function Cart() {
                             {cartData.map((item, index) => (
                                 <li key={`${item.gameId}_${item.playtype}`} className="cartList_body">
                                     <span><input className="input" onChange={e => onChangeHandler(e.target.checked, item.gameId, item.playtype)} checked={selectedItems.some(selectedItem => selectedItem.gameId === item.gameId && selectedItem.playtype === item.playtype)} type="checkbox" value={item.gameId} aria-label={`${item.title} 선택`} /></span>
-                                    <p>{item.title}<br />{item.playtype === 'nintendo' && <span><img className="playtypeImg" src="/images/logo/service_nintendo_logo.jpg"></img></span>}
-                                        {item.playtype === 'playstation' && <span><img className="playtypeImg" src="/images/logo/service_playstation_logo.jpg"></img></span>}
+                                    <p>{item.gameTitle}<br />{item.playtype === 'nin' && <span><img className="playtypeImg" src="/images/logo/service_nintendo_logo.jpg"></img></span>}
+                                        {item.playtype === 'ps' && <span><img className="playtypeImg" src="/images/logo/service_playstation_logo.jpg"></img></span>}
                                         {item.playtype === 'pc' && <span><img className="playtypeImg" src="/images/logo/service_pc_logo.jpg"></img></span>}
                                     </p>
                                     <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
-                                    <span><img src={require(`../../images/store/gameitem${parseInt(item.gameId)}.jpg`)} alt={item.title} onClick={() => imgClick(item.gameId)} /></span>
+                                    <span><img src={`${API_BASE_URL}/resources/images/game/${item.titleImg}`} alt={item.title} onClick={() => imgClick(item.gameId)} /></span>
                                     <button onClick={() => deleteItem(item.gameId, item.playtype)}><FontAwesomeIcon icon={faTrashCan} size="xl" /></button>
                                 </li>
                             ))}
