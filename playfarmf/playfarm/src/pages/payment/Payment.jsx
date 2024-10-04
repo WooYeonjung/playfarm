@@ -5,6 +5,7 @@ import '../../styles/Payment.css';
 import axios from "axios";
 import { useAuth } from '../../service/context/AuthProvider';
 import { API_BASE_URL } from "../../service/app-config";
+import { Checkout } from "./Checkout";
 
 export default function Payment() {
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
@@ -54,7 +55,7 @@ export default function Payment() {
                             playtype: playtype,
                             gameTitle: game.gameTitle,
                             titleImg: game.titleImg,
-                            price: game.price
+                            price: +game.price
                         };
                     });
                     setPayData(formattedGames);
@@ -91,7 +92,7 @@ export default function Payment() {
 
     const isPaymentButtonEnabled = acknowledgeWarning && selectedPaymentMethod !== '';
     let method = selectedPaymentMethod;
-
+    console.log(payData)
     return (
         <div>
             <h1 className="payment_h1">Payment</h1>
@@ -147,6 +148,7 @@ export default function Payment() {
                 </div>
                 <div>
                     <h2>Payment Method</h2>
+                    <Checkout payData={payData} />
                     <div className="paymentMethod_container">
                         <div className="choose_paymentMethod">
                             <p>Please select a payment method</p>
