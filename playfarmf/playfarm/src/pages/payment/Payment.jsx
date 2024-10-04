@@ -4,11 +4,19 @@ import InfoService from "../../service/infoService";
 import '../../styles/Payment.css';
 import axios from "axios";
 import { useAuth } from '../../service/context/AuthProvider';
+import { API_BASE_URL } from "../../service/app-config";
 
 export default function Payment() {
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
-    const [buyData, setBuyData] = useState();
-    // Scroll to top on first render
+    const [payData, setPayData] = useState([]);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+    const [acknowledgeWarning, setAcknowledgeWarning] = useState(false);
+    const [payTypeCode, setPayTypeCode] = useState([]);
+    const [playtypeCode, setPlaytypeCode] = useState([]);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo({
             top: 0
@@ -17,102 +25,59 @@ export default function Payment() {
         const fetchCodeData = async () => {
             try {
                 const payCodeResponse = await axios.get('/code/codedv/paytype');
-                // const playTypeCodeResponse = await axios.get('/code')
-                setPayTypeCode(payCodeResponse.data)
+                setPayTypeCode(payCodeResponse.data);
+
+                const playTypeCodeResponse = await axios.get('/code/codedv/playtype');
+                setPlaytypeCode(playTypeCodeResponse.data);
             } catch (error) {
-                console.log('결제 코드 데이터를 가져오지 못했습니다.', error);
+                console.log('코드 데이터를 가져오지 못했습니다.', error);
             }
         };
-        fetchCodeData();
-        // const fetchBuyData = async () => {
-        //     try {
-        //         const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
-        //         setPayData(buyResponse.data);
-        //     } catch (error) {
-        //         console.log('구매 정보를 찾을 수 없습니다.', error);
-        //     }
-        // };
 
+        fetchCodeData();
     }, []);
 
-    const [loginUserId, setLoginUserId] = useState('');
-    const [payData, setPayData] = useState([]);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
-    const [acknowledgeWarning, setAcknowledgeWarning] = useState(false);
-    const [payTypeCode, setPayTypeCode] = useState([]);
-    const [paymentCode, setPaymentCode] = useState([]);
-
-    const location = useLocation();
-    const navigate = useNavigate();
-    console.log(paymentCode);
     useEffect(() => {
         const fetchUserData = async () => {
-            try {
-                // const userInfo = JSON.parse(localStorage.getItem("userData"));
-                if (isLoggedIn && loginInfo.userId) {
-                    // setLoginUserId(userInfo.userid);
+            if (isLoggedIn && loginInfo.userId) {
+                const selectedGames = location.state?.selectedGames;
 
-                    const selectedGames = location.state?.selectedGames;
-                    console.log(selectedGames);
-
-                    if (selectedGames && selectedGames.length > 0) {
-                        // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
-                        const formattedGames = selectedGames.map(game => ({
+                console.log('Selected Games:', selectedGames);
+                console.log('Playtype Code:', playtypeCode);
+                if (selectedGames && selectedGames.length > 0) {
+                    // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
+                    const formattedGames = selectedGames.map(game => {
+                        const matchedPlaytype = playtypeCode.find(code => code.codeId === game.playtype);
+                        const playtype = matchedPlaytype ? matchedPlaytype.codeInfo : null;
+                        return {
                             gameId: game.gameId,
-                            playtype: game.playtype,
+                            playtype: playtype,
                             gameTitle: game.gameTitle,
                             titleImg: game.titleImg,
                             price: game.price
-                        }));
-
-                        setPayData(formattedGames);
-                        console.log(formattedGames);
-
-                        // console.log(location.state.selectedGames);
-                        // if (location.state?.selectedGames && location.state.selectedGames.length > 0) {
-                        //     // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
-                        //     // const cartData = await InfoService.getCartData(loginInfo.userId);
-                        //     // console.log(cartData)
-                        //     const selectedGames = location.state.selectedGames.map(game => ({ 
-                        //         gameId: game.gameId, 
-                        //         playtype: game.playtype, 
-                        //         gameTitle: game.gameTitle, 
-                        //         titleImg: game.titleImg, 
-                        //         price: game.price 
-                        //     }));
-                        //     // const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
-                        //     // setPayData(filteredData);
-                        //     setPayData(selectedGames);
-                        //     console.log(selectedGames);
-                    } else {
-                        // pay data 가져오는 로직
-                        // const payData = await InfoService.getPayData(userInfo.userid);
-                        // setPayData(payData);
-                        try {
-                            // const buyResponse = await axios.get(`/purchase/buy/${loginInfo.userId}`);
-                            const buyResponse = await axios.get('/purchase/buy', {
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': 'Bearer ' + loginInfo.token,
-                                }
-                            });
-                            console.log(buyResponse)
-                            setPayData([buyResponse.data]);
-                        } catch (error) {
-                            console.log('구매 정보를 찾을 수 없습니다.', error);
-                        }
+                        };
+                    });
+                    setPayData(formattedGames);
+                } else {
+                    // pay data 가져오는 로직
+                    try {
+                        const buyResponse = await axios.get('/purchase/buy', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + loginInfo.token,
+                            }
+                        });
+                        setPayData([buyResponse.data]);
+                    } catch (error) {
+                        console.log('구매 정보를 찾을 수 없습니다.', error);
                     }
                 }
-            } catch (err) {
-                console.error(err);
             }
         };
 
         fetchUserData();
-    }, [location.state]);
+    }, [isLoggedIn, loginInfo.userId, playtypeCode, location.state]);
 
-    console.log(loginInfo)
-    console.log(payData)
     const handlePayment = () => {
         // eslint-disable-next-line no-restricted-globals
         let paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
@@ -144,7 +109,10 @@ export default function Payment() {
                                 <div className="paymentList_img"><img src={`/images/game/${item.titleImg}`} alt={item.title} /></div>
                                 <div className="paymentList_title">{item.gameTitle}</div>
                                 <div className="paymentList_playtype">
-                                    <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt="" />
+                                    <img
+                                        src={`${API_BASE_URL}/resources/images/logo/service_${item.playtype}_logo.jpg`}
+                                        alt={`${item.playtype} logo`}
+                                    />
                                 </div>
                                 <div className="paymentList_price">{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                             </div>
@@ -153,7 +121,7 @@ export default function Payment() {
                                 <div className="paymentList_img"><img src={`/images/game/${item.game.titleImg}`} alt={item.title} /></div>
                                 <div className="paymentList_title">{item.game.gameTitle}</div>
                                 <div className="paymentList_playtype">
-                                    <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt="" />
+                                    <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
                                 </div>
                                 <div className="paymentList_price">{item.game.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                             </div>
@@ -167,10 +135,14 @@ export default function Payment() {
                         <div>
                             <p>수량</p><p>{payData.length}</p>
                         </div>
-                        <div>
-                            {/* <p>총 금액</p><p>{payData.reduce((total, item) => total + item.game.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p> */}
-                        </div>
-
+                        {payData.length > 1 ?
+                            <div>
+                            <p>총 금액</p><p>{payData.reduce((total, item) => total + item.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                            </div> :
+                            <div>
+                            <p>총 금액</p><p>{payData.reduce((total, item) => total + item.game.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div>
