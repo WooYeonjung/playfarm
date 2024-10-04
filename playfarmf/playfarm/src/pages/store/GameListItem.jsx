@@ -8,11 +8,20 @@ function GameItem({ game }) {
     return (
         <div>
             <img className="gameitem_image" src={`${API_BASE_URL}/resources/images/game/${game.titleImg}`} />
+            {game.discount > 0 ? 
+                <img className="gameitem_disImg" src="/images/logo/discount.gif" /> : null}
             <p className="gameitem_releasedate">{game.releaseDate}</p>
             <h2 className="gameitem_title">{game.gameTitle}</h2>
             {/* <p>{game.playtype}</p> */}
+            {game.discount > 0 && (game.discendDate !== null || new Date(game.discendDate) >= new Date()) ? 
+                <p className="gameitem_disprice">
+                    {(game.price - (game.price * game.discount / 100.0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                </p> : null}
             {/* <p>{game.tag}</p> */}
-            <p className="gameitem_price">&#8361;{game.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+            <p style={game.discount > 0 ? 
+                {'text-decoration': 'line-through'} : null} className="gameitem_price">
+                    &#8361;{game.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </p>
         </div>
     );
 }
