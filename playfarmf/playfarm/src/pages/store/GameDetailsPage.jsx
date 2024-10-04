@@ -5,6 +5,7 @@ import '../../styles/GameDetailsPage.css';
 import LikedBtn from '../mypage/ItemLike';
 import axios from 'axios';
 import { useAuth } from '../../service/context/AuthProvider';
+import { API_BASE_URL } from '../../service/app-config';
 
 /** inView 이벤트 처리를 위한 훅 */
 const useIntersectionObserver = (threshold) => {
@@ -192,7 +193,7 @@ export default function GameDetailsPage({ gameId }) {
     return (
         <>
             <section>
-                <img className="game_title_image" src={`/images/game/${imgName[0]}`} alt={item.title} />
+                <img className="game_title_image" src={`${API_BASE_URL}/resources/images/game/${imgName[0]}`} alt={item.title} />
                 <div className={`game_title_content ${inView ? 'show' : ''}`} ref={ref}>
                     {gameDetail.detailCon}
                 </div>
@@ -201,7 +202,7 @@ export default function GameDetailsPage({ gameId }) {
                 {imageData.slice(1, 4).map((item, index) => (
                     <DetailItem
                         key={index}
-                        src={`/images/game/${item.originName}`}
+                        src={`${API_BASE_URL}/resources/images/game/${item.originName}`}
                         name={`${gameDetail[`modeName${index + 1}`]}`}
                         content={`${gameDetail[`modeDesc${index + 1}`]}`}
                     />
@@ -212,7 +213,7 @@ export default function GameDetailsPage({ gameId }) {
                     {codePlaytype.map((type) => (
                         gameDetail.playtype && gameDetail.playtype.includes(type.codeId) && (
                             <div key={type.codeDv} className='purchase_type_container'>
-                                <img className='purchase_type_img' src={`/images/logo/service_${type.codeInfo}_logo.jpg`} alt={`${type.codeInfo} Logo`} />
+                                <img className='purchase_type_img' src={`${API_BASE_URL}/resources/images/logo/service_${type.codeInfo}_logo.jpg`} alt={`${type.codeInfo} Logo`} />
                                 <div className='btn_container'>
                                     <button className={`purchase_btn_${type.codeInfo}`} onClick={() => addToCart(item, type.codeId)}><span>장바구니</span></button>
                                     <button className={`purchase_btn_${type.codeInfo}`} onClick={() => goPayment(item, type.codeId)}><span>구매하기</span></button>
@@ -222,7 +223,7 @@ export default function GameDetailsPage({ gameId }) {
                     ))}
                 </div>
                 <div className='info_container'>
-                    <img className='info_img' src={`/images/game/${gameDetail.titleImg}`} alt={item.titleImg} />
+                    <img className='info_img' src={`${API_BASE_URL}/resources/images/game/${gameDetail.titleImg}`} alt={item.titleImg} />
                     <div className='info_game_name_container'>
                         <div className='info_game_name'>{gameDetail.gameTitle}</div>
                         {isLoggedIn && loginInfo.userId && <LikedBtn item={item} />}

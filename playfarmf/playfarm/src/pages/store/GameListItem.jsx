@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import axios from 'axios';
 import '../../styles/GameListItem.css';
 import PagiNation from '../../pages/Pagination';
+import { API_BASE_URL } from "../../service/app-config";
 
 function GameItem({ game }) {
     return (
         <div>
-            <img className="gameitem_image" src={`/images/game/${game.titleImg}`} />
+            <img className="gameitem_image" src={`${API_BASE_URL}/resources/images/game/${game.titleImg}`} />
             <p className="gameitem_releasedate">{game.releaseDate}</p>
             <h2 className="gameitem_title">{game.gameTitle}</h2>
             {/* <p>{game.playtype}</p> */}

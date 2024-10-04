@@ -226,9 +226,9 @@ export default function Cart() {
 
                     }
                 });
-                console.log(response.data);
+                console.log(response.data)
                 setCartData(response.data);
-                const selectedItems = response.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
+                const selectedItems = response.data.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price }));
                 setSelectedItems(selectedItems);
             } catch (err) {
                 console.log('장바구니 정보를 가져오지 못했습니다.');
@@ -238,7 +238,7 @@ export default function Cart() {
         // if()
         fetchCartData();
     }, []);
-
+    console.log(selectedItems);
 
     // const fetchUserData = async () => {
     //     const userInfo = JSON.parse(localStorage.getItem("userData"));
@@ -264,18 +264,18 @@ export default function Cart() {
     // };
     const allCheckHandler = (checked) => {
         if (checked) {
-            setSelectedItems(cartData.map(item => ({ gameId: item.gameId, playtype: item.playtype })));
+            setSelectedItems(cartData.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price })));
         } else {
             setSelectedItems([]);
         }
     }
 
-    const onChangeHandler = (checked, gameId, playtype) => {
+    const onChangeHandler = (checked, gameId, playtype, gameTitle, titleImg, price) => {
         if (checked) {
-            const newSelectedItems = [...selectedItems, { gameId, playtype }];
+            const newSelectedItems = [...selectedItems, { gameId, playtype, gameTitle, titleImg, price }];
             setSelectedItems(newSelectedItems);
         } else {
-            const newSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype));
+            const newSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype && item.gameTitle === gameTitle && item.titleImg === titleImg && price === item.price));
             setSelectedItems(newSelectedItems);
         }
     }
@@ -356,9 +356,9 @@ export default function Cart() {
                             {cartData.map((item, index) => (
                                 <li key={`${item.gameId}_${item.playtype}`} className="cartList_body">
                                     <span><input className="input" onChange={e => onChangeHandler(e.target.checked, item.gameId, item.playtype)} checked={selectedItems.some(selectedItem => selectedItem.gameId === item.gameId && selectedItem.playtype === item.playtype)} type="checkbox" value={item.gameId} aria-label={`${item.title} 선택`} /></span>
-                                    <p>{item.gameTitle}<br />{item.playtype === 'nin' && <span><img className="playtypeImg" src="/images/logo/service_nintendo_logo.jpg"></img></span>}
-                                        {item.playtype === 'ps' && <span><img className="playtypeImg" src="/images/logo/service_playstation_logo.jpg"></img></span>}
-                                        {item.playtype === 'pc' && <span><img className="playtypeImg" src="/images/logo/service_pc_logo.jpg"></img></span>}
+                                    <p>{item.gameTitle}<br />{item.playtype === 'nin' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_nintendo_logo.jpg`}></img></span>}
+                                        {item.playtype === 'ps' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_playstation_logo.jpg`}></img></span>}
+                                        {item.playtype === 'pc' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_pc_logo.jpg`}></img></span>}
                                     </p>
                                     <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
                                     <span><img src={`${API_BASE_URL}/resources/images/game/${item.titleImg}`} alt={item.title} onClick={() => imgClick(item.gameId)} /></span>

@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import '../../styles/button.css';
+import { API_BASE_URL } from "../../service/app-config";
 
 
 const OutLinkList = () => {
 
     const outLinkImg = [
-        { id: 0, src: './images/logo/service_nintendo_logo.jpg', alt: 'nintendo_logo', playtype: "nintendo" },
-        { id: 1, src: './images/logo/service_playstation_logo.jpg', alt: 'playstation_logo', playtype: 'playstation' },
-        { id: 2, src: './images/logo/service_pc_logo.jpg', alt: 'pc_logo', playtype: "pc" }
+        { id: 0, src: `${API_BASE_URL}/resources/images/logo/service_nintendo_logo.jpg`, alt: 'nintendo_logo', playtype: "nintendo" },
+        { id: 1, src: `${API_BASE_URL}/resources/images/logo/service_playstation_logo.jpg`, alt: 'playstation_logo', playtype: 'playstation' },
+        { id: 2, src: `${API_BASE_URL}/resources/images/logo/service_pc_logo.jpg`, alt: 'pc_logo', playtype: "pc" }
     ];
 
 

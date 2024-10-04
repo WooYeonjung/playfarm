@@ -16,8 +16,9 @@ export default function Payment() {
 
         const fetchCodeData = async () => {
             try {
-                const response = await axios.get('/code/codedv/paytype');
-                setPaymentCode(response.data)
+                const payCodeResponse = await axios.get('/code/codedv/paytype');
+                // const playTypeCodeResponse = await axios.get('/code')
+                setPayTypeCode(payCodeResponse.data)
             } catch (error) {
                 console.log('결제 코드 데이터를 가져오지 못했습니다.', error);
             }
@@ -38,6 +39,7 @@ export default function Payment() {
     const [payData, setPayData] = useState([]);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const [acknowledgeWarning, setAcknowledgeWarning] = useState(false);
+    const [payTypeCode, setPayTypeCode] = useState([]);
     const [paymentCode, setPaymentCode] = useState([]);
 
     const location = useLocation();
@@ -50,13 +52,38 @@ export default function Payment() {
                 if (isLoggedIn && loginInfo.userId) {
                     // setLoginUserId(userInfo.userid);
 
-                    if (location.state?.selectedGames && location.state.selectedGames.length > 0) {
+                    const selectedGames = location.state?.selectedGames;
+                    console.log(selectedGames);
+
+                    if (selectedGames && selectedGames.length > 0) {
                         // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
-                        // const cartData = await InfoService.getCartData(userInfo.userid);
-                        // const selectedGames = location.state.selectedGames.map(game => ({ gameId: game.gameId, playtype: game.playtype }));
-                        // const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
-                        // setPayData(filteredData);
-                        // console.log(filteredData);
+                        const formattedGames = selectedGames.map(game => ({
+                            gameId: game.gameId,
+                            playtype: game.playtype,
+                            gameTitle: game.gameTitle,
+                            titleImg: game.titleImg,
+                            price: game.price
+                        }));
+
+                        setPayData(formattedGames);
+                        console.log(formattedGames);
+
+                        // console.log(location.state.selectedGames);
+                        // if (location.state?.selectedGames && location.state.selectedGames.length > 0) {
+                        //     // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
+                        //     // const cartData = await InfoService.getCartData(loginInfo.userId);
+                        //     // console.log(cartData)
+                        //     const selectedGames = location.state.selectedGames.map(game => ({ 
+                        //         gameId: game.gameId, 
+                        //         playtype: game.playtype, 
+                        //         gameTitle: game.gameTitle, 
+                        //         titleImg: game.titleImg, 
+                        //         price: game.price 
+                        //     }));
+                        //     // const filteredData = cartData.filter(item => selectedGames.some(selected => selected.gameId === item.gameId && selected.playtype === item.playtype));
+                        //     // setPayData(filteredData);
+                        //     setPayData(selectedGames);
+                        //     console.log(selectedGames);
                     } else {
                         // pay data 가져오는 로직
                         // const payData = await InfoService.getPayData(userInfo.userid);
@@ -112,8 +139,17 @@ export default function Payment() {
                             <div>Playtype</div>
                             <div>Price</div>
                         </div>
-                        {payData.map((item) => (
+                        {payData.length > 1 ? payData.map((item) => (
                             <div key={item.id} className="paymentList_body">
+                                <div className="paymentList_img"><img src={`/images/game/${item.titleImg}`} alt={item.title} /></div>
+                                <div className="paymentList_title">{item.gameTitle}</div>
+                                <div className="paymentList_playtype">
+                                    <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt="" />
+                                </div>
+                                <div className="paymentList_price">{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+                            </div>
+                        )) : payData.map((item) => (
+                            <div key={item.game.gameId} className="paymentList_body">
                                 <div className="paymentList_img"><img src={`/images/game/${item.game.titleImg}`} alt={item.title} /></div>
                                 <div className="paymentList_title">{item.game.gameTitle}</div>
                                 <div className="paymentList_playtype">
@@ -132,7 +168,7 @@ export default function Payment() {
                             <p>수량</p><p>{payData.length}</p>
                         </div>
                         <div>
-                            <p>총 금액</p><p>{payData.reduce((total, item) => total + item.game.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                            {/* <p>총 금액</p><p>{payData.reduce((total, item) => total + item.game.price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p> */}
                         </div>
 
                     </div>
@@ -148,7 +184,7 @@ export default function Payment() {
                                 onChange={(e) => setSelectedPaymentMethod(e.target.value)}
                             >
                                 <option value="payment method" disabled={selectedPaymentMethod !== ''}>결제 방식</option>
-                                {paymentCode.map((item) => (
+                                {payTypeCode.map((item) => (
                                     <option value={item.codeInfo}>{item.codeInfo}</option>
                                 ))}
 
