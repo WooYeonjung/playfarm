@@ -40,4 +40,14 @@ public class CodeController {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("codeDv 데이터가 없습니다.");
 		}
 	}
+	@GetMapping("/typelist")
+	public ResponseEntity<?> typelist() {
+		List<Code> list = codeService.getTypeList();
+		if (list!=null) {
+			return ResponseEntity.ok(list);
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("d");
+		}
+		
+	}
 }

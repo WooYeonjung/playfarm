@@ -2,6 +2,7 @@ package com.example.playfarmb.community.entity;
 
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.common.entity.BaseEntity;
+import com.example.playfarmb.community.domain.PostDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,21 +13,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "post")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private int postId;
-    
-    @Column(name = "user_id", nullable = false, length = 15)
-    private String userId;
-
+   
 
     @Column(name = "post_title", nullable = false, length = 255)
     private String postTitle;
@@ -37,17 +41,8 @@ public class Post extends BaseEntity {
     @Column(name = "link", length = 255)
     private String link;
 
-    @Column(name = "post_upimg", length = 255)
-    private String postUpimg;
-
     @Column(name = "post_content", nullable = false)
     private String postContent;
-
-//    @Column(name = "reg_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-//    private LocalDateTime regDate;
-//
-//    @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-//    private LocalDateTime modDate;
 
     @Column(name = "views", columnDefinition = "INT DEFAULT 0")
     private int views;
@@ -59,9 +54,13 @@ public class Post extends BaseEntity {
     private String useyn;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
+    
+    @Column(name = "file_group_id", length = 200)
+    private String fileGroupId;
 
+    
     // Getters and Setters
     @PrePersist
     public void init() {

@@ -19,32 +19,45 @@ const WrittenByMe = () => {
     const [filteredPostsList, setFilteredPostsList] = useState([]); // 검색된 게시글을 저장하는 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호를 저장하는 상태
 
-    console.log("로그인 사용자 ID:", loginInfo);
-
-
     const postsPerPage = 9; // 한 페이지에 표시할 게시글 수
     const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 함수
 
+
     useEffect(() => {
+
+        debugger;
         const fetchPost = async () => {
             if (isLoggedIn && loginInfo.userId) {
                 setLoginUserId(loginInfo.userId); // 로그인된 사용자 ID 설정
-                console.log(loginUserId)
+                const token = loginInfo.token
                 try {
-                    const response = await axios.get(`/commu/mypost/${loginInfo.userId}`);
-                    setPosts(response.data);
+                    const response = await axios.get(`/community/mypost`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    return response.data
+                    // setPosts(response.data);
                 } catch (error) {
                     console.error('게시글을 찾지 못했습니다.', error);
                 }
             }
-        };
-        fetchPost();
-        // 최신 게시글이 맨 위에 오도록 정렬
-        // const sortDate = filterById.sort((a, b) => new Date(b.date) - new Date(a.date));
-        // setPostsList(sortDate); // 필터된 게시글 상태 설정
-        // setFilteredPostsList(sortDate); // 검색된 게시글 상태 초기 설정
-    }, [isLoggedIn, loginInfo]); // loginUserId가 변경될 때마다 useEffect 실행
 
+        };
+        fetchPost().then((res) => {
+            setPosts(res);
+            const sortDate = res.sort((a, b) => new Date(b.date) - new Date(a.date));
+            setPostsList(sortDate); // 필터된 게시글 상태 설정
+            setFilteredPostsList(sortDate); // 검색된 게시글 상태 초기 설정
+        });
+        // // 최신 게시글이 맨 위에 오도록 정렬
+        //  const sortDate = filterById.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+
+    }, [loginInfo]); // loginUserId가 변경될 때마다 useEffect 실행  // 변경전 [isLoggedIn, loginInfo]
+
+    console.log(posts);
     // 게시글 삭제 핸들러
     const handleDelete = (postId) => {
         let confirm = window.confirm("삭제 하시겠습니까?");
@@ -70,7 +83,7 @@ const WrittenByMe = () => {
             case 'find': return (<FontAwesomeIcon icon={faHandshake} />);
             case 'free': return (<FontAwesomeIcon icon={faComments} />);
             case 'question': return (<FontAwesomeIcon icon={faCircleQuestion} />);
-            case 'fanArt': return (<FontAwesomeIcon icon={faPalette} />);
+            case 'fanart': return (<FontAwesomeIcon icon={faPalette} />);
             default: return null;
         }
     }
@@ -149,13 +162,13 @@ const WrittenByMe = () => {
                                     <div className="post_list_item1">
                                         <p>{filteredPostsList.length - (indexOfFirstPost + index)}</p> {/* 게시글 번호 */}
                                         <h3>{icon(post.postType)}</h3> {/* 게시글 타입에 따른 아이콘 */}
-                                        <p>{post.title}</p> {/* 게시글 제목 */}
+                                        <p>{post.postTitle}</p> {/* 게시글 제목 */}
                                         {post.link && (
                                             <a href={post.link} target="_blank" rel="noopener noreferrer">
                                                 {post.link}
                                             </a>
                                         )}
-                                        <small>{post.date.slice(0, 10)}</small> {/* 게시글 작성 날짜 */}
+                                        <small>{post.regDate.slice(0, 10)}</small> {/* 게시글 작성 날짜 */}
                                         <div className="post_list_item_actions">
                                             <FontAwesomeIcon icon={faEdit} className="post_list_icon" size="xl" onClick={() => handleEdit(post)} />
                                             <FontAwesomeIcon icon={faTrash} className="post_list_icon" size="xl" onClick={() => handleDelete(post.postId)} />

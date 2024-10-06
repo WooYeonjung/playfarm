@@ -9,9 +9,12 @@ import { useAuth } from '../../service/context/AuthProvider';
 const WriteCommunity = () => {
     const [loginUserId, setLoginUserId] = useState(''); // 로그인 되어있는 userId 담기
     const [postType, setPostType] = useState(null);
+    const [selectType, setSelectType] = useState('');
     const [link, setLink] = useState('');
     const [postContent, setPostContent] = useState('');
     const [postTitle, setPostTitle] = useState('');
+    const [files, setFiles] = useState([]);
+    const [preViews, setPreViews] = useState([]);
     const navigate = useNavigate();
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
 
@@ -23,7 +26,12 @@ const WriteCommunity = () => {
 
     const handlePostTypeChange = (selectedOption) => {
         setPostType(selectedOption);
+        setSelectType(selectedOption.value);
+
     };
+
+    console.log(postType)
+
 
     const handleLinkChange = (e) => {
         setLink(e.target.value);
@@ -32,6 +40,39 @@ const WriteCommunity = () => {
     const handleContentChange = (e) => {
         setPostContent(e.target.value);
     };
+    const handleImageChange = (event) => {
+        const selectedFiles = event.target.files;
+        if (event.target.files.length > 4) {
+            alert("이미지는 최대 4장까지 선택할 수 있습니다.");
+            event.target.value = ""; // 파일 입력 리셋
+            setFiles([]);
+            setPreViews([]);
+            return;
+        } else {
+            if (selectedFiles.length === 0) {
+                setFiles([]);
+                setPreViews([]);
+                return;
+            }
+
+            setFiles(event.target.files);
+            const filePreviews = [];
+            for (const file of selectedFiles) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    filePreviews.push(reader.result);
+                    if (filePreviews.length === selectedFiles.length) {
+                        setPreViews(filePreviews);
+                    } else {
+                        setPreViews('');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+    };
+
 
     const handleCancel = (e) => {
         e.preventDefault();
@@ -39,6 +80,8 @@ const WriteCommunity = () => {
         setLink('');
         setPostContent('');
         setPostTitle('');
+        setFiles('');
+        setPreViews('');
         navigate('/community/all');
     };
 
@@ -53,20 +96,33 @@ const WriteCommunity = () => {
             return;
         }
 
-        const newPost = {
-            userId: loginUserId,
-            postTitle,
-            postType: postType.value, // postType이 null이 아닌 경우에만 접근
-            link,
-            postContent,
+        // const newPost = {
+        //     userId: loginUserId,
+        //     postTitle,
+        //     postType: postType.value, // postType이 null이 아닌 경우에만 접근
+        //     link,
+        //     postContent,
 
-        };
-
+        // };
+        const formData = new FormData(document.getElementById('postFrom'));
+        const token = loginInfo.token;
+        const existFile = document.getElementById('file');
+        console.log(existFile);
+        let headers;
+        if (existFile) {
+            headers = {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            }
+        } else {
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }
         try {
-            const response = await axios.post('/commu/uploadpost', newPost, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            const response = await axios.post('/community/uploadpost', formData, {
+                headers: headers
             });
             if (response.status === 200) {
                 alert('게시글이 작성되었습니다.');
@@ -74,6 +130,8 @@ const WriteCommunity = () => {
                 setLink('');
                 setPostContent('');
                 setPostTitle('');
+                setFiles('');
+                setPreViews('');
                 navigate('/community/all');
             } else {
                 alert('게시글 작성에 실패했습니다.');
@@ -88,24 +146,26 @@ const WriteCommunity = () => {
             }
             alert('게시글 작성 중 오류가 발생했습니다.');
         }
-        console.log(newPost);
+        // console.log(newPost);
     };
 
     return (
-        <div>
+        <div className="total_wrapper">
+            
             <div className='blank'>
-                <h1> Community</h1>
+                <h2> Community</h2>
             </div>
             <div className="write_community_container">
                 <div className="write_community_wrapper">
                     <h1 className="write_community_title">게시글 작성</h1>
                     <hr />
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} id='postFrom'>
                         <div className="write_community_section">
                             <label className="write_community_label" htmlFor="postType">유형</label>
                             <CommunitySelect
                                 value={postType}
                                 onChange={handlePostTypeChange}
+                                required
                             />
                         </div>
                         <div className="write_community_section">
@@ -114,6 +174,7 @@ const WriteCommunity = () => {
                                 className="write_community_input"
                                 type="text"
                                 id="title"
+                                name="postTitle"
                                 value={postTitle}
                                 onChange={handleTitleChange}
                                 placeholder="글의 제목을 입력하세요"
@@ -125,6 +186,7 @@ const WriteCommunity = () => {
                             <div className="write_community_flex_container">
                                 <input
                                     className="write_community_input"
+                                    name="link"
                                     type="text"
                                     id="link"
                                     value={link}
@@ -134,9 +196,29 @@ const WriteCommunity = () => {
                             </div>
                         </div>
                         <div className="write_community_section">
+                            <label className="write_community_label" htmlFor="file">사진</label>
+                            <div className="write_community_flex_container">
+                                <input
+                                    className="write_community_input"
+                                    type="file"
+                                    id="file"
+                                    name="postImg"
+                                    // value={link}
+                                    onChange={handleImageChange}
+                                    multiple
+                                />
+                            </div>
+                            <div className="image_previews">
+                                {preViews.map((url, index) => (
+                                    <img key={index} src={url} alt={`Preview ${index + 1}`} className="image_preview" />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="write_community_section">
                             <label className="write_community_label" htmlFor="postContent">내용</label>
                             <textarea
                                 className="write_community_textarea"
+                                name="postContent"
                                 id="content"
                                 value={postContent}
                                 onChange={handleContentChange}
@@ -152,10 +234,11 @@ const WriteCommunity = () => {
                                 작성완료
                             </button>
                         </div>
+                        <input type="hidden" name="postType" value={selectType} />
                     </form>
-                    <div className="community_advertise">
-                        <CommunityAdvertising />
-                    </div>
+                </div>
+                <div className="community_advertise">
+                    <CommunityAdvertising />
                 </div>
             </div>
         </div>

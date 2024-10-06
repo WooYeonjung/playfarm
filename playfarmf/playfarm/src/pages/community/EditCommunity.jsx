@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/WriteCommunity.css';
-import CommunitySelect, { options } from './CommunitySelect'; // options 가져오기
+// import CommunitySelect, { options } from './CommunitySelect'; // options 가져오기
+import CommunitySelect from './CommunitySelect'; // options 가져오기
 import CommunityAdvertising from './CommunityAdvertising';
 
 const EditCommunity = () => {
@@ -37,8 +38,8 @@ const EditCommunity = () => {
         }
 
         // postType을 초기화
-        const selectedPostType = options.find(option => option.value === post.postType);
-        setPostType(selectedPostType);
+        // const selectedPostType = options.find(option => option.value === post.postType);
+        // setPostType(selectedPostType);
     }, []);
 
     const handlePostTypeChange = (selectedOption) => {

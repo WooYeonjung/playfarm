@@ -218,53 +218,28 @@ export default function Cart() {
                     headers:
                     {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                        // 'Host': '<calculated when request is sent>',
-                        // 'User-Agent': 'PostmanRuntime/7.42.0',
-                        // 'Accept': '*/*',
-                        // 'Accept-Encoding': 'gzip, deflate, br',
-                        // 'Connection': 'keep-alive'
-
-
-
+                        'Authorization': 'Bearer ' + token
                     }
                 });
-                console.log(response.data)
                 setCartData(response.data);
                 const selectedItems = response.data.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price }));
                 setSelectedItems(selectedItems);
             } catch (err) {
-                console.log('장바구니 정보를 가져오지 못했습니다.');
-            }
+                if (cartData) {
 
+                } else {
+                    alert('장바구니 정보를 가져오지 못했습니다.');
+                }
+
+            }
         };
         // if()
-        fetchCartData();
+        if (loginInfo) {
+            fetchCartData();
+        }
     }, [loginInfo]);
 
-
-    // const fetchUserData = async () => {
-    //     const userInfo = JSON.parse(localStorage.getItem("userData"));
-    //     if (userInfo && userInfo.userid) {
-    //         setLoginUserId(userInfo.userid);
-    //         const cartJSON = localStorage.getItem('cartJSON');
-    //         if (cartJSON) {
-    //             const parsedCartData = JSON.parse(cartJSON);
-    //             setCartData(parsedCartData);
-    //             const selectedItems = parsedCartData.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
-    //             setSelectedItems(selectedItems);
-    //         } else {
-    //             await InfoService.getCartData(userInfo.userid)
-    //                 .then(res => {
-    //                     setCartData(res);
-    //                     const selectedItems = res.map(item => ({ gameId: item.gameId, playtype: item.playtype }));
-    //                     setSelectedItems(selectedItems);
-    //                     localStorage.setItem('cartJSON', JSON.stringify(res));
-    //                 })
-    //                 .catch(err => console.log(err));
-    //         }
-    //     }
-    // };
+    // 전체선택
     const allCheckHandler = (checked) => {
         if (checked) {
             setSelectedItems(cartData.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price })));
@@ -273,6 +248,7 @@ export default function Cart() {
         }
     }
 
+    // 체크박스 상테 변화
     const onChangeHandler = (checked, gameId, playtype, gameTitle, titleImg, price) => {
         if (checked) {
             const newSelectedItems = [...selectedItems, { gameId, playtype, gameTitle, titleImg, price }];
@@ -296,30 +272,47 @@ export default function Cart() {
         setTotalPrice(total);
     };
 
-    const deleteItem = (gameId, playtype) => {
+    const deleteItem = async (gameId, playtype) => {
         let userConfirmed = window.confirm('이 상품을 삭제하시겠습니까?');
+        console.log(selectedItems);
         if (userConfirmed) {
             try {
-                const updatedCartData = cartData.filter(item => !(item.gameId === gameId && item.playtype === playtype));
-                setCartData(updatedCartData);
-                const updatedSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype));
-                setSelectedItems(updatedSelectedItems);
+                const token = loginInfo.token
+                const response = await axios.delete("/cart/cartdelete", {
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    data: selectedItems
+                });
+                alert(response.data);
+                window.location.reload();
 
-                localStorage.setItem('cartJSON', JSON.stringify(updatedCartData));
             } catch (error) {
-                console.error("상품 삭제 중 에러 발생:", error);
+                alert('상품 삭제 중 에러 발생가 발생하였습니다.');
             }
         }
     }
 
-    const deleteAll = () => {
+    const deleteAll = async () => {
         let userConfirmed = window.confirm('전체 상품을 삭제하시겠습니까?');
         if (userConfirmed) {
             try {
+
+                const token = loginInfo.token
+                const response = await axios.delete("/cart/cartdelete", {
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    data: selectedItems
+                });
+                alert(response.data);
+                window.location.reload();
                 setCartData([]);
                 setSelectedItems([]);
-
-                localStorage.removeItem('cartJSON');
             } catch (error) {
                 console.error("상품 삭제 중 에러 발생:", error);
             }

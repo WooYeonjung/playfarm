@@ -13,7 +13,7 @@ function Community() {
 
     useEffect(() => {
         const fetchPostData = async () => {
-            await axios.get('/commu/postlist')
+            await axios.get('/community/postlist')
                 .then(response => {
                     console.log(response)
                     // const postlist = ;

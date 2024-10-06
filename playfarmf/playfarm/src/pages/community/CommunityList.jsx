@@ -55,7 +55,7 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
         <div className='commu_item_container'>
             {type === 'free' && <FontAwesomeIcon className='cmItem_icon' icon={faComments} />}
             {type === 'find' && <FontAwesomeIcon className='cmItem_icon' icon={faHandshake} />}
-            {type === 'fanArt' && <FontAwesomeIcon className='cmItem_icon' icon={faPalette} />}
+            {type === 'fanart' && <FontAwesomeIcon className='cmItem_icon' icon={faPalette} />}
             {type === 'question' && <FontAwesomeIcon className='cmItem_icon' icon={faCircleQuestion} />}
 
             <div className='cmItem_title'>{title}</div>

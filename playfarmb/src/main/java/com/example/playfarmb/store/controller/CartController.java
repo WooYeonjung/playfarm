@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,21 +46,20 @@ public class CartController {
 			List<CartDTO> dto = cservice.cartList(userId);
 //			System.out.println("#######"+dto);
 			return ResponseEntity.ok(dto);
-
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 정보를 불러오는 것에 오류가 발생하였습니다.");
 		}
 	}
 	
-	@GetMapping("/cartdelete")
+	@DeleteMapping("/cartdelete")
 	public ResponseEntity<?>  cartDelete(@AuthenticationPrincipal String userId,@RequestBody CartDTO[] dto){
 		
 		try {
-			for(CartDTO c : dto) {
+//			for(CartDTO c : dto) {
 				cservice.cartDelete(userId, dto);
-			}
+//			}
 			
-			return ResponseEntity.ok("");
+			return ResponseEntity.ok("상품이 삭제되었습니다.");
 		}catch(Exception err) {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 정보 수정하는 것에 실패하였습니다.");
 		}

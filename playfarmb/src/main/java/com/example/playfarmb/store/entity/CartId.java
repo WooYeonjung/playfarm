@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @AllArgsConstructor
 @Builder
 @Embeddable

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion, faComments, faHandshake, faPalette } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-export const options = [
-    { value: 'find', label: '유저찾기', icon: <FontAwesomeIcon icon={faHandshake} /> },
-    { value: 'free', label: '자유', icon: <FontAwesomeIcon icon={faComments} /> },
-    { value: 'question', label: '질문', icon: <FontAwesomeIcon icon={faCircleQuestion} /> },
-    { value: 'fanArt', label: '팬아트', icon: <FontAwesomeIcon icon={faPalette} /> },
-];
 
+// export const options = [
+//     { value: 'find', label: '유저찾기', icon: <FontAwesomeIcon icon={faHandshake} /> },
+//     { value: 'free', label: '자유', icon: <FontAwesomeIcon icon={faComments} /> },
+//     { value: 'question', label: '질문', icon: <FontAwesomeIcon icon={faCircleQuestion} /> },
+//     { value: 'fanArt', label: '팬아트', icon: <FontAwesomeIcon icon={faPalette} /> },
+// ];
 const customStyles = {
     control: (provided) => ({
         ...provided,
@@ -42,6 +43,55 @@ const customStyles = {
 };
 
 const CommunitySelect = ({ value, onChange }) => {
+
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        const fetchTypeList = async () => {
+            try {
+                const response = await axios.get("/code/typelist");
+                const option = response.data.map((option) => {
+                    let icon;
+                    let label;
+                    switch (option.codeId) {
+                        case 'find': {
+                            value = option.codeId;
+                            label = "유저찾기";
+                            icon = <FontAwesomeIcon icon={faHandshake} />
+                            break;
+                        }
+
+                        case 'question': {
+                            value = option.codeId;
+                            label = "질문";
+                            icon = <FontAwesomeIcon icon={faCircleQuestion} />
+                            break;
+                        }
+                        case 'fanart': {
+                            value = option.codeId;
+                            label = "팬아트";
+                            icon = <FontAwesomeIcon icon={faPalette} />
+                            break;
+                        }
+                        default: {
+                            value = option.codeId;
+                            label = "자유";
+                            icon = <FontAwesomeIcon icon={faComments} />
+                            break;
+                        }
+                    }
+                    // return { ...option,value, label, icon };
+                    return { value: option.codeId, label, icon };
+                });
+                setOptions(option);
+            } catch (err) {
+                console.log("게시물타입을 불러오는것을 실패하였습니다.");
+            }
+        }
+        fetchTypeList();
+    }, []);
+
+
     const formatOptionLabel = ({ label, icon }) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             {icon && <span style={{ marginRight: 8 }}>{icon}</span>}

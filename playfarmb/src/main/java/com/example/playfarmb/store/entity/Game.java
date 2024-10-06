@@ -75,6 +75,9 @@ public class Game extends BaseEntity {
 
     @Column(length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'y'")
     private String useyn = "y";
+    
+    @Column(name = "file_group_id", length = 200)
+    private String fileGroupId;
 
 //    @Column(name = "reg_date", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
 //    private LocalDateTime regDate;
