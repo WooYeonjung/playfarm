@@ -49,7 +49,7 @@ public class CommunityController {
 	
 	@GetMapping("/mypost")
 	public ResponseEntity<?> mypost(@AuthenticationPrincipal String userId) {
-	    
+		   log.info(userId); 
 		List<Post> list = cservice.mypostlist(userId);
 	    log.info(list); 
 	    

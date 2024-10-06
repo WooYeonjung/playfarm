@@ -15,8 +15,11 @@ import com.example.playfarmb.community.repository.CommunityRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 
 @Service
+@Log4j2
 public class CommunityServiceImpl implements CommunityService {
 
 	@Autowired
@@ -55,7 +58,9 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<Post> mypostlist(String userId) {
-		return  null; //repository.findByUserId(userId);
+		
+		log.info(repository.myPostList(userId));
+		return  repository.myPostList(userId);
 	}
 
 }
