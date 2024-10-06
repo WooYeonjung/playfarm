@@ -16,12 +16,22 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	ImageRepository imgRepository;
 	@Autowired
-    GameRepository gRepository;
-	
+	GameRepository gRepository;
+
 	@Override
 	public List<Image> getImagesById(Integer gameId) {
-		Optional<Game> result = gRepository.findById(gameId);
-		if (result.isPresent())  return imgRepository.findByGame(result.get());
-		else return null;
+//		Optional<Game> result = gRepository.findById(gameId);
+//		if (result.isPresent())
+//			return imgRepository.findByGame(result.get());
+//		else
+//			return null;
+		 Game result = gRepository.findById(gameId).orElseThrow(()-> new RuntimeException(""));
+		if (result!=null)
+			return imgRepository.getgameList(result.getFileGroupId());
+		else
+			return null;
 	}
+	
+
+	
 }

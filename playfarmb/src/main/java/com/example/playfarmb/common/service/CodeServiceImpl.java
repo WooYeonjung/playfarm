@@ -23,4 +23,8 @@ public class CodeServiceImpl implements CodeService {
 	public List<Code> codedvDetail(String codeDv) {
 		return repository.findByCodeDv(codeDv);
 	}
+	@Override
+	public List<Code> getTypeList(){
+		return repository.findByCodedv();
+	}
 }

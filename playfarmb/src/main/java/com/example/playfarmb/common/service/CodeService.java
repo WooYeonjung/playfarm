@@ -10,4 +10,5 @@ public interface CodeService {
 
 	List<Code> getCodeList();
 	List<Code> codedvDetail(String codeDv);
+	List<Code> getTypeList();
 }
