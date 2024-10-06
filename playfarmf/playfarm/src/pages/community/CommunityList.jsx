@@ -1,32 +1,26 @@
 import '../../styles/CommunityList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments, faMagnifyingGlass, faHandshake, faCircleQuestion, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faMessage } from '@fortawesome/free-regular-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Pagination from '../Pagination';
 import { useAuth } from '../../service/context/AuthProvider';
 
-const CommuListItem = ({ title, date, userId, type, content }) => {
-    const formatUserId = (userId) => {
-        if (!userId) return '';
-        if (userId.length <= 3) {
-            return userId;
-        }
-        return `${userId.slice(0, 3)}****`;
-    }
+const CommuListItem = ({ title, date, userName, type, reply }) => {
 
     const formatDate = (date) => {
         if (!date) return '';
         const now = new Date();
-        console.log(date)
+        // console.log('작성시간: ' + date)
         const postTime = new Date(date);
-        console.log(now)
-        console.log(postTime)
-        // if (isNaN(postTime.getTime())) return '';
+        // console.log('현재: '+now)
+        // console.log('작정시간 넣은값: '+postTime)
 
         const betweenTime = Math.floor(
             (now.getTime() - postTime.getTime()) / 1000 / 60
         );
+        // console.log('시간차이계산: '+betweenTime)
         if (betweenTime < 1) return "방금전";
         if (betweenTime < 60) {
             return `${betweenTime}분전`;
@@ -41,7 +35,7 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
         if (betweenTimeDay < 365) {
             return `${betweenTimeDay}일전`;
         }
-        console.log(`${Math.floor(betweenTimeDay / 365)}년전`)
+        // console.log(`${Math.floor(betweenTimeDay / 365)}년전`)
         return `${Math.floor(betweenTimeDay / 365)}년전`;
         // if (differenceInMinutes < 60) {
         //     return `${differenceInMinutes} 분 전`;
@@ -60,7 +54,8 @@ const CommuListItem = ({ title, date, userId, type, content }) => {
 
             <div className='cmItem_title'>{title}</div>
             <div className='cmItem_date'>{formatDate(date)}</div>
-            <div className='cmItem_userId'>{formatUserId(userId)}</div>
+            <div className='cmItem_userId'>{userName}</div>
+            <div className='cmItem_view'><FontAwesomeIcon icon={faMessage} /> {reply}</div>
         </div>
     );
 }
@@ -70,10 +65,10 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
     const [searchTerm, setSearchTerm] = useState('');
     // const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9; // 페이지당 아이템 수
-    const userInfo = JSON.parse(localStorage.getItem("userData"));
+    // const userInfo = JSON.parse(localStorage.getItem("userData"));
     const navigate = useNavigate();
 
-    const userposts = JSON.parse(localStorage.getItem("postsJSON"));
+    // const userposts = JSON.parse(localStorage.getItem("postsJSON"));
 
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
     // CommunityWrite 이동
@@ -178,11 +173,12 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
                         return (
                             <div className='commuItem_container' key={idx} onClick={() => { onPostListClick(post) }}>
                                 <CommuListItem
-                                    userId={post.userId}
+                                    userName={post.user.nickname}
                                     title={post.postTitle}
-                                    content={post.postContent}
+                                    // content={post.postContent}
                                     type={post.postType}
                                     date={post.regDate}
+                                    reply={post.replyCnt}
                                 />
                             </div>
                         )

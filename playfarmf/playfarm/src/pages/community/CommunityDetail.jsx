@@ -2,20 +2,44 @@ import { useParams } from "react-router-dom";
 import '../../styles/CommunityDetail.css';
 import CommunityAdvertising from "./CommunityAdvertising";
 import CommentSection from "./CommentSection";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from '../../service/context/AuthProvider';
 
 export default function CommunityDetail() {
-    const userposts = JSON.parse(localStorage.getItem("postsJSON"));
+    // const userposts = JSON.parse(localStorage.getItem("postsJSON"));
+    const [postData, setPostData] = useState({});
     const { postId } = useParams();
-    const item = userposts.find((item) => item.postId === parseInt(postId));
-
-    const formatUserId = (userId) => {
-        if (!userId) return '';
-        if (userId.length <= 3) {
-            return userId;
-        }
-        return `${userId.slice(0, 3)}****`;
-    }
+    const { isLoggedIn, loginInfo, onLogout } = useAuth();
+    // const item = userposts.find((item) => item.postId === parseInt(postId));
+    useEffect(() => {
+        window.scrollTo({
+            top: 0
+        })
+        console.log("postId:", postId);
+        const fetchPostData = async () => {
+            try {
+                const response = await axios.get(`/community/postdetail/${postId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + loginInfo.token,
+                    }
+                });
+                console.log("Response Data:", response.data);
+                setPostData(response.data);
+            } catch (err) {
+                console.error('게시물 데이터를 찾지 못했습니다', err);
+            }
+        };
+        fetchPostData();
+    }, [postId]);
+    // const formatUserId = (userId) => {
+    //     if (!userId) return '';
+    //     if (userId.length <= 3) {
+    //         return userId;
+    //     }
+    //     return `${userId.slice(0, 3)}****`;
+    // }
     const formatDate = (date) => {
         const now = new Date();
         const postTime = new Date(date);
@@ -40,12 +64,6 @@ export default function CommunityDetail() {
         return `${Math.floor(betweenTimeDay / 365)}년전`;
     }
 
-    useEffect(() => {
-        window.scrollTo({
-            top: 0
-        })
-    }, []);
-
     return (
         <div>
             <div className="detail_nav_area">
@@ -54,18 +72,23 @@ export default function CommunityDetail() {
             <div className="commu_detail_main_container">
                 <div className="commu_detail_main">
                     <div className="commu_detail_title">
-                        {item.title}
+                        {postData.postTitle}
                     </div>
                     <div className="commu_detail_addinfo">
-                        <span>{item.postType}</span>
-                        <span>{formatDate(item.date)}</span>
-                        <span>{formatUserId(item.userId)}</span>
+                        <div>
+                            <span>{postData.postType}</span>
+                            <span>{formatDate(postData.regDate)}</span>
+                            <span>{postData.nickname}</span>
+                        </div>
+                        <div>
+                            <span>조회수 {postData.views}</span>
+                        </div>
                     </div>
                     <hr />
                     <div className="commu_detail_content">
-                        {item.content}
+                        {postData.postContent}
                     </div>
-                    <CommentSection postId={item.postId} />
+                    <CommentSection postId={postId} />
                 </div>
                 <CommunityAdvertising />
             </div>

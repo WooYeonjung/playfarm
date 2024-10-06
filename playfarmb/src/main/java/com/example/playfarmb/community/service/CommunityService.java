@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.example.playfarmb.community.domain.PostDTO;
+import com.example.playfarmb.community.domain.PostResponseDTO;
 import com.example.playfarmb.community.entity.Post;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,4 +16,5 @@ public interface CommunityService {
 	@Transactional
 	Post save(PostDTO dto,String userId,HttpServletRequest request) throws IOException;
 	List<Post> mypostlist(String userId);
+	PostDTO postDetail(int postId, String userId);
 }

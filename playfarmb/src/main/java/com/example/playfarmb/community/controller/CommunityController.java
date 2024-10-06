@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,6 +58,22 @@ public class CommunityController {
 	    } else {
 	        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("내가 작성한 게시글 데이터가 없습니다.");
 	    }
+	}
+	
+	@GetMapping("/postdetail/{id}")
+	public ResponseEntity<?> postdetail(@PathVariable("id") int postId, @AuthenticationPrincipal String userId) {
+		PostDTO postDTO = cservice.postDetail(postId, userId);
+		
+		if (postDTO != null) {
+	        return ResponseEntity.ok(postDTO);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("게시물 데이터가 없습니다.");
+	    }
+	}
+	
+	@PostMapping("/reply")
+	public ResponseEntity<?> addToReply(@AuthenticationPrincipal String userId) {
+		
 	}
 	
 }

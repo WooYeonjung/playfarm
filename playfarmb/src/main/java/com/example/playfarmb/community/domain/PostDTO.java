@@ -1,5 +1,7 @@
 package com.example.playfarmb.community.domain;
 
+import java.time.LocalDateTime;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.playfarmb.community.entity.Post;
@@ -17,11 +19,13 @@ public class PostDTO {
 	private String nickname;
 	private String postTitle;
 	private String postType;
-	private int views;
-	private int replyCnt;
 	private String postContent;
 	private String link;
+	private int views;
+	private int replyCnt;
 	private MultipartFile[] postImg;
+	private String fileGroupId;
+	private LocalDateTime regDate;
 	
 	// of 함수 정의
 		public Post toEntity() {
@@ -36,4 +40,19 @@ public class PostDTO {
 		}
 	
 	//toEntity
+	
+		public static PostDTO of(Post entity) {
+	        return PostDTO.builder()
+	                .nickname(entity.getUser() != null ? entity.getUser().getNickname() : null)
+	                .postTitle(entity.getPostTitle())
+	                .postType(entity.getPostType())
+	                .link(entity.getLink())
+	                .postContent(entity.getPostContent())
+	                .views(entity.getViews())
+	                .replyCnt(entity.getReplyCnt())
+	                .fileGroupId(entity.getFileGroupId())
+	                .regDate(entity.getRegDate())
+	                .build();
+	    }
+	
 }

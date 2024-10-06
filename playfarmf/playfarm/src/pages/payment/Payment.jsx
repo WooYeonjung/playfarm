@@ -67,7 +67,14 @@ export default function Payment() {
                                 'Authorization': 'Bearer ' + loginInfo.token,
                             }
                         });
-                        setPayData([buyResponse.data]);
+                        const buyData = buyResponse.data;
+                        const matchedPlaytype = playtypeCode.find(code => code.codeId === buyData.playtype);
+                        const playtype = matchedPlaytype ? matchedPlaytype.codeInfo : null;
+
+                        setPayData([{
+                            ...buyData,
+                            playtype: playtype
+                        }]);
                     } catch (error) {
                         console.log('구매 정보를 찾을 수 없습니다.', error);
                     }
@@ -91,7 +98,7 @@ export default function Payment() {
 
     const isPaymentButtonEnabled = acknowledgeWarning && selectedPaymentMethod !== '';
     let method = selectedPaymentMethod;
-
+    console.log(payData)
     return (
         <div>
             <h1 className="payment_h1">Payment</h1>
@@ -104,7 +111,7 @@ export default function Payment() {
                             <div>Playtype</div>
                             <div>Price</div>
                         </div>
-                        {payData.length > 1 ? payData.map((item) => (
+                        {/* {payData.length > 1 ? payData.map((item) => (
                             <div key={item.id} className="paymentList_body">
                                 <div className="paymentList_img"><img src={`/images/game/${item.titleImg}`} alt={item.title} /></div>
                                 <div className="paymentList_title">{item.gameTitle}</div>
@@ -124,6 +131,16 @@ export default function Payment() {
                                     <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
                                 </div>
                                 <div className="paymentList_price">{item.game.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+                            </div>
+                        ))} */}
+                        {payData.map((item) => (
+                            <div key={item.gameId || item.game.gameId} className="paymentList_body">
+                                <div className="paymentList_img"><img src={`/images/game/${item.titleImg || item.game.titleImg}`} alt={item.gameTitle || item.game.gameTitle} /></div>
+                                <div className="paymentList_title">{item.gameTitle || item.game.gameTitle}</div>
+                                <div className="paymentList_playtype">
+                                    <img src={`${API_BASE_URL}/resources/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
+                                </div>
+                                <div className="paymentList_price">{(item.price || item.game.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                             </div>
                         ))}
                     </div>

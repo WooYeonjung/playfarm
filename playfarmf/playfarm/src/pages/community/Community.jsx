@@ -16,7 +16,6 @@ function Community() {
             await axios.get('/community/postlist')
                 .then(response => {
                     console.log(response)
-                    // const postlist = ;
 
                     setPostData(response.data);
                 })

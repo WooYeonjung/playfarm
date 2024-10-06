@@ -1,8 +1,7 @@
 package com.example.playfarmb.community.entity;
 
-import java.time.LocalDateTime;
-
 import com.example.playfarmb.auth.entity.User;
+import com.example.playfarmb.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name = "reply")
-public class Reply {
+@Data
+public class Reply extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,18 +35,16 @@ public class Reply {
     @Column(name = "reply_con", length = 500, nullable = false)
     private String replyContent;
 
-    @Column(name = "reg_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime regDate;
-
-    @Column(name = "mod_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime modDate;
-
     @Column(name = "useyn", length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'y'")
-    private String useYn;
+    private String useyn;
 
-    @ManyToOne
-    @JoinColumn(name = "root", columnDefinition = "INT DEFAULT 0")
-    private Reply root;
+//    @ManyToOne
+//    @JoinColumn(name = "root", columnDefinition = "INT DEFAULT 0")
+//    private Reply root;
 
     // Getters and Setters
+    @PrePersist
+    public void init() {
+    	this.useyn = this.useyn != null ? this.useyn : "y"; 
+    }
 }
