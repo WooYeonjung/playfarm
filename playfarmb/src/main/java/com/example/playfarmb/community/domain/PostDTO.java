@@ -1,9 +1,11 @@
 package com.example.playfarmb.community.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.playfarmb.common.domain.ImageDTO;
 import com.example.playfarmb.community.entity.Post;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ public class PostDTO {
 	private MultipartFile[] postImg;
 	private String fileGroupId;
 	private LocalDateTime regDate;
+	private List<ImageDTO> images;
 	
 	// of 함수 정의
 		public Post toEntity() {

@@ -85,15 +85,71 @@ export default function Payment() {
         fetchUserData();
     }, [isLoggedIn, loginInfo.userId, playtypeCode, location.state]);
 
-    const handlePayment = () => {
-        // eslint-disable-next-line no-restricted-globals
-        let paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
-        if (paymentConfirm) {
-            navigate('/list3')
-        } else {
-            navigate('/')
+    const handlePayment = async () => {
+        // if (!isPaymentButtonEnabled) return;
+
+        const totalPrice = payData.reduce((total, item) => total + item.price, 0);
+        // console.log(payData[0].playtype)
+        const purchaseData = {
+            userId: loginInfo.userId,
+            totalPrice: totalPrice,
+            paymethod: selectedPaymentMethod,
+            listDetails: payData.map(item => ({
+                purchId: { // ListdetailId 객체
+                    purchId: null, // 구매 시 자동 생성
+                    gameId: item.game.gameId,
+                    playtype: item.playtype
+                },
+                purchaselist: null // 구매 후 자동 연결
+            }))
+        };
+
+        try {
+            await axios.post('/purchase/completed', purchaseData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + loginInfo.token,
+                }
+            });
+
+            //ESLint 규칙 비활성화
+            // eslint-disable-next-line no-restricted-globals
+            const paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
+            if (paymentConfirm) {
+                navigate('/list3')
+            } else {
+                navigate('/')
+            }
+
+            //모달 라이브러리 사용. import와 install 필요!
+            // confirmAlert({
+            //     title: '결제 완료',
+            //     message: '결제가 완료되었습니다! 지금 게임하러 가시겠습니까?',
+            //     buttons: [
+            //         {
+            //             label: '예',
+            //             onClick: () => navigate('/list3')
+            //         },
+            //         {
+            //             label: '아니오',
+            //             onClick: () => navigate('/')
+            //         }
+            //     ]
+            // });
+            // import { confirmAlert } from 'react-confirm-alert'; // npm install react-confirm-alert
+            // import 'react-confirm-alert/src/react-confirm-alert.css';
+        } catch (error) {
+            console.error('결제 처리 중 오류가 발생했습니다.', error);
         }
-        return;
+
+        // eslint-disable-next-line no-restricted-globals
+        // let paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
+        // if (paymentConfirm) {
+        //     navigate('/list3')
+        // } else {
+        //     navigate('/')
+        // }
+        // return;
     };
 
     const isPaymentButtonEnabled = acknowledgeWarning && selectedPaymentMethod !== '';
@@ -140,6 +196,7 @@ export default function Payment() {
                                 <div className="paymentList_playtype">
                                     <img src={`${API_BASE_URL}/resources/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
                                 </div>
+                                
                                 <div className="paymentList_price">{(item.price || item.game.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                             </div>
                         ))}

@@ -31,6 +31,7 @@ public class ImageDTO {
     
     public static ImageDTO of(Image entity) {
     	return ImageDTO.builder()
+    					.imageId(entity.getImageId())
     					.path(entity.getPath())
     					.originName(entity.getOriginName())
     					.afterName(entity.getAfterName())

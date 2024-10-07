@@ -222,7 +222,11 @@ export default function Cart() {
                     }
                 });
                 setCartData(response.data);
-                const selectedItems = response.data.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price }));
+                const selectedItems = response.data.map(item => ({
+                    gameId: item.gameId,
+                    playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg,
+                    price: item.price, discount: item.discount, discendDate: item.discendDate
+                }));
                 setSelectedItems(selectedItems);
             } catch (err) {
                 if (cartData) {
@@ -242,16 +246,20 @@ export default function Cart() {
     // 전체선택
     const allCheckHandler = (checked) => {
         if (checked) {
-            setSelectedItems(cartData.map(item => ({ gameId: item.gameId, playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg, price: item.price })));
+            setSelectedItems(cartData.map(item => ({
+                gameId: item.gameId,
+                playtype: item.playtype, gameTitle: item.gameTitle, titleImg: item.titleImg,
+                price: item.price, discount: item.discount, discendDate: item.discendDate
+            })));
         } else {
             setSelectedItems([]);
         }
     }
 
     // 체크박스 상테 변화
-    const onChangeHandler = (checked, gameId, playtype, gameTitle, titleImg, price) => {
+    const onChangeHandler = (checked, gameId, playtype, gameTitle, titleImg, price, discount, discendDate) => {
         if (checked) {
-            const newSelectedItems = [...selectedItems, { gameId, playtype, gameTitle, titleImg, price }];
+            const newSelectedItems = [...selectedItems, { gameId, playtype, gameTitle, titleImg, price, discount, discendDate }];
             setSelectedItems(newSelectedItems);
         } else {
             const newSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype && item.gameTitle === gameTitle && item.titleImg === titleImg && price === item.price));
@@ -332,7 +340,7 @@ export default function Cart() {
     function imgClick(gameId) {
         navigate(`/store/detail/${gameId}`)
     }
-
+    console.log(cartData)
     return (
         <div className="cart_container" style={{ height: "auto" }}>
             <div className='cart_title'>
@@ -356,7 +364,12 @@ export default function Cart() {
                                         {item.playtype === 'ps' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_playstation_logo.jpg`}></img></span>}
                                         {item.playtype === 'pc' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_pc_logo.jpg`}></img></span>}
                                     </p>
-                                    <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
+                                    {item.discount > 0 && (item.discendDate !== null || new Date(item.discendDate) >= new Date()) ? 
+                                    <span>
+                                        {(item.price - (item.price * item.discount / 100.0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    </span> : <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
+                                    }
+                                    {/* <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span> */}
                                     <span><img src={`${API_BASE_URL}/resources/images/game/${item.titleImg}`} alt={item.title} onClick={() => imgClick(item.gameId)} /></span>
                                     <button onClick={() => deleteItem(item.gameId, item.playtype)}><FontAwesomeIcon icon={faTrashCan} size="xl" /></button>
                                 </li>

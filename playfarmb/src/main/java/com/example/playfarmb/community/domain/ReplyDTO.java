@@ -25,7 +25,7 @@ public class ReplyDTO {
 		return ReplyDTO.builder()
 				.replyId(entity.getReplyId())
 				.postId(entity.getPost().getPostId())
-				.nickname(entity.getUser().getNickname())
+				.nickname(entity.getUser() != null ? entity.getUser().getNickname() : null)
 				.replyContent(entity.getReplyContent())
 				.regDate(entity.getRegDate())
 				.build();

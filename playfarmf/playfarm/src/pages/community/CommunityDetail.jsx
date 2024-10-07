@@ -5,11 +5,13 @@ import CommentSection from "./CommentSection";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from '../../service/context/AuthProvider';
+import { API_BASE_URL } from "../../service/app-config";
 
 export default function CommunityDetail() {
     // const userposts = JSON.parse(localStorage.getItem("postsJSON"));
     const [postData, setPostData] = useState({});
     const { postId } = useParams();
+    const [comments, setComments] = useState([]);
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
     // const item = userposts.find((item) => item.postId === parseInt(postId));
     useEffect(() => {
@@ -31,8 +33,23 @@ export default function CommunityDetail() {
                 console.error('게시물 데이터를 찾지 못했습니다', err);
             }
         };
+        const fetchReplies = async () => {
+            try {
+                const response = await axios.get(`/community/replies/${postId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + loginInfo.token,
+                    }
+                });
+                setComments(response.data);
+            } catch (error) {
+                console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
+            }
+        };
         fetchPostData();
+        fetchReplies();
     }, [postId]);
+    console.log(comments)
     // const formatUserId = (userId) => {
     //     if (!userId) return '';
     //     if (userId.length <= 3) {
@@ -85,10 +102,20 @@ export default function CommunityDetail() {
                         </div>
                     </div>
                     <hr />
+                    {postData.images && postData.images.length > 0 && postData.images.map(img => (
+                        img.originName ? (
+                            <img style={{ width: "300px", height: "300px" }}
+                                src={`${API_BASE_URL}/resources/images/post/${img.afterName}`}
+                                alt={img.originName}
+                                key={img.imageId} />
+                        ) : null
+                    ))}
+                    {postData.link && <a href={postData.link} target="_blank" rel="noopener noreferrer">{postData.link}</a>}
+                    {/* {postData.} */}
                     <div className="commu_detail_content">
                         {postData.postContent}
                     </div>
-                    <CommentSection postId={postId} />
+                    <CommentSection postId={postId} comments={comments} setComments={setComments} />
                 </div>
                 <CommunityAdvertising />
             </div>

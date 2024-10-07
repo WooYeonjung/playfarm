@@ -140,7 +140,6 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
         setSearchTerm(search);
     }, [search]);
 
-    console.log(postData.regDate)
     return (
         <div className='commuList_container'>
             <div className='commuList_wrapper'>

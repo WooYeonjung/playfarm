@@ -112,10 +112,12 @@ export default function GameDetailsPage({ gameId }) {
             }
             return;
         }
-
+        console.log(item)
         let cartData = {
             // "userId": loginInfo.userId,
             "gameId": item.gameId,
+            "discount": item.discount,
+            "discendDate": item.discendDate,
             "playtype": type
         };
 
