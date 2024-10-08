@@ -122,7 +122,7 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
             filteredPosts = filteredPosts.filter((item) => item.postTitle && item.postTitle.toLowerCase().includes(search.toLowerCase()));
         }
         // 게시물을 날짜 기준으로 정렬 (최신 순)
-        filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        filteredPosts.sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
         return filteredPosts;
     }
 

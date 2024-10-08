@@ -38,6 +38,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<CartDTO> cartList(String userId) {
 		List<CartDTO> gameList = cartRepository.findAllByCartIdUserId(userId);
+		
 		if(!gameList.isEmpty()) {
 			return gameList;
 		}else {

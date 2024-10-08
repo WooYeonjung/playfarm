@@ -31,7 +31,7 @@ public class CartDSLRepositoryImpl implements CartDSLRepository{
 //				.where(cart.cartId.userId.eq(userId)))).fetch();
 		
 		 List<CartDTO> cartList = jpaQueryFactory.select(Projections
-				 .fields(CartDTO.class,game.gameId,game.gameTitle,game.titleImg,game.discount,game.price,cart.cartId.playtype))
+				 .fields(CartDTO.class,game.gameId,game.gameTitle,game.titleImg,game.discount,game.discendDate,game.price,cart.cartId.playtype))
 				  .from(game)
 				  .join(cart).on(game.gameId.eq(cart.cartId.gameId))
 				  .where(cart.cartId.userId.eq(userId)).fetch();

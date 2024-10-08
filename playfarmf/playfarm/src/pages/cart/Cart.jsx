@@ -221,6 +221,7 @@ export default function Cart() {
                         'Authorization': 'Bearer ' + token
                     }
                 });
+                console.log(response.data)
                 setCartData(response.data);
                 const selectedItems = response.data.map(item => ({
                     gameId: item.gameId,
@@ -274,7 +275,12 @@ export default function Cart() {
     const calculatePaymentInfo = () => {
         let total = selectedItems.reduce((acc, selectedItem) => {
             const item = cartData.find(item => item.gameId === selectedItem.gameId && item.playtype === selectedItem.playtype);
-            return item ? acc + item.price : acc;
+            if (item) {
+                const discountedPrice = item.discount > 0 && (item.discendDate !== null || new Date(item.discendDate) >= new Date()) ?
+                    item.price - (item.price * item.discount / 100.0) : item.price;
+                return acc + discountedPrice;
+            }
+            return acc;
         }, 0);
 
         setTotalPrice(total);
@@ -364,10 +370,10 @@ export default function Cart() {
                                         {item.playtype === 'ps' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_playstation_logo.jpg`}></img></span>}
                                         {item.playtype === 'pc' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_pc_logo.jpg`}></img></span>}
                                     </p>
-                                    {item.discount > 0 && (item.discendDate !== null || new Date(item.discendDate) >= new Date()) ? 
-                                    <span>
-                                        {(item.price - (item.price * item.discount / 100.0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    </span> : <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
+                                    {item.discount > 0 && (item.discendDate !== null || new Date(item.discendDate) >= new Date()) ?
+                                        <span>
+                                            {(item.price - (item.price * item.discount / 100.0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                        </span> : <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
                                     }
                                     {/* <span>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span> */}
                                     <span><img src={`${API_BASE_URL}/resources/images/game/${item.titleImg}`} alt={item.title} onClick={() => imgClick(item.gameId)} /></span>
