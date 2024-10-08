@@ -47,20 +47,34 @@ public class UserController {
 	TokenProvider tokenProvider;
 	DateUtil dateUtil;
 
-	// 그냥 테스트
+	// id 찾기
 	@GetMapping("/findid/{email}")
 	public ResponseEntity<?> findId(@PathVariable String email){
 		
 		try {
 			String userId = uservice.findId(email);
+			if(userId!=null && !userId.isEmpty()) {
 				return ResponseEntity.ok(userId);
-		}catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+			}else {
+				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Email 과 일치하는 ID 가 없습니다. 다시 시도하세요.");
+			}
+				
+//		}catch (RuntimeException e) {
+//			
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Id 를 찾는 중 오류가 발생하였습니다. 다시 시도해주세요.");
 		}
 		
 	}
+	// pw 찾기
+//	@PostMapping("/findpw")
+//	public ResponseEntity<?> findPw(@RequestBody UserDTO dto){
+//		try {
+//			
+//		}catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Id 와 비밀번호  ");
+//		}
+//	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User entity, HttpSession session) {

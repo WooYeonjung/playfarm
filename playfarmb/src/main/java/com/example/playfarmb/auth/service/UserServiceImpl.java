@@ -37,9 +37,10 @@ public class UserServiceImpl implements UserService {
 	 public String findId(String email) {
 
 		User entity = urepository.findByEmail(email);
-		if(!ObjectUtils.isEmpty(entity)) {
+		if(entity!=null) {
 			return entity.getUserId();
 		}
+		
 		return null;
 	};
 
