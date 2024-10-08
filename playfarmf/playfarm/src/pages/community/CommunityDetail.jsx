@@ -14,6 +14,8 @@ export default function CommunityDetail() {
     const [comments, setComments] = useState([]);
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
     // const item = userposts.find((item) => item.postId === parseInt(postId));
+
+
     useEffect(() => {
         window.scrollTo({
             top: 0
@@ -33,6 +35,25 @@ export default function CommunityDetail() {
                 console.error('게시물 데이터를 찾지 못했습니다', err);
             }
         };
+        // const fetchReplies = async () => {
+        //     try {
+        //         const response = await axios.get(`/community/replies/${postId}`, {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': 'Bearer ' + loginInfo.token,
+        //             }
+        //         });
+        //         setComments(response.data);
+        //     } catch (error) {
+        //         console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
+        //     }
+        // };
+
+        fetchPostData();
+
+    }, [postId]);
+    useEffect(() => {
+
         const fetchReplies = async () => {
             try {
                 const response = await axios.get(`/community/replies/${postId}`, {
@@ -46,9 +67,9 @@ export default function CommunityDetail() {
                 console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
             }
         };
-        fetchPostData();
+
         fetchReplies();
-    }, [postId]);
+    }, [comments]);
     console.log(comments)
     // const formatUserId = (userId) => {
     //     if (!userId) return '';

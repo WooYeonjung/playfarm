@@ -33,6 +33,7 @@ export default function CommentSection({ postId, comments, setComments }) {
             if (response.status === 200) {
                 alert('댓글을 등록하였습니다.');
                 setNewComment('');
+
             }
         } catch (error) {
             alert('댓글 등록을 실패하였습니다.');

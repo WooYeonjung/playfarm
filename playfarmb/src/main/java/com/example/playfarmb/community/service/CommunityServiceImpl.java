@@ -43,9 +43,6 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	ImageModule imgModule;
 	
-	@Autowired
-	ImageRepository imgRepository;
-
 	@Override
 	public List<Post> getPostList() {
 		return commuRepository.findAll();
@@ -61,7 +58,7 @@ public class CommunityServiceImpl implements CommunityService {
 
 		// entity.setUser(user);
 		entity.setUser(user);
-		repository.save(entity);
+		commuRepository.save(entity);
 		// dto에 사진 파일 있으면 addFile 호출해서 filegroudid받기
 		if (dto.getPostImg() != null && dto.getPostImg().length > 0) {
 			String fileGroupId = imgModule.addImage(dto.getPostImg(), "post", entity.getPostId(), request);
@@ -75,14 +72,14 @@ public class CommunityServiceImpl implements CommunityService {
 	//내가 쓴 글보기
 	@Override
 	public List<Post> mypostlist(String userId) {
-			return repository.myPostList(userId);
+			return commuRepository.myPostList(userId);
 	}
 	
 	
 	//detailPost
 	@Override
 	public PostResponseDTO getDetailPost(int postId) {
-		Post entity = repository.findById(postId).orElseThrow(()-> new RuntimeException("해당 아이디의 게시물이 존재하지 않습니다."));
+		Post entity = commuRepository.findById(postId).orElseThrow(()-> new RuntimeException("해당 아이디의 게시물이 존재하지 않습니다."));
 		PostResponseDTO res = PostResponseDTO.of(entity);
 		if(!ObjectUtils.isEmpty(res.getFileGroupId())) {
 			// imageRepository 조회
@@ -96,21 +93,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	@Transactional
 	public PostResponseDTO udpatePost(PostDTO dto, String userId, HttpServletRequest request) throws IOException {
-		Post entity = repository.findById(dto.getPostId()).orElseThrow(() -> new RuntimeException("게시물 등록을 실패하였습니다."));
+		Post entity = commuRepository.findById(dto.getPostId()).orElseThrow(() -> new RuntimeException("게시물 등록을 실패하였습니다."));
 		entity.update(dto);
 		// dto에 사진 파일 있으면 addFile 호출해서 filegroudid받기
 		if (dto.getPostImg() != null && dto.getPostImg().length > 0) {
 			String fileGroupId = imgModule.updateImage(dto.getPostImg(), "post", entity.getPostId(), request);
 			entity.setFileGroupId(fileGroupId);
 		}
-		
-
-	@Override
-	public List<Post> mypostlist(String userId) {
-		
-		log.info(commuRepository.myPostList(userId));
-		return  commuRepository.myPostList(userId);
+		return PostResponseDTO.of(entity);	
 	}
+
 	
 	@Override
 	public PostDTO postDetail(int postId, String userId) {
@@ -184,7 +176,7 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		post.setReplyCnt(post.getReplyCnt() - 1);
 	    commuRepository.save(post);
-		return PostResponseDTO.of(entity);
+
 
 	}
 
