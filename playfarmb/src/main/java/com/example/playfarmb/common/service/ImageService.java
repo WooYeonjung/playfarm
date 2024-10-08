@@ -8,4 +8,6 @@ public interface ImageService {
 	List<Image> getImagesById(Integer gameId);
 //	public void save(String id , MutipartFile file,HttpServletRequest request)
 	
+	List<String> findByFileGroupId(String fileGroupId);
+	
 }

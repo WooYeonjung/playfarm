@@ -28,5 +28,6 @@ public interface UserService {
 	 UserDTO updateUser(HttpServletRequest request,String userId,UserDTO req) throws IOException;
 	 void withdraw(String userId);
 	 User findByIdAndEmail(String userId,String email);
-		
+	 String findId(String email);
+	 
 }

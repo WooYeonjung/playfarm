@@ -14,5 +14,11 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 	
 	@Query("Select i from Image i join Game g on g.fileGroupId =:groupId and g.fileGroupId = i.fileGroupId ")
 	List<Image> getgameList(@Param("groupId") String groupId);
+	
+	
+	List<Image> findAllByFileGroupId(String fileGroupId);
+	
 
+	// 이미지 수정
+	void deleteAllByFileGroupId(String fileGroupId);
 }

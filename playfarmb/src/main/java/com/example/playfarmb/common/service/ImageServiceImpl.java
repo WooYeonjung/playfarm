@@ -32,6 +32,11 @@ public class ImageServiceImpl implements ImageService {
 			return null;
 	}
 	
-
+	
+	@Override
+	public List<String> findByFileGroupId(String fileGroupId) {
+		List<String> imageList = imgRepository.findAllByFileGroupId(fileGroupId).stream().map(image -> image.getAfterName()).toList();
+		return imageList;
+	}
 	
 }

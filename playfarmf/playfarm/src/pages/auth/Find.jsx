@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Find.css';
+import axios from 'axios';
 
 const Find = () => {
   const [activeTab, setActiveTab] = useState('findId');
@@ -24,25 +25,46 @@ const Find = () => {
   //   };
   // }, []); // 빈 배열을 넣어 한 번만 실행되도록 설정
 
-  const handleFindId = (e) => {
+  const handleFindId = async (e) => {
     e.preventDefault();
 
-    // 가짜 데이터 (실제 서버 요청 대신 사용)
-    const fakeData = JSON.parse(localStorage.getItem('usersJSON'));
+    console.log(email);
+    debugger;
+    try {
+      const response = await axios.get(`/user/findid/${email}`);
+      if (response) {
+        setUserId(response.data);
+        setMessage('');
+      } else {
+        setMessage(response.data);
+        setUserId('');
+      }
 
-    const foundUser = fakeData.find(user => user.email === email);
-
-    if (foundUser) {
-      setUserId(foundUser.userid);
-      setMessage('');
-      // 사용자 ID를 로컬 스토리지에 저장
-      localStorage.setItem('foundUserId', foundUser.userid);
-    } else {
-      setMessage('User not found');
-      setUserId('');
-      // 사용자 ID가 없으면 로컬 스토리지에서 제거
-      localStorage.removeItem('foundUserId');
+    } catch (err) {
+      if (err.response.status === 502) {
+        setMessage(err.response.data.message);
+        setUserId('');
+      } else {
+        setMessage(err.response.data.message);
+        setUserId('');
+      }
     }
+
+    // const fakeData = JSON.parse(localStorage.getItem('usersJSON'));
+
+    // const foundUser = fakeData.find(user => user.email === email);
+
+    // if (foundUser) {
+    //   setUserId(foundUser.userid);
+    //   setMessage('');
+    //   // 사용자 ID를 로컬 스토리지에 저장
+    //   localStorage.setItem('foundUserId', foundUser.userid);
+    // } else {
+    //   setMessage('User not found');
+    //   setUserId('');
+    //   // 사용자 ID가 없으면 로컬 스토리지에서 제거
+    //   localStorage.removeItem('foundUserId');
+    // }
   }
 
   const handleFindPw = (e) => {

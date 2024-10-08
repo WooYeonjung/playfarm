@@ -25,7 +25,6 @@ const WrittenByMe = () => {
 
     useEffect(() => {
 
-        debugger;
         const fetchPost = async () => {
             if (isLoggedIn && loginInfo.userId) {
                 setLoginUserId(loginInfo.userId); // 로그인된 사용자 ID 설정
@@ -163,11 +162,11 @@ const WrittenByMe = () => {
                                         <p>{filteredPostsList.length - (indexOfFirstPost + index)}</p> {/* 게시글 번호 */}
                                         <h3>{icon(post.postType)}</h3> {/* 게시글 타입에 따른 아이콘 */}
                                         <p>{post.postTitle}</p> {/* 게시글 제목 */}
-                                        {post.link && (
+                                        {/* <br></br>{post.link && (
                                             <a href={post.link} target="_blank" rel="noopener noreferrer">
                                                 {post.link}
                                             </a>
-                                        )}
+                                        )} */}
                                         <small>{post.regDate.slice(0, 10)}</small> {/* 게시글 작성 날짜 */}
                                         <div className="post_list_item_actions">
                                             <FontAwesomeIcon icon={faEdit} className="post_list_icon" size="xl" onClick={() => handleEdit(post)} />
