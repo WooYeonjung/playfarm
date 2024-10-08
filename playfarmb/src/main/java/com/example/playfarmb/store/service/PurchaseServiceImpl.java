@@ -36,16 +36,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 		// Purchaselist 엔티티 생성
 	    Purchaselist purchase = Purchaselist.builder()
 	            .userId(dto.getUserId())
-	            .totalPrice(dto.getTotalPrice()) // totalPrice 필드에 값 할당
-	            .purchDate(LocalDateTime.now()) // 현재 시간으로 구매 날짜 설정
-	            .payMethod(dto.getPayMethod()) // 결제 방법 설정
-	            .listDetails(new ArrayList<>()) // listDetails 초기화
+	            .totalPrice(dto.getTotalPrice())
+	            .purchDate(LocalDateTime.now())
+	            .payMethod(dto.getPayMethod())
+	            .listDetails(new ArrayList<>())
 	            .build();
 	    
 	    // Listdetail 엔티티 생성
 	    Listdetail listDetail = Listdetail.builder()
-	            .purchId(new ListdetailId(purchase.getPurchId(), dto.getGameId(), dto.getPlaytype())) // 구매 ID, 게임 ID, 플레이 타입 설정
-	            .purchaselist(purchase) // Purchaselist 설정
+	            .purchId(new ListdetailId(purchase.getPurchId(), dto.getGameId(), dto.getPlaytype()))
+	            .purchaselist(purchase)
 	            .build();
 
 	    // Purchaselist의 listDetails에 추가

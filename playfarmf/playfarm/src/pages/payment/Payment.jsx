@@ -90,22 +90,28 @@ export default function Payment() {
     const handlePayment = async () => {
         // if (!isPaymentButtonEnabled) return;
 
-        const totalPrice = payData.reduce((total, item) => total + item.price, 0);
-        // console.log(payData[0].playtype)
+        // const totalPrice = payData.reduce((total, item) => total + item.price, 0);
+        const totalPrice = payData.reduce((total, item) => {
+            const price = (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date()))
+                ? item.price - (item.price * item.discount / 100) 
+                : item.price;
+            return total + price;
+        }, 0);
+        
         const purchaseData = {
             userId: loginInfo.userId,
             totalPrice: totalPrice,
-            paymethod: selectedPaymentMethod,
+            payMethod: selectedPaymentMethod,
             listDetails: payData.map(item => ({
                 purchId: { // ListdetailId 객체
                     purchId: null, // 구매 시 자동 생성
-                    gameId: item.game.gameId,
+                    gameId: payData.length > 1 ? item.gameId : item.game.gameId,
                     playtype: item.playtype
                 },
                 purchaselist: null // 구매 후 자동 연결
             }))
         };
-
+        console.log(purchaseData)
         try {
             await axios.post('/purchase/completed', purchaseData, {
                 headers: {

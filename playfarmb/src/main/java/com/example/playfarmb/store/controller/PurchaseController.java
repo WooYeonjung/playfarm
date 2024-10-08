@@ -18,11 +18,13 @@ import com.example.playfarmb.store.service.PurchaseService;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/purchase")
 @AllArgsConstructor
 @NoArgsConstructor
+@Log4j2
 public class PurchaseController {
 	@Resource(name = "PurchaseService")
 	private PurchaseService pservice;
@@ -34,6 +36,7 @@ public class PurchaseController {
 	
 	@PostMapping("/completed")
 	public ResponseEntity<?> paymentCompleted(@RequestBody PurchaseDTO dto, @AuthenticationPrincipal String userId) {
+		log.info(dto);
 		try {
 			Purchaselist purchase = pservice.savePurchase(dto, userId);
 			return ResponseEntity.ok("구매가 완료되었습니다. 구매리스트로 이동하시겠습니까?");
