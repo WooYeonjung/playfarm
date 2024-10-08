@@ -101,10 +101,6 @@
     flex: 1;
 }
 
-.cmItem_view {
-    flex: 0.5;
-}
-
 /* pagenation */
 .commu_list_pagination {
     margin-bottom: 20px;

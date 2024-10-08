@@ -63,7 +63,6 @@ h4 {
 
 .findMain>div:nth-child(1)>button:hover h4 {
   transform: scale(1.1);
-  cursor: pointer;
 }
 
 .findMain>div:nth-child(1)>button.active {
@@ -150,7 +149,6 @@ h4 {
   border-radius: 5px;
   color: white;
   background: linear-gradient(to right, white, blue, black);
-  cursor: pointer;
 }
 
 /* ==================================================================== */

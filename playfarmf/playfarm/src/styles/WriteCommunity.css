@@ -1,17 +1,13 @@
 /* WriteCommunity.css */
-.total_wrapper {
-    height: 1000px;
-}
-
 .blank {
-    width: 80%;
+    width: 100%;
     /* height: 70.4px; */
     margin: 25px 0 25px 20px;
     /* padding: 30px 30px 0 30px; */
 }
 
 .write_community_container {
-    width: 70vw;
+    width: 60vw;
     height: 100vh;
     display: flex;
     margin: 0 auto;
@@ -27,7 +23,7 @@
 .write_community_wrapper {
     flex: 2;
     height: 70%;
-    margin-right: 50px;
+    margin-right: 100px;
 }
 
 .write_community_wrapper form {
@@ -60,7 +56,7 @@
     width: 90%;
 }
 
-.write_community_input[type='text'],.write_community_input[type='url'] {
+.write_community_input[type='text'] {
     padding: '5px 10px';
     border: '2px solid #ccc';
     border-radius: '5px';
@@ -104,7 +100,6 @@
 .write_community_button_submit:hover {
     background-color: #242424;
     color: #fff;
-    
 }
 
 .write_community_button_cancel:hover {
@@ -160,31 +155,6 @@
     color: #333;
 }
 
-.image_previews {
-    margin-top: 5px;
-    height: 100px;
-    width: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    border: lightslategray 2px dashed;
-    border-radius: 5px;
-    gap: 10px;
-}
-
-.image_preview {
-    /* display: inline-block; */
-    /* width: 50px; */
-    height: 100%;
-    flex: 1 1 calc(25% - 10px);
-    /* 4개의 이미지를 한 줄에 배치 */
-    max-width: calc(25% - 10px);
-    /* height: auto; */
-    object-fit: cover;
-    /* 이미지 비율 유지 */
-
-
-}
-
 /* .write_community_section>label:nth-of-type(1) {
     display: flex;
     flex-direction: row;
@@ -214,7 +184,5 @@
         /* margin: 0 auto; */
         box-sizing: border-box;
     }
-
-
 
 }

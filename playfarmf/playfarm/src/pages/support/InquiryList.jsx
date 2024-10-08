@@ -1,30 +1,42 @@
 import React, { useEffect } from 'react';
 
+
 const InquiryList = ({ inquiryData, handleArticleClick, handleDelete }) => {
   useEffect(() => {
-    window.scrollTo({
+    window.scrollTo({ // 페이지 스크롤 최상단으로 이동
       top: 0,
-      behavior: 'smooth' // 부드럽게 스크롤
+      behavior: 'smooth' 
     });
-  }, [])
+  }, []);
 
   return (
     <div className="article-grid">
-      {/* 문의 항목들을 나타내는 그리드 */}
-      {inquiryData.map((article) => (
-        <div key={article.id} className="article-card" onClick={() => handleArticleClick(article)}>
+      {inquiryData.map((article, index) => ( // 문의 목록 렌더링
+        <div 
+          key={article.id} // 각 문의의 고유 ID
+          className="article-card" 
+          onClick={() => handleArticleClick(article)} // 클릭 시 핸들러 호출
+        >
           <div className="article-info">
-            {/* 문의 항목 정보 */}
-            <div><strong>번호</strong> {article.number}</div>
-            <div><strong>제목</strong> {article.title}</div>
-            <div><strong>등록일</strong> {article.date}</div>
+            <div style={{ textAlign: 'center' }}>
+              <strong>번호</strong> {index + 1} 
+              {/* 번호 표시 */}
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <strong>제목</strong> {article.title}  
+              {/* 제목 표시 */}
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <strong>등록일</strong> {new Date(article.regDate).toLocaleString()} 
+              {/* 등록일 표시 */}
+            </div>
           </div>
-          {/* 문의 항목 삭제 버튼 */}
           <button
             className="delete-button"
+            style={{ marginTop: '-8px' }}
             onClick={(e) => {
-              e.stopPropagation(); // 이벤트 버블링 방지하여 부모 요소로의 전파를 막습니다.
-              handleDelete(article.id); // 문의 삭제 함수를 호출하고 해당 문의의 ID를 전달합니다.
+              e.stopPropagation(); // 클릭 전파 방지
+              handleDelete(article.id); // 삭제 핸들러 호출
             }}
           >
             삭제

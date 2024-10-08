@@ -17,20 +17,12 @@
     display: flex;
 }
 
-.comment_item_nickname {
-    flex: 0.5;
-}
-
 .comment_item_content {
     flex: 3;
 }
 
 .comment_item_date {
     flex: 1;
-}
-
-.comment_item_delete {
-    flex: 0.1;
 }
 
 .comment_form {

@@ -1,17 +1,15 @@
 import React from 'react';
-import '../../styles/Modal.css';
+import '../../styles/Modal.css'; // CSS 스타일 import
 
-// 모달 컴포넌트 정의
 const Modal = ({ showModal, closeModal }) => {
-  // showModal prop이 true일 때 모달을 보여줌
   return (
-    showModal && ( // showModal이 true인 경우에만 렌더링
+    showModal && ( // 모달이 표시될 조건
       <div className="modal">
         <div className="modal-content">
+          <span className="close" onClick={closeModal}>&times;</span> 
           {/* 모달 닫기 버튼 */}
-          <span className="close" onClick={closeModal}>&times;</span>
-          {/* 모달 내용 */}
-          <p>1:1 문의가 등록되었습니다.</p>
+          <p>1:1 문의가 등록되었습니다.</p> 
+          {/* 등록 완료 메시지 */}
         </div>
       </div>
     )
