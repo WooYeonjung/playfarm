@@ -1,5 +1,7 @@
 package com.example.playfarmb.community.entity;
 
+import org.springframework.util.ObjectUtils;
+
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.common.entity.BaseEntity;
 import com.example.playfarmb.community.domain.PostDTO;
@@ -67,5 +69,15 @@ public class Post extends BaseEntity {
     	this.useyn = this.useyn != null ? this.useyn : "y";
     }
     
+    public void update(PostDTO dto) {
+    	this.postTitle = !ObjectUtils.isEmpty(dto.getPostTitle())  ? dto.getPostTitle() : this.postTitle;
+    	this.postContent = !ObjectUtils.isEmpty(dto.getPostContent())  ? dto.getPostContent() : this.postContent;
+    	this.postType = !ObjectUtils.isEmpty(dto.getPostType())  ? dto.getPostType() : this.postType;
+    	this.link = !ObjectUtils.isEmpty(dto.getLink())  ? dto.getLink() : this.link;
+    }
+    
+    public void deletePost() {
+    	this.useyn = "n";
+    }
 }
 

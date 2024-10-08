@@ -95,15 +95,6 @@ const WriteCommunity = () => {
             alert('게시물 유형을 선택해주세요.');
             return;
         }
-
-        // const newPost = {
-        //     userId: loginUserId,
-        //     postTitle,
-        //     postType: postType.value, // postType이 null이 아닌 경우에만 접근
-        //     link,
-        //     postContent,
-
-        // };
         const formData = new FormData(document.getElementById('postFrom'));
         const token = loginInfo.token;
         const existFile = document.getElementById('file');
@@ -151,7 +142,7 @@ const WriteCommunity = () => {
 
     return (
         <div className="total_wrapper">
-            
+
             <div className='blank'>
                 <h2> Community</h2>
             </div>
@@ -187,7 +178,7 @@ const WriteCommunity = () => {
                                 <input
                                     className="write_community_input"
                                     name="link"
-                                    type="text"
+                                    type="url"
                                     id="link"
                                     value={link}
                                     onChange={handleLinkChange}

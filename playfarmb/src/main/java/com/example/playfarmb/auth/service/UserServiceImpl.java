@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.playfarmb.auth.domain.UserDTO;
@@ -32,7 +33,17 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return udrepository.findUser();
 	}
+	@Override
+	 public String findId(String email) {
 
+		User entity = urepository.findByEmail(email);
+		if(!ObjectUtils.isEmpty(entity)) {
+			return entity.getUserId();
+		}
+		return null;
+	};
+
+	
 	@Override
 	public User findById(String userId) {
 		Optional<User> result = urepository.findById(userId);

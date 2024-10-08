@@ -1,8 +1,7 @@
 package com.example.playfarmb.community.domain;
 
 import java.time.LocalDateTime;
-
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import com.example.playfarmb.community.entity.Post;
 
@@ -23,6 +22,7 @@ public class PostResponseDTO {
 	private String link;
 	private String postContent;
 	private String postType;
+	private List<String> afterName;
 	private String fileGroupId;
 
 	public static PostResponseDTO of(Post entity) {

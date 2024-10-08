@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,9 +48,18 @@ public class UserController {
 	DateUtil dateUtil;
 
 	// 그냥 테스트
-	@GetMapping("/finduser")
-	public void getMethodName() {
-		log.info(uservice.findUser());
+	@GetMapping("/findid/{email}")
+	public ResponseEntity<?> findId(@PathVariable String email){
+		
+		try {
+			String userId = uservice.findId(email);
+				return ResponseEntity.ok(userId);
+		}catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Id 를 찾는 중 오류가 발생하였습니다. 다시 시도해주세요.");
+		}
+		
 	}
 
 	@PostMapping("/login")

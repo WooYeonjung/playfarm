@@ -60,7 +60,7 @@
     width: 90%;
 }
 
-.write_community_input[type='text'] {
+.write_community_input[type='text'],.write_community_input[type='url'] {
     padding: '5px 10px';
     border: '2px solid #ccc';
     border-radius: '5px';
@@ -104,6 +104,7 @@
 .write_community_button_submit:hover {
     background-color: #242424;
     color: #fff;
+    
 }
 
 .write_community_button_cancel:hover {
