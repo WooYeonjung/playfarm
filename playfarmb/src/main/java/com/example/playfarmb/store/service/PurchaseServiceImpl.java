@@ -31,9 +31,31 @@ public class PurchaseServiceImpl implements PurchaseService {
 		else return null;
 	}
 	
+//	@Override
+//	public Purchaselist savePurchase(PurchaseDTO dto, String userId) {
+//		// Purchaselist 엔티티 생성
+//	    Purchaselist purchase = Purchaselist.builder()
+//	            .userId(dto.getUserId())
+//	            .totalPrice(dto.getTotalPrice())
+//	            .purchDate(LocalDateTime.now())
+//	            .payMethod(dto.getPayMethod())
+//	            .listDetails(new ArrayList<>())
+//	            .build();
+//	    
+//	    // Listdetail 엔티티 생성
+//	    Listdetail listDetail = Listdetail.builder()
+//	            .purchId(new ListdetailId(purchase.getPurchId(), dto.getGameId(), dto.getPlaytype()))
+//	            .purchaselist(purchase)
+//	            .build();
+//
+//	    // Purchaselist의 listDetails에 추가
+//	    purchase.getListDetails().add(listDetail);
+//
+//	    // Purchaselist 저장
+//	    return purchaseRepository.save(purchase);
+//	}
 	@Override
 	public Purchaselist savePurchase(PurchaseDTO dto, String userId) {
-		// Purchaselist 엔티티 생성
 	    Purchaselist purchase = Purchaselist.builder()
 	            .userId(dto.getUserId())
 	            .totalPrice(dto.getTotalPrice())
@@ -41,17 +63,22 @@ public class PurchaseServiceImpl implements PurchaseService {
 	            .payMethod(dto.getPayMethod())
 	            .listDetails(new ArrayList<>())
 	            .build();
-	    
-	    // Listdetail 엔티티 생성
-	    Listdetail listDetail = Listdetail.builder()
-	            .purchId(new ListdetailId(purchase.getPurchId(), dto.getGameId(), dto.getPlaytype()))
-	            .purchaselist(purchase)
+
+	    // Purchaselist 저장 (purchId 자동 생성)
+	    Purchaselist savedPurchase = purchaseRepository.save(purchase);
+
+	    // 각 게임에 대한 Listdetail 생성 및 추가
+	    for (Listdetail listDetailDTO : dto.getListDetails()) {
+	        Listdetail listDetail = Listdetail.builder()
+	            .purchId(new ListdetailId(savedPurchase.getPurchId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
+	            .purchaselist(savedPurchase)
 	            .build();
 
-	    // Purchaselist의 listDetails에 추가
-	    purchase.getListDetails().add(listDetail);
+	        savedPurchase.getListDetails().add(listDetail);
+	    }
 
-	    // Purchaselist 저장
-	    return purchaseRepository.save(purchase);
+	    // Listdetail 추가 후 다시 저장
+	    return purchaseRepository.save(savedPurchase);
 	}
+
 }
