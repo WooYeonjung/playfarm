@@ -68,7 +68,7 @@ const Membership = () => {
         try {
 
             const response = await apiCall('/user/updatepw', 'POST', formData, token);
-
+            debugger;
             if (response) {
 
                 alert(response);

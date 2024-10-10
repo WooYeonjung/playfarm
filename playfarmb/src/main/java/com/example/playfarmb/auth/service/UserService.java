@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.entity.User;
-import com.example.playfarmb.common.domain.MailDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -30,14 +29,5 @@ public interface UserService {
 	 void withdraw(String userId);
 	 User findByIdAndEmail(String userId,String email);
 	 String findId(String email);
-	 User findPw(String userId, String email);
-
-	void tempPassword(String str, String userEmail);
-
-	void mailSend(MailDTO mailDTO);
-
-	String getTempPassword();
-
-	MailDTO createChangePassword(User entity);
 	 
 }
