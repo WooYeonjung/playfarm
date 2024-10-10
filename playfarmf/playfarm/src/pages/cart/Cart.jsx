@@ -263,7 +263,7 @@ export default function Cart() {
             const newSelectedItems = [...selectedItems, { gameId, playtype, gameTitle, titleImg, price, discount, discendDate }];
             setSelectedItems(newSelectedItems);
         } else {
-            const newSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype && item.gameTitle === gameTitle && item.titleImg === titleImg && price === item.price));
+            const newSelectedItems = selectedItems.filter(item => !(item.gameId === gameId && item.playtype === playtype));
             setSelectedItems(newSelectedItems);
         }
     }
@@ -274,7 +274,10 @@ export default function Cart() {
 
     const calculatePaymentInfo = () => {
         let total = selectedItems.reduce((acc, selectedItem) => {
-            const item = cartData.find(item => item.gameId === selectedItem.gameId && item.playtype === selectedItem.playtype);
+            const item = cartData.find(item => item.gameId === selectedItem.gameId && item.playtype === selectedItem.playtype &&
+                item.gameTitle === selectedItem.gameTitle && item.titleImg === selectedItem.titleImg && selectedItem.price === item.price && 
+                item.discount === selectedItem.discount && item.discendDate === selectedItem.discendDate
+            );
             if (item) {
                 const discountedPrice = item.discount > 0 && (item.discendDate !== null || new Date(item.discendDate) >= new Date()) ?
                     item.price - (item.price * item.discount / 100.0) : item.price;
@@ -346,7 +349,7 @@ export default function Cart() {
     function imgClick(gameId) {
         navigate(`/store/detail/${gameId}`)
     }
-    console.log(cartData)
+    console.log(selectedItems)
     return (
         <div className="cart_container" style={{ height: "auto" }}>
             <div className='cart_title'>
@@ -365,7 +368,17 @@ export default function Cart() {
                             </li>
                             {cartData.map((item, index) => (
                                 <li key={`${item.gameId}_${item.playtype}`} className="cartList_body">
-                                    <span><input className="input" onChange={e => onChangeHandler(e.target.checked, item.gameId, item.playtype)} checked={selectedItems.some(selectedItem => selectedItem.gameId === item.gameId && selectedItem.playtype === item.playtype)} type="checkbox" value={item.gameId} aria-label={`${item.title} 선택`} /></span>
+                                    <span>
+                                        <input className="input" 
+                                            onChange={e => onChangeHandler(e.target.checked, item.gameId, item.playtype, 
+                                                    item.gameTitle, item.titleImg, item.price, item.discount, item.discendDate)} 
+                                            checked={selectedItems.some(selectedItem => selectedItem.gameId === item.gameId && 
+                                                selectedItem.playtype === item.playtype)} 
+                                            type="checkbox" 
+                                            value={item.gameId} 
+                                            aria-label={`${item.title} 선택`} 
+                                        />
+                                    </span>
                                     <p>{item.gameTitle}<br />{item.playtype === 'nin' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_nintendo_logo.jpg`}></img></span>}
                                         {item.playtype === 'ps' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_playstation_logo.jpg`}></img></span>}
                                         {item.playtype === 'pc' && <span><img className="playtypeImg" src={`${API_BASE_URL}/resources/images/logo/service_pc_logo.jpg`}></img></span>}

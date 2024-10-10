@@ -1,89 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/InquiryView.css'; // CSS 스타일 import
-import InquiryList from './InquiryList'; // 문의 목록 컴포넌트
-import SelectedArticleDetails from './SelectedArticleDetails'; // 선택된 문의 상세보기 컴포넌트
-import { useAuth } from '../../service/context/AuthProvider'; // 인증 컨텍스트 import
+import '../../styles/InquiryView.css';
+import InquiryList from './InquiryList';
+import SelectedArticleDetails from './SelectedArticleDetails';
 
 const InquiryView = () => {
-  const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
-  const [inquiryData, setInquiryData] = useState([]); // 문의 데이터 상태
-  const [selectedArticle, setSelectedArticle] = useState(null); // 선택된 문의 상태
+  // 상태 변수들 선언 및 초기화
+  const [inquiryData, setInquiryData] = useState([]); // 문의 데이터 배열
+  const [selectedArticle, setSelectedArticle] = useState(null); // 선택된 문의 항목
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
 
   useEffect(() => {
-    const fetchInquiries = async () => {
-      if (!isLoggedIn) return; // 로그인 상태일 때만 데이터 호출
-
-      try {
-        const response = await fetch('/api/inquiries'); // API에서 문의 데이터 가져오기
-        if (!response.ok) {
-          throw new Error('문의 데이터 로딩 실패');
-        }
-        const data = await response.json(); // JSON 형식으로 변환
-        setInquiryData(data); // 상태 업데이트
-      } catch (error) {
-        console.error(error); // 오류 출력
-      }
-    };
-
-    fetchInquiries(); // 문의 데이터 호출
-  }, [isLoggedIn]); // 로그인 상태가 변경될 때마다 실행
-
-  const handleArticleClick = (article) => {
-    // 문의 클릭 시 선택된 문의 상태 업데이트
-    if (selectedArticle && selectedArticle.id === article.id) {
-      setSelectedArticle(null); // 이미 선택된 문의면 해제
+    // 컴포넌트가 처음 마운트될 때 실행되는 부수 효과 함수
+    // 로그인 상태를 localStorage에서 가져옵니다.
+    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    if (storedLoginStatus) {
+      setIsLoggedIn(true); // 로그인 상태면 true로 설정
     } else {
-      setSelectedArticle(article); // 새로운 문의 선택
+      setIsLoggedIn(false); // 로그인 상태가 아니면 false로 설정
+    }
+
+    // 저장된 문의 데이터를 localStorage에서 가져옵니다.
+    const storedData = JSON.parse(localStorage.getItem('inquiries')) || [];
+    if (Array.isArray(storedData)) {
+      // 가져온 데이터를 상태 변수에 설정하고, 각 문의 항목에 순번을 추가합니다.
+      setInquiryData(
+        storedData.map((article, index) => ({
+          ...article,
+          number: index + 1
+        }))
+      );
+    } else {
+      console.error('저장된 데이터가 배열이 아닙니다:', storedData);
+      setInquiryData([]); // 데이터가 배열이 아닐 경우 빈 배열로 초기화합니다.
+    }
+  }, []);
+
+  // 문의 항목을 클릭했을 때 실행되는 함수
+  const handleArticleClick = (article) => {
+    if (selectedArticle && selectedArticle.id === article.id) {
+      setSelectedArticle(null); // 이미 선택된 문의를 다시 클릭하면 닫습니다.
+    } else {
+      setSelectedArticle(article); // 클릭한 문의를 엽니다.
     }
   };
 
-  const handleDelete = async (articleId) => {
-    if (window.confirm('정말로 삭제하시겠습니까?')) {
-      try {
-        const response = await fetch(`/api/inquiries/${articleId}`, {
-          method: 'DELETE' // DELETE 요청
-        });
-
-        if (!response.ok) {
-          throw new Error('문의 삭제 실패');
-        }
-
-        const updatedData = inquiryData.filter((article) => article.id !== articleId); // 삭제 후 데이터 업데이트
-        setInquiryData(updatedData); // 상태 업데이트
-        setSelectedArticle(null); // 선택된 문의 해제
-      } catch (error) {
-        console.error(error); // 오류 출력
-        alert('삭제하는 동안 문제가 발생했습니다.'); // 오류 메시지
-      }
-    }
+  // 문의 항목 삭제 버튼을 클릭했을 때 실행되는 함수
+  const handleDelete = (articleId) => {
+    // 선택된 문의를 제외한 나머지 문의 데이터를 업데이트합니다.
+    const updatedData = inquiryData.filter((article) => article.id !== articleId);
+    // 업데이트된 데이터에 순번을 다시 매겨서 설정합니다.
+    setInquiryData(
+      updatedData.map((article, index) => ({
+        ...article,
+        number: index + 1
+      }))
+    );
+    setSelectedArticle(null); // 선택된 문의 상태를 초기화합니다.
+    localStorage.setItem('inquiries', JSON.stringify(updatedData)); // 업데이트된 데이터를 localStorage에 저장합니다.
   };
 
   return (
     <div className="InquiryView">
       <h2>1:1 문의</h2>
-      {!isLoggedIn && <p className="login-message">로그인 후 이용해 주세요.</p>} 
-      {/* 로그인하지 않은 경우 메시지 표시 */}
+      {!isLoggedIn && <p className="login-message">로그인 후 이용해 주세요.</p>}
       {isLoggedIn && (
         <>
           {inquiryData.length === 0 ? (
-            <p className="no-inquiries-message">문의 내용이 없습니다.</p> // 문의가 없는 경우 메시지
+            <p className="no-inquiries-message">문의 내용이 없습니다.</p>
           ) : (
             <InquiryList
-              inquiryData={inquiryData.map((article, index) => ({ // 문의 목록을 번호와 함께 렌더링
-                ...article,
-                number: index + 1, // 번호 추가
-              }))}
-              handleArticleClick={handleArticleClick} // 클릭 핸들러 전달
-              handleDelete={handleDelete} // 삭제 핸들러 전달
+              inquiryData={inquiryData}
+              handleArticleClick={handleArticleClick}
+              handleDelete={handleDelete}
             />
           )}
+
         </>
       )}
       {selectedArticle && (
         <SelectedArticleDetails
-          selectedArticle={selectedArticle} // 선택된 문의 전달
-          setSelectedArticle={setSelectedArticle} // 선택된 문의 설정 함수 전달
-          handleDelete={handleDelete} // 삭제 핸들러 전달
+          selectedArticle={selectedArticle}
+          setSelectedArticle={setSelectedArticle}
         />
       )}
     </div>

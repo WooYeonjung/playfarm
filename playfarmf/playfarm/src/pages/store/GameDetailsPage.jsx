@@ -44,13 +44,14 @@ const TagList = ({ tags, codeTag }) => (
 
 export default function GameDetailsPage({ gameId }) {
     const { id } = useParams();
-    const navigatePayment = useNavigate();
+    const navigate = useNavigate();
     const [ref, inView] = useIntersectionObserver(0.1);
     const [gameDetail, setGameDetail] = useState([]);
     const [rqmData, setRqmData] = useState([]);
     const [codeTag, setCodeTag] = useState([]);
     const [codePlaytype, setCodePlaytype] = useState([]);
     const [imageData, setImageData] = useState([]);
+    const [purchaseData, setPurchaseData] = useState([]);
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
 
     useEffect(() => {
@@ -88,18 +89,29 @@ export default function GameDetailsPage({ gameId }) {
                 console.error('이미지 데이터를 가져오는데 실패했습니다.', error);
             }
         }
+
+        const fetchPurchasedGame = async () => {
+            try {
+                const purchasedList = await axios.get('/purchase/gamelist', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + loginInfo.token,
+                    }
+                })
+                setPurchaseData(purchasedList.data);
+            } catch (error) {
+                console.error('구매 게임 데이터를 가져올 수 없습니다.', error);
+            }
+        }
         fetchGameDetail();
         fetchCodeData();
         fetchImageData();
-
+        fetchPurchasedGame();
     }, [gameId]);
 
     const imgName = imageData.map(image => image.originName);
-    // console.log(rqmData);
-    console.log(codePlaytype);
-    console.log(imageData);
-    console.log(codeTag);
-    console.log(gameDetail)
+    console.log(loginInfo.token)
+    console.log(purchaseData)
     console.log(gameDetail[`modeDesc${id}`])
 
     const item = gameDetail;
@@ -108,11 +120,20 @@ export default function GameDetailsPage({ gameId }) {
         if (!isLoggedIn || !loginInfo.userId) {
             let loginConfirm = window.confirm('로그인 후 이용 가능. 로그인 하시겠습니까?');
             if (loginConfirm) {
-                navigatePayment('/login')
+                navigate('/login')
             }
             return;
         }
-        console.log(item)
+
+        const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
+        if (isPurchased) {
+            let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
+            if (gameConfirm) {
+                navigate('/list3')
+            }
+            return;
+        }
+
         let cartData = {
             // "userId": loginInfo.userId,
             "gameId": item.gameId,
@@ -121,7 +142,6 @@ export default function GameDetailsPage({ gameId }) {
             "playtype": type
         };
 
-        //이거를 엑시오스 post 로 cart entity에 데이터 담고 그 담긴데이터 비교하는 걸로 수정해야함
         const token = loginInfo.token;
         const headers = {
             'Content-Type': 'application/json',
@@ -131,7 +151,7 @@ export default function GameDetailsPage({ gameId }) {
             .then(res => {
                 let cartConfirm = window.confirm(res.data);
                 if (cartConfirm) {
-                    navigatePayment('/cart');
+                    navigate('/cart');
                 }
             }).catch(err => {
                 alert(err.response.data);
@@ -161,7 +181,16 @@ export default function GameDetailsPage({ gameId }) {
         if (!isLoggedIn || !loginInfo.userId) {
             let loginConfirm = window.confirm('로그인 후 이용 가능. 로그인 하시겠습니까?');
             if (loginConfirm) {
-                navigatePayment('/login')
+                navigate('/login')
+            }
+            return;
+        }
+
+        const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
+        if (isPurchased) {
+            let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
+            if (gameConfirm) {
+                navigate('/list3')
             }
             return;
         }
@@ -189,7 +218,7 @@ export default function GameDetailsPage({ gameId }) {
 
         // localStorage.setItem('pay', JSON.stringify(payData));
 
-        navigatePayment('/payment');
+        navigate('/payment');
     };
 
     return (

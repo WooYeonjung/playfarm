@@ -17,6 +17,7 @@
 <link href="/resources/myLib/css/styles.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
 	crossorigin="anonymous"></script>
+<script src="/resources/myLib/store.js"></script>
 </head>
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -54,7 +55,7 @@
 							data-bs-target="#collapseUser" aria-expanded="false"
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
-								<i class="fas fa-columns"></i>
+								<i class="fas fa-user"></i>
 							</div> User
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
@@ -72,7 +73,7 @@
 							data-bs-target="#collapseStore" aria-expanded="false"
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
-								<i class="fas fa-columns"></i>
+								<i class="fas fa-gamepad"></i>
 							</div> Store
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
@@ -81,8 +82,9 @@
 						<div class="collapse" id="collapseStore"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="layout-static.html">Static
-									Navigation</a> <a class="nav-link" href="layout-sidenav-light.html">Light
+								<span class="nav-link" onclick="game()">Game</span> 
+								<!-- <a class="nav-link" href="layout-static.html">Game</a> --> 
+								<a class="nav-link" href="layout-sidenav-light.html">Light
 									Sidenav</a>
 							</nav>
 						</div>
@@ -90,7 +92,7 @@
 							data-bs-target="#collapsePurchase" aria-expanded="false"
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
-								<i class="fas fa-columns"></i>
+								<i class="fas fa-file-invoice-dollar"></i>
 							</div> Purchase
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
@@ -108,7 +110,7 @@
 							data-bs-target="#collapseSupport" aria-expanded="false"
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
-								<i class="fas fa-columns"></i>
+								<i class="fas fa-headset"></i>
 							</div> Support
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
@@ -143,92 +145,13 @@
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
-					<h1 class="mt-4">Dashboard</h1>
+					<h1 id="title" class="mt-4"></h1>
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item active">Dashboard</li>
+						<li id="subtitle1" class="breadcrumb-item active"></li>
 					</ol>
-					<div class="row">
-						<div class="col-xl-3 col-md-6">
-							<div class="card bg-primary text-white mb-4">
-								<div class="card-body">Primary Card</div>
-								<div
-									class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" href="#">View
-										Details</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-6">
-							<div class="card bg-warning text-white mb-4">
-								<div class="card-body">Warning Card</div>
-								<div
-									class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" href="#">View
-										Details</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-6">
-							<div class="card bg-success text-white mb-4">
-								<div class="card-body">Success Card</div>
-								<div
-									class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" href="#">View
-										Details</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-6">
-							<div class="card bg-danger text-white mb-4">
-								<div class="card-body">Danger Card</div>
-								<div
-									class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" href="#">View
-										Details</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xl-6">
-							<div class="card mb-4">
-								<div class="card-header">
-									<i class="fas fa-chart-area me-1"></i> Area Chart Example
-								</div>
-								<div class="card-body">
-									<canvas id="myAreaChart" width="100%" height="40"></canvas>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-6">
-							<div class="card mb-4">
-								<div class="card-header">
-									<i class="fas fa-chart-bar me-1"></i> Bar Chart Example
-								</div>
-								<div class="card-body">
-									<canvas id="myBarChart" width="100%" height="40"></canvas>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card mb-4">
-						<div class="card-header">
-							<i class="fas fa-table me-1"></i> DataTable Example
-						</div>
-						<div class="card-body"></div>
-					</div>
+					<div id="resultArea1" class="row"></div>
+					<div id="resultArea2" class="row"></div>
+					<div id="resultArea3" class="card mb-4"></div>
 				</div>
 			</main>
 			<footer class="py-4 bg-light mt-auto">
