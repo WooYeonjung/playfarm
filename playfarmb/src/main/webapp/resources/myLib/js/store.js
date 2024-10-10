@@ -1,12 +1,15 @@
 "use strict"
 
-function game() {
-	axios.get("/game/gamelist"
+function game(e) {
+	e.preventDefault();
+	axios.get("/admin"
 		
 	).then(response => {
 		let listData = response.data;
 		document.getElementById("title").innerHTML = "Store";
-		document.getElementById("subtitle").innerHTML = "Game";
-	})
+		document.getElementById("subtitle1").innerHTML = "Game";
+	}).catch(err => {
+		
+	});
 	
 }

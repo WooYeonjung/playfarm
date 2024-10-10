@@ -90,7 +90,7 @@ export default function GameDetailsPage({ gameId }) {
             }
         }
 
-        if (isLoggedIn || loginInfo.userId) {
+        if (isLoggedIn) {
             const fetchPurchasedGame = async () => {
                 try {
                     const purchasedList = await axios.get('/purchase/gamelist', {
@@ -131,9 +131,9 @@ export default function GameDetailsPage({ gameId }) {
     // }, [loginInfo.token])
 
     const imgName = imageData.map(image => image.originName);
-    console.log(loginInfo.token)
-    console.log(purchaseData)
-    console.log(gameDetail[`modeDesc${id}`])
+    // console.log(loginInfo.token)
+    // console.log(purchaseData)
+    // console.log(gameDetail[`modeDesc${id}`])
 
     const item = gameDetail;
 

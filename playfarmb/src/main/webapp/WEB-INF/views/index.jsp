@@ -82,7 +82,7 @@
 						<div class="collapse" id="collapseStore"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<span class="nav-link" onclick="game()">Game</span> 
+								<a class="nav-link" onclick="e => game()">Game</a> 
 								<!-- <a class="nav-link" href="layout-static.html">Game</a> --> 
 								<a class="nav-link" href="layout-sidenav-light.html">Light
 									Sidenav</a>
@@ -168,7 +168,7 @@
 			</footer>
 		</div>
 	</div>
-	<script
+	<!-- <script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>
 	<script src="js/scripts.js"></script>
@@ -180,6 +180,6 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
 		crossorigin="anonymous"></script>
-	<script src="js/datatables-simple-demo.js"></script>
+	<script src="js/datatables-simple-demo.js"></script> -->
 </body>
 </html>

@@ -226,11 +226,11 @@ export default function Payment() {
                             return (
                                 <div key={gameData.gameId} className="paymentList_body">
                                     <div className="paymentList_img">
-                                        <img src={`/images/game/${gameData.titleImg}`} alt={gameData.gameTitle} />
+                                        <img src={`${API_BASE_URL}/images/game/${gameData.titleImg}`} alt={gameData.gameTitle} />
                                     </div>
                                     <div className="paymentList_title">{gameData.gameTitle}</div>
                                     <div className="paymentList_playtype">
-                                        <img src={`/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
+                                        <img src={`${API_BASE_URL}/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
                                     </div>
                                     {(gameData.discount > 0 && (gameData.discendDate !== null || new Date(gameData.discendDate) >= new Date())) ? (
                                         <div className="paymentList_price">{discountPrice}</div>
