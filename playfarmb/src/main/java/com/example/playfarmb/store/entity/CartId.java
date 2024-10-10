@@ -24,12 +24,15 @@ public class CartId implements Serializable {
 
 
 	@EqualsAndHashCode.Include
+	@Column(name="user_id", length = 15)
 	private String userId;
 
 	@EqualsAndHashCode.Include
+	@Column(name="game_id")
 	private int gameId;
 
 
 	@EqualsAndHashCode.Include
+	@Column(name="playtype", length = 3)
 	private String playtype;
 }
