@@ -226,7 +226,7 @@ public class UserServiceImpl implements UserService {
 
         // 문자 배열 길이의 값을 랜덤으로 10개를 뽑아 구문을 작성함
         int idx = 0;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 5; i++) {
             idx = (int) (charSet.length * Math.random());
             str += charSet[idx];
         }
