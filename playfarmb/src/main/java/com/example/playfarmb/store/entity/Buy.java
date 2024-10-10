@@ -37,6 +37,6 @@ public class Buy {
 	@JoinColumn(name = "game_id", referencedColumnName = "game_id")
 	private Game game;
 	
-	@Column
+	@Column(length = 3)
 	private String playtype;
 }

@@ -1,5 +1,7 @@
 package com.example.playfarmb.store.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -7,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.playfarmb.store.domain.ListdetailDTO;
 import com.example.playfarmb.store.domain.PurchaseDTO;
 import com.example.playfarmb.store.entity.Buy;
 import com.example.playfarmb.store.entity.Purchaselist;
@@ -44,4 +46,14 @@ public class PurchaseController {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("구매에 실패하였습니다.");
 		}
 	}
+	
+	@GetMapping("/gamelist")
+	public ResponseEntity<?> purchasedGame(@AuthenticationPrincipal String userId) {
+		try {
+			List<ListdetailDTO> gamelist = pservice.purchasedList(userId);
+			return ResponseEntity.ok(gamelist);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("구매한 게임이 없습니다.");
+		}
+	} 
 }

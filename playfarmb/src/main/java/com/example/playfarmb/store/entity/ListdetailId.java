@@ -2,6 +2,7 @@ package com.example.playfarmb.store.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +25,6 @@ public class ListdetailId implements Serializable {
 	@EqualsAndHashCode.Include
     private int gameId;
 	@EqualsAndHashCode.Include
+	@Column(length = 3)
     private String playtype;
 }

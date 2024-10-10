@@ -2,17 +2,24 @@ package com.example.playfarmb.store.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.playfarmb.store.domain.ListdetailDTO;
 import com.example.playfarmb.store.domain.PurchaseDTO;
 import com.example.playfarmb.store.entity.Buy;
+import com.example.playfarmb.store.entity.Cart;
+import com.example.playfarmb.store.entity.CartId;
 import com.example.playfarmb.store.entity.Listdetail;
 import com.example.playfarmb.store.entity.ListdetailId;
 import com.example.playfarmb.store.entity.Purchaselist;
 import com.example.playfarmb.store.repository.BuyRepository;
+import com.example.playfarmb.store.repository.CartRepository;
+import com.example.playfarmb.store.repository.ListdetailRepository;
 import com.example.playfarmb.store.repository.PurchaselistRepository;
 
 @Service("PurchaseService")
@@ -23,6 +30,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Autowired
     private PurchaselistRepository purchaseRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
+	
+	@Autowired
+	private ListdetailRepository ldRepository;
 	
 	@Override
 	public Buy getBuyData(String userId) {
@@ -75,10 +88,33 @@ public class PurchaseServiceImpl implements PurchaseService {
 	            .build();
 
 	        savedPurchase.getListDetails().add(listDetail);
+	        
+	        Cart cartlist = cartRepository.findById(new CartId(dto.getUserId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
+	        		.orElseThrow(() -> new RuntimeException("카트에 같은 게임 정보가 없습니다"));
+	        cartRepository.delete(cartlist);
 	    }
-
+	    
 	    // Listdetail 추가 후 다시 저장
 	    return purchaseRepository.save(savedPurchase);
+	}
+	
+	@Override
+	public List<ListdetailDTO> purchasedList(String userId) {
+		
+//		List<ListdetailDTO> list = ldRepository.findAllByPurchaselistUserId(userId);
+//		if (!list.isEmpty()) return list;
+//		else return null;
+		List<Purchaselist> purchaseLists = purchaseRepository.findByUserId(userId);
+	    List<ListdetailDTO> listDetails = purchaseLists.stream()
+	        .flatMap(purchaseList -> purchaseList.getListDetails().stream()
+	            .map(listDetail -> new ListdetailDTO(
+	                purchaseList.getPurchId(),
+	                listDetail.getPurchId().getGameId(),
+	                listDetail.getPurchId().getPlaytype()
+	            )))
+	        .collect(Collectors.toList());
+	    
+	    return !listDetails.isEmpty() ? listDetails : null;
 	}
 
 }
