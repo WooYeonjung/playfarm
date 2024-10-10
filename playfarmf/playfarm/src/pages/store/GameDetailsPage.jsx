@@ -90,24 +90,45 @@ export default function GameDetailsPage({ gameId }) {
             }
         }
 
-        const fetchPurchasedGame = async () => {
-            try {
-                const purchasedList = await axios.get('/purchase/gamelist', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + loginInfo.token,
-                    }
-                })
-                setPurchaseData(purchasedList.data);
-            } catch (error) {
-                console.error('구매 게임 데이터를 가져올 수 없습니다.', error);
+        if (isLoggedIn || loginInfo.userId) {
+            const fetchPurchasedGame = async () => {
+                try {
+                    const purchasedList = await axios.get('/purchase/gamelist', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + loginInfo.token,
+                        }
+                    })
+                    setPurchaseData(purchasedList.data);
+                } catch (error) {
+                    console.error('구매 게임 데이터를 가져올 수 없습니다.', error);
+                }
             }
+            fetchPurchasedGame();
         }
+
         fetchGameDetail();
         fetchCodeData();
         fetchImageData();
-        fetchPurchasedGame();
+
     }, [gameId]);
+
+    // useEffect(() => {
+    //     const fetchPurchasedGame = async () => {
+    //         try {
+    //             const purchasedList = await axios.get('/purchase/gamelist', {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': 'Bearer ' + loginInfo.token,
+    //                 }
+    //             })
+    //             setPurchaseData(purchasedList.data);
+    //         } catch (error) {
+    //             console.error('구매 게임 데이터를 가져올 수 없습니다.', error);
+    //         }
+    //     }
+    //     fetchPurchasedGame();
+    // }, [loginInfo.token])
 
     const imgName = imageData.map(image => image.originName);
     console.log(loginInfo.token)
