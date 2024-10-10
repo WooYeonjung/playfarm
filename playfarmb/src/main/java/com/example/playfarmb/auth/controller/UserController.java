@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,10 +24,10 @@ import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.domain.UserRole;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.service.UserService;
+import com.example.playfarmb.common.domain.MailDTO;
 import com.example.playfarmb.common.util.DateUtil;
 import com.example.playfarmb.jwtToken.TokenProvider;
 
-import io.jsonwebtoken.lang.Objects;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -67,14 +64,27 @@ public class UserController {
 		
 	}
 	// pw 찾기
-//	@PostMapping("/findpw")
-//	public ResponseEntity<?> findPw(@RequestBody UserDTO dto){
-//		try {
-//			
-//		}catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Id 와 비밀번호  ");
-//		}
-//	}
+	@PostMapping("/findpw")
+	public ResponseEntity<?> findPw(@RequestBody UserDTO dto){
+		try {
+			User entity = uservice.findPw(dto.getUserId(), dto.getEmail());
+			
+			if(entity!=null) {
+				MailDTO mailDto =  uservice.createChangePassword(entity);
+				if(mailDto!=null) {
+					uservice.mailSend(mailDto);
+					return ResponseEntity.ok("사용자의 이메일로 임시 비밀번호가 발급되었습니다. \n 로그인 후에 비밀번호를 변경해 주세요.");
+				}else {
+					return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("임시비밀번호 메일 발송 실패, 고객센터에 문의하세요.");
+				}
+			}else {
+				return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Id와 Email이 일치하지 않습니다.");
+			}
+			
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("비밀번호 찾기 중 오류가 발생하였습니다.");
+		}
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User entity, HttpSession session) {
@@ -291,7 +301,6 @@ public class UserController {
 	public ResponseEntity<?> reassign(@RequestBody UserDTO dto) {
 		System.out.println("*********" + dto);
 		try {
-			log.info("try진입!");
 			User entity = uservice.findByIdAndEmail(dto.getUserId(), dto.getEmail());
 			if (entity != null) {
 				return ResponseEntity.ok("계정이 활성화 되었습니다. 로그인 후 이용해주세요.");

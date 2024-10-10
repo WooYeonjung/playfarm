@@ -14,6 +14,7 @@ import com.example.playfarmb.auth.domain.UserRole;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserRepository;
 import com.example.playfarmb.auth.service.UserService;
+import com.example.playfarmb.common.util.MailSenderRunner;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
@@ -24,10 +25,15 @@ class PlayfarmbApplicationTests {
 	UserRepository userRepository;
 	@Autowired
 	UserService userService;
+	@Autowired
+	 MailSenderRunner mailSenderRunner;
+	
+	
+	
 	void date(String date) {
 		
 	}
-	@Test
+
 	@Transactional
 	void updateUser() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -52,10 +58,17 @@ class PlayfarmbApplicationTests {
 		userRepository.save(user);
 		
 	}
-	@Test
+
 	void userselect() {
 	User entity = userService.findById("admin");
 	log.info("entity =>"+ entity.getUserId());
 	}
+   // @Test
+//    void mailSend() throws Exception {
+//        // 단순히 run 메서드를 호출해보기
+//        mailSenderRunner.run(null);
+//    }
 
+
+	
 }

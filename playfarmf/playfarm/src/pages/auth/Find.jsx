@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/Find.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Find = () => {
   const [activeTab, setActiveTab] = useState('findId');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [userId, setUserId] = useState('');
-
+  const navigator = useNavigate();
   // const [inputUserId, setInputUserId] = useState('');
 
   function emailCofirm() {
@@ -66,22 +66,19 @@ const Find = () => {
 
   const handleFindPw = async (e) => {
     e.preventDefault();
-    const data = { 'email': email, 'id': userId }
+    const requestData = { 'email': email, 'userId': userId }
     if (emailCofirm() && idCheck()) {
       try {
-        const response = await axios.get(`/user/findpw`,data);
-        if (response) {
-          setUserId(response.data);
-          setMessage('');
-        }
+        const response = await axios.post(`/user/findpw`, requestData);
+        setUserId('');
+        setMessage('');
+        alert(response.data);
+        navigator('/login');
+
       } catch (err) {
-        if (err.response.status === 502) {
-          setMessage(err.response.data);
-          setUserId('');
-        } else {
-          setMessage(err.response.data);
-          setUserId('');
-        }
+        alert(err.response.data);
+        setUserId('');
+        setEmail('');
       }
     }
 
