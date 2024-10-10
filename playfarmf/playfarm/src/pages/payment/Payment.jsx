@@ -97,19 +97,29 @@ export default function Payment() {
                 : item.price;
             return total + price;
         }, 0);
+
+        const payMethodCode = payTypeCode.find(type => type.codeInfo === selectedPaymentMethod);
+        // const payPlaytypeCode = playtypeCode.filter(type => 
+        //     payData.some(item => item.playtype === type.codeInfo)
+        // );
+        // console.log(payPlaytypeCode)
         
         const purchaseData = {
             userId: loginInfo.userId,
             totalPrice: totalPrice,
-            payMethod: selectedPaymentMethod,
-            listDetails: payData.map(item => ({
-                purchId: { // ListdetailId 객체
-                    purchId: null, // 구매 시 자동 생성
-                    gameId: payData.length > 1 ? item.gameId : item.game.gameId,
-                    playtype: item.playtype
-                },
-                purchaselist: null // 구매 후 자동 연결
-            }))
+            payMethod: payMethodCode.codeId,
+            listDetails: payData.map(item => {
+                const playtypeMatch = playtypeCode.find(type => type.codeInfo === item.playtype);
+
+                return {
+                    purchId: { // ListdetailId 객체
+                        purchId: null, // 구매 시 자동 생성
+                        gameId: payData.length > 1 ? item.gameId : item.game.gameId,
+                        playtype: playtypeMatch ? playtypeMatch.codeId : null // 일치하는 playtypeCode가 있으면 codeId를 사용
+                    },
+                // purchaselist: null // 구매 후 자동 연결
+                }
+            })
         };
         console.log(purchaseData)
         try {
