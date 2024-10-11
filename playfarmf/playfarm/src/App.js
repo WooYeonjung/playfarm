@@ -31,6 +31,7 @@ import WrittenByMe from './pages/community/WrittenByMe';
 import EditCommunity from './pages/community/EditCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import Membership from './pages/mypage/Membership';
+import List4 from './pages/mypage/List4';
 
 
 // export const wholeVariable = React.createContext();
@@ -148,8 +149,9 @@ function App() {
             </PrivateRoute>} />
           <Route path="/membership" element={<Membership />} />
           <Route path="/myInfo" element={<List1 />} />
-          <Route path="/list2" element={<List2 />} />
-          <Route path="/list3" element={<List3 />} />
+          <Route path="/wishlist" element={<List2 />} />
+          <Route path="/mygame" element={<List3 />} />
+          <Route path="/shoppinglist" element={<List4 />} />
           <Route path="/customerboard" element={<CustomerBoard />} />
           <Route path="/InquiryForm" element={<InquiryForm />} />
           <Route path="/inquiry-form" element={<InquiryForm />} />
