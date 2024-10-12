@@ -144,16 +144,19 @@ export default function GameDetailsPage({ gameId }) {
                 navigate('/login')
             }
             return;
+        } else {
+            if (purchaseData !== null && purchaseData.length > 0) {
+                const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
+                if (isPurchased) {
+                    let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
+                    if (gameConfirm) {
+                        navigate('/list3')
+                    }
+                    return;
+                }
+            }
         }
 
-        const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
-        if (isPurchased) {
-            let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
-            if (gameConfirm) {
-                navigate('/list3')
-            }
-            return;
-        }
 
         let cartData = {
             // "userId": loginInfo.userId,
@@ -177,25 +180,6 @@ export default function GameDetailsPage({ gameId }) {
             }).catch(err => {
                 alert(err.response.data);
             });
-
-
-
-        // const cartJSON = localStorage.getItem('cartJSON');
-        // let cartItems = cartJSON ? JSON.parse(cartJSON) : [];
-
-        // const itemExists = cartItems.some(cartItem => cartItem.gameId === data.gameId && cartItem.playtype === data.playtype);
-
-        // if (itemExists) {
-        //     alert('이미 동일한 상품이 장바구니에 담겨 있습니다.');
-        // } else {
-        //     cartItems.push(data);
-        //     localStorage.setItem('cartJSON', JSON.stringify(cartItems));
-
-        //     let cartConfirm = window.confirm('장바구니에 상품을 담았습니다! 장바구니로 이동 하시겠습니까?');
-        //     if (cartConfirm) {
-        //         navigatePayment('/cart');
-        //     }
-        // }
     };
 
     const goPayment = (item, type) => {
@@ -205,16 +189,20 @@ export default function GameDetailsPage({ gameId }) {
                 navigate('/login')
             }
             return;
+        } else {
+            if (purchaseData !== null && purchaseData.length > 0) {
+                const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
+                if (isPurchased) {
+                    let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
+                    if (gameConfirm) {
+                        navigate('/list3')
+                    }
+                    return;
+                }
+
+            }
         }
 
-        const isPurchased = purchaseData.some(purchase => purchase.gameId === item.gameId && purchase.playtype === type);
-        if (isPurchased) {
-            let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
-            if (gameConfirm) {
-                navigate('/list3')
-            }
-            return;
-        }
 
         let buyData = {
             "userId": loginInfo.userId,

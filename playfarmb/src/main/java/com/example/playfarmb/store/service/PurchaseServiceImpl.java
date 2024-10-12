@@ -81,17 +81,19 @@ public class PurchaseServiceImpl implements PurchaseService {
 	    Purchaselist savedPurchase = purchaseRepository.save(purchase);
 
 	    // 각 게임에 대한 Listdetail 생성 및 추가
-	    for (Listdetail listDetailDTO : dto.getListDetails()) {
-	        Listdetail listDetail = Listdetail.builder()
-	            .purchId(new ListdetailId(savedPurchase.getPurchId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
-	            .purchaselist(savedPurchase)
-	            .build();
-
-	        savedPurchase.getListDetails().add(listDetail);
-	        
-	        Cart cartlist = cartRepository.findById(new CartId(dto.getUserId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
-	        		.orElseThrow(() -> new RuntimeException("카트에 같은 게임 정보가 없습니다"));
-	        cartRepository.delete(cartlist);
+	    if (dto.getListDetails() != null && !dto.getListDetails().isEmpty()) {
+	    	for (Listdetail listDetailDTO : dto.getListDetails()) {
+	    		Listdetail listDetail = Listdetail.builder()
+	    				.purchId(new ListdetailId(savedPurchase.getPurchId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
+	    				.purchaselist(savedPurchase)
+	    				.build();
+	    		
+	    		savedPurchase.getListDetails().add(listDetail);
+	    		
+	    		Cart cartlist = cartRepository.findById(new CartId(dto.getUserId(), listDetailDTO.getPurchId().getGameId(), listDetailDTO.getPurchId().getPlaytype()))
+	    				.orElseThrow(() -> new RuntimeException("카트에 같은 게임 정보가 없습니다"));
+	    		cartRepository.delete(cartlist);
+	    	}
 	    }
 	    
 	    // Listdetail 추가 후 다시 저장

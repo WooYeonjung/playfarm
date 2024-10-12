@@ -92,32 +92,40 @@ export default function Payment() {
 
         // const totalPrice = payData.reduce((total, item) => total + item.price, 0);
         const totalPrice = payData.reduce((total, item) => {
-            const price = (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date()))
-                ? item.price - (item.price * item.discount / 100) 
-                : item.price;
+            const gameData = item.game ? item.game : item;
+            const price = (gameData.discount > 0 && (gameData.discendDate !== null && new Date(gameData.discendDate) >= new Date())) 
+                ? gameData.price - (gameData.price * gameData.discount / 100) 
+                : gameData.price;
+        
             return total + price;
         }, 0);
+        // const totalPrice = payData.reduce((total, item) => {
+        //     const price = (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date()))
+        //         ? item.price - (item.price * item.discount / 100)
+        //         : item.price;
+        //     return total + price;
+        // }, 0);
 
         const payMethodCode = payTypeCode.find(type => type.codeInfo === selectedPaymentMethod);
         // const payPlaytypeCode = playtypeCode.filter(type => 
         //     payData.some(item => item.playtype === type.codeInfo)
         // );
         // console.log(payPlaytypeCode)
-        
+
         const purchaseData = {
             userId: loginInfo.userId,
             totalPrice: totalPrice,
             payMethod: payMethodCode.codeId,
             listDetails: payData.map(item => {
+                const payData = item.game ? item.game : item;
                 const playtypeMatch = playtypeCode.find(type => type.codeInfo === item.playtype);
-
                 return {
                     purchId: { // ListdetailId 객체
                         purchId: null, // 구매 시 자동 생성
-                        gameId: payData.length > 1 ? item.gameId : item.game.gameId,
+                        gameId: payData.gameId,
                         playtype: playtypeMatch ? playtypeMatch.codeId : null // 일치하는 playtypeCode가 있으면 codeId를 사용
                     },
-                // purchaselist: null // 구매 후 자동 연결
+                    // purchaselist: null // 구매 후 자동 연결
                 }
             })
         };
@@ -218,19 +226,20 @@ export default function Payment() {
                             </div>
                         ))} */}
                         {payData.map((item) => {
-                            const isMultiple = payData.length > 1;
-                            const gameData = isMultiple ? item : item.game; // gameData를 상황에 따라 다르게 설정
+                            const gameData = item.game ? item.game : item;
+                            // const isMultiple = payData.length > 1;
+                            // const gameData = isMultiple ? item : item.game; // gameData를 상황에 따라 다르게 설정
                             const discountPrice = (gameData.price - (gameData.price * gameData.discount / 100.0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                             const originalPrice = gameData.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
                             return (
                                 <div key={gameData.gameId} className="paymentList_body">
                                     <div className="paymentList_img">
-                                        <img src={`${API_BASE_URL}/images/game/${gameData.titleImg}`} alt={gameData.gameTitle} />
+                                        <img src={`${API_BASE_URL}/resources/images/game/${gameData.titleImg}`} alt={gameData.gameTitle} />
                                     </div>
                                     <div className="paymentList_title">{gameData.gameTitle}</div>
                                     <div className="paymentList_playtype">
-                                        <img src={`${API_BASE_URL}/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
+                                        <img src={`${API_BASE_URL}/resources/images/logo/service_${item.playtype}_logo.jpg`} alt={`${item.playtype} logo`} />
                                     </div>
                                     {(gameData.discount > 0 && (gameData.discendDate !== null || new Date(gameData.discendDate) >= new Date())) ? (
                                         <div className="paymentList_price">{discountPrice}</div>
@@ -253,13 +262,12 @@ export default function Payment() {
                             <p>총 금액</p>
                             <p>
                                 {payData.reduce((total, item) => {
-                                    const price = payData.length > 1 
-                                        ? (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date())
-                                            ? item.price - (item.price * item.discount / 100) 
-                                            : item.price) 
-                                        : (item.game.discount > 0 && (item.game.discendDate !== null && new Date(item.game.discendDate) >= new Date())
-                                            ? item.game.price - (item.game.price * item.game.discount / 100) 
-                                            : item.game.price);
+                                    const gameData = item.game ? item.game : item;
+
+                                    const price = (gameData.discount > 0 && (gameData.discendDate !== null && new Date(gameData.discendDate) >= new Date()))
+                                        ? gameData.price - (gameData.price * gameData.discount / 100)
+                                        : gameData.price;
+
                                     return total + price;
                                 }, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             </p>
