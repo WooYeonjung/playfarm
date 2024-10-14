@@ -93,12 +93,13 @@ export default function Payment() {
         // const totalPrice = payData.reduce((total, item) => total + item.price, 0);
         const totalPrice = payData.reduce((total, item) => {
             const gameData = item.game ? item.game : item;
-            const price = (gameData.discount > 0 && (gameData.discendDate !== null && new Date(gameData.discendDate) >= new Date())) 
-                ? gameData.price - (gameData.price * gameData.discount / 100) 
+            const price = (gameData.discount > 0 && (gameData.discendDate !== null && new Date(gameData.discendDate) >= new Date()))
+                ? gameData.price - (gameData.price * gameData.discount / 100)
                 : gameData.price;
-        
+
             return total + price;
         }, 0);
+
         // const totalPrice = payData.reduce((total, item) => {
         //     const price = (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date()))
         //         ? item.price - (item.price * item.discount / 100)
@@ -119,13 +120,18 @@ export default function Payment() {
             listDetails: payData.map(item => {
                 const payData = item.game ? item.game : item;
                 const playtypeMatch = playtypeCode.find(type => type.codeInfo === item.playtype);
+                const discountPrice = (payData.price - (payData.price * payData.discount / 100.0));
+                const originalPrice = payData.price;
+
                 return {
-                    purchId: { // ListdetailId 객체
-                        purchId: null, // 구매 시 자동 생성
+                    purchId: {
+                        purchId: null,
                         gameId: payData.gameId,
-                        playtype: playtypeMatch ? playtypeMatch.codeId : null // 일치하는 playtypeCode가 있으면 codeId를 사용
+                        playtype: playtypeMatch ? playtypeMatch.codeId : null,
+                        price: payData.discount > 0 && (payData.discendDate !== null || new Date(payData.discendDate) >= new Date()) ?
+                            discountPrice : originalPrice
                     },
-                    // purchaselist: null // 구매 후 자동 연결
+                    // purchaselist: null
                 }
             })
         };

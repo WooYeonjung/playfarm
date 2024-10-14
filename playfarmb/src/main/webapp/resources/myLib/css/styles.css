@@ -336,6 +336,11 @@ th {
   border-width: 0;
 }
 
+tbody tr {
+	pointer-events: auto;
+	cursor: pointer;
+}
+
 label {
   display: inline-block;
 }
