@@ -127,10 +127,10 @@ export default function Payment() {
                     purchId: {
                         purchId: null,
                         gameId: payData.gameId,
-                        playtype: playtypeMatch ? playtypeMatch.codeId : null,
-                        price: payData.discount > 0 && (payData.discendDate !== null || new Date(payData.discendDate) >= new Date()) ?
-                            discountPrice : originalPrice
+                        playtype: playtypeMatch ? playtypeMatch.codeId : null
                     },
+                    price: payData.discount > 0 && (payData.discendDate !== null || new Date(payData.discendDate) >= new Date()) ?
+                        discountPrice : originalPrice
                     // purchaselist: null
                 }
             })
