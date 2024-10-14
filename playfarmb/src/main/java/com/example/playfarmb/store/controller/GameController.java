@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.playfarmb.store.domain.BuyDTO;
+import com.example.playfarmb.store.domain.GameDTO;
 import com.example.playfarmb.store.entity.Buy;
 import com.example.playfarmb.store.entity.Game;
 import com.example.playfarmb.store.entity.Requirement;
@@ -31,6 +32,11 @@ public class GameController {
 	
 	@Resource(name = "GameService")
 	private GameService gservice;
+	
+//	@GetMapping("/detaildata/{id}")
+//	public GameDTO gameDetailData(@PathVariable("id") int gameId) {
+//		return gservice.gameDetailData(gameId);
+//	}
 	
 	@GetMapping("/gamelist")
 	public List<Game> gamelist() {

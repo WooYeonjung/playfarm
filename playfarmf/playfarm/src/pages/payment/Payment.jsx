@@ -24,10 +24,10 @@ export default function Payment() {
 
         const fetchCodeData = async () => {
             try {
-                const payCodeResponse = await axios.get('/code/codedv/paytype');
+                const payCodeResponse = await axios.get(`${API_BASE_URL}/code/codedv/paytype`);
                 setPayTypeCode(payCodeResponse.data);
 
-                const playTypeCodeResponse = await axios.get('/code/codedv/playtype');
+                const playTypeCodeResponse = await axios.get(`${API_BASE_URL}/code/codedv/playtype`);
                 setPlaytypeCode(playTypeCodeResponse.data);
             } catch (error) {
                 console.log('코드 데이터를 가져오지 못했습니다.', error);
@@ -63,7 +63,7 @@ export default function Payment() {
                 } else {
                     // pay data 가져오는 로직
                     try {
-                        const buyResponse = await axios.get('/purchase/buy', {
+                        const buyResponse = await axios.get(`${API_BASE_URL}/purchase/buy`, {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization': 'Bearer ' + loginInfo.token,
@@ -137,7 +137,7 @@ export default function Payment() {
         };
         console.log(purchaseData)
         try {
-            await axios.post('/purchase/completed', purchaseData, {
+            await axios.post(`${API_BASE_URL}/purchase/completed`, purchaseData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + loginInfo.token,
