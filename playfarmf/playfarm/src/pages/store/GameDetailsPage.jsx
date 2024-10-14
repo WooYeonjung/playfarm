@@ -63,7 +63,7 @@ export default function GameDetailsPage({ gameId }) {
             try {
                 const gameResponse = await axios.get(`/game/gamedetail/${id}`);
                 const requirementResponse = await axios.get(`/game/requirement/${id}`);
-                setGameDetail(gameResponse.data);
+                setGameDetail(gameResponse.data); 
                 setRqmData(requirementResponse.data);
             } catch (error) {
                 console.error('게임 세부 정보를 가져오는데 실패했습니다.', error);

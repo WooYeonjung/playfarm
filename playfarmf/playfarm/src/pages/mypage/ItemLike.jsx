@@ -6,7 +6,11 @@ import useLikedGames from './ItemLikeLogic'; // 훅의 경로를 확인하세요
 
 const LikedBtn = ({ item }) => {
   const [likedGames, handleLikeBtn] = useLikedGames();
-  const isLiked = likedGames.some(likedItem => likedItem.id === item.id);
+  let isLiked = ''
+  if (likedGames.length > 0) {
+    isLiked = likedGames.some(likedItem => likedItem.gameId === item.gameId);
+  }
+
 
   return (
     // <div className="like-container">
