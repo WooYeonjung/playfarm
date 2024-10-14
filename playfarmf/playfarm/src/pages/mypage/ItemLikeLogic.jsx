@@ -3,8 +3,8 @@ import { useAuth } from '../../service/context/AuthProvider';
 import axios from 'axios';
 
 const useLikedGames = () => {
-  const { isLoggedIn, loginInfo, onLogout } = useAuth();
-  const userId = loginInfo.userId;
+  const { isLoggedIn, loginInfo } = useAuth();
+  // const userId = loginInfo.userId;
   const [likedGames, setLikedGames] = useState([]);
   // const [likedGames, setLikedGames] = useState(() => {
   //   const storedData = JSON.parse(localStorage.getItem('likedGames')) || {};

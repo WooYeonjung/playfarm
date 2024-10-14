@@ -8,4 +8,8 @@ import com.example.playfarmb.store.entity.Purchaselist;
 
 public interface PurchaselistRepository extends JpaRepository<Purchaselist, Integer> {
 	List<Purchaselist> findByUserId(String userId);
+
+	//List<Purchaselist> findAllById(String userId);
+
+	List<Purchaselist> findAllByUserId(String userId);
 }

@@ -1,5 +1,22 @@
 package com.example.playfarmb.auth.domain;
 
-public class MyGameDTO {
+import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MyGameDTO {
+	private String gameTitle;
+	private String playtype;
+	private String email;
+	private String nickname;
+	private LocalDateTime purchDate;
+//	private String price;
+	private String titleImg;
 }

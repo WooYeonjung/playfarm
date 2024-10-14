@@ -49,7 +49,6 @@ public class MypageController {
 	@PostMapping("/addwish")
 	public ResponseEntity<?> addToWish(@AuthenticationPrincipal String userId,@RequestBody WishListDTO dto ){
 	
-			System.out.println("---전달인자 => " +userId +", "+ dto );
 		try {
 			myservice.save(dto, userId);
 			return ResponseEntity.ok("위시리스트에 상품이 담겼습니다.");
@@ -65,8 +64,22 @@ public class MypageController {
 	}
 	
 	@GetMapping("/mygamelist")
-	public ResponseEntity<?> mygameList(@AuthenticationPrincipal String userId,@RequestBody MyGameDTO dto){
-		return null;
+	public ResponseEntity<?> mygameList(@AuthenticationPrincipal String userId){
+			
+		try {
+			List<MyGameDTO> dto = myservice.selectMygameList(userId);		
+			  if (dto == null || dto.isEmpty()) {
+			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
+			    }
+			    return ResponseEntity.ok(dto);
+			
+		}catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("알 수 없는 오류가 발생하였습니다.");
+		}
+	
 	}
 	
 

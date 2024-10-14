@@ -2,6 +2,8 @@ import '../../styles/Mypages.css'
 import { NavBarW } from "./Mypages";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../service/context/AuthProvider';
+import axios from 'axios';
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import PagiNation from '../Pagination';
@@ -14,6 +16,7 @@ function List3() {
   const [selectedGame, setSelectedGame] = useState(null);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const { isLoggedIn, loginInfo } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -37,8 +40,17 @@ function List3() {
     }
   }, []);
 
+  // const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
+  // const userPayData = JSON.parse(localStorage.getItem('userData'));
+
   const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
   const userPayData = JSON.parse(localStorage.getItem('userData'));
+
+  // useEffect(async() => {
+  //   if (isLoggedIn) {
+  //     await axios.get('/mypage/mygamelist')
+  //   }
+  // },[isLoggedIn]);
 
   const openModal = (game) => {
     setSelectedGame(game);
@@ -141,11 +153,11 @@ function List3() {
               </span>
             </div>
             <div className='gamePayUser'>
-              <div>Price </div>
-              <p>{selectedGame.price} 원</p>
+              {/* <div>Price </div>
+              <p>{selectedGame.price} 원</p> */}
               <div>Date of purchase </div>
               <p>{day}</p>
-              <div>User Name </div>
+              <div>User Ninkname </div>
               <p>{userPayData.name}</p>
               <div>E-mail </div>
               <p>{userPayData.email}</p>
