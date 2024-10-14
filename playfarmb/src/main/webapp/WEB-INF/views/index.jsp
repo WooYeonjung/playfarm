@@ -17,7 +17,7 @@
 <link href="/resources/myLib/css/styles.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
 	crossorigin="anonymous"></script>
-<script src="/resources/myLib/store.js"></script>
+
 </head>
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -82,8 +82,7 @@
 						<div class="collapse" id="collapseStore"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" onclick="e => game()">Game</a> 
-								<!-- <a class="nav-link" href="layout-static.html">Game</a> --> 
+								<a class="nav-link" href="javascript:void(0);" onclick="gameData()">Game</a> 
 								<a class="nav-link" href="layout-sidenav-light.html">Light
 									Sidenav</a>
 							</nav>
@@ -152,6 +151,11 @@
 					<div id="resultArea1" class="row"></div>
 					<div id="resultArea2" class="row"></div>
 					<div id="resultArea3" class="card mb-4"></div>
+					<div id="detailArea" class="card-body" style="display:none;">
+				        <h3 id="detailTitle" class="mt-4"></h3>
+				        <div id="detailContent"></div>
+				    </div>
+					<div id="resultArea4" class="card mb-4"></div>
 				</div>
 			</main>
 			<footer class="py-4 bg-light mt-auto">
@@ -168,18 +172,20 @@
 			</footer>
 		</div>
 	</div>
-	<!-- <script
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>
-	<script src="js/scripts.js"></script>
+	<script src="/resources/myLib/js/scripts.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
 		crossorigin="anonymous"></script>
-	<script src="assets/demo/chart-area-demo.js"></script>
-	<script src="assets/demo/chart-bar-demo.js"></script>
+	<script src="/resources/myLib/js/chart-area-demo.js"></script>
+	<script src="/resources/myLib/js/chart-bar-demo.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
 		crossorigin="anonymous"></script>
-	<script src="js/datatables-simple-demo.js"></script> -->
+	<script src="/resources/myLib/js/datatables-simple-demo.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="/resources/myLib/js/store.js"></script>
 </body>
 </html>

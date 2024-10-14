@@ -16,4 +16,5 @@ public class ListdetailDTO {
 	private int purchId;
     private int gameId;
     private String playtype;
+    private int price;
 }
