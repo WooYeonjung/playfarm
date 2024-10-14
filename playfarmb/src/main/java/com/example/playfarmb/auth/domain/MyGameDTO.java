@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MyGameDTO {
+	private int gameId;
 	private String gameTitle;
 	private String playtype;
 	private String email;
 	private String nickname;
 	private LocalDateTime purchDate;
-//	private String price;
 	private String titleImg;
 }
