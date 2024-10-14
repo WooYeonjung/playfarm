@@ -27,6 +27,5 @@ public class ListdetailId implements Serializable {
 	@EqualsAndHashCode.Include
 	@Column(length = 3)
     private String playtype;
-	@EqualsAndHashCode.Include
-	private int price;
+	
 }

@@ -65,8 +65,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	    		Listdetail listDetail = Listdetail.builder()
 	    				.purchId(new ListdetailId(savedPurchase.getPurchId(), 
 	    						listDetailDTO.getPurchId().getGameId(), 
-	    						listDetailDTO.getPurchId().getPlaytype(),
-	    						listDetailDTO.getPurchId().getPrice()))
+	    						listDetailDTO.getPurchId().getPlaytype()))
+	    				.price(listDetailDTO.getPrice())
 	    				.purchaselist(savedPurchase)
 	    				.build();
 	    		
@@ -96,7 +96,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	                purchaseList.getPurchId(),
 	                listDetail.getPurchId().getGameId(),
 	                listDetail.getPurchId().getPlaytype(),
-	                listDetail.getPurchId().getPrice()
+	                listDetail.getPrice()
 	            )))
 	        .collect(Collectors.toList());
 	    

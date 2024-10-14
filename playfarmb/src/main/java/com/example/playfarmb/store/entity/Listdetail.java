@@ -22,6 +22,8 @@ public class Listdetail {
 	@EmbeddedId
 	private ListdetailId purchId;
 
+	private int price;
+	
     @ManyToOne
     @MapsId("purchId")
     @JoinColumn(name = "purch_id", referencedColumnName = "purch_id")
