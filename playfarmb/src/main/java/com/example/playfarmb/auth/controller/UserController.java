@@ -116,7 +116,6 @@ public class UserController {
 				// 빌더패턴 적용, 값변경을 예방을 위해 final 적용
 				UserDTO userDTO = UserDTO.of(entity);
 				userDTO.setToken(token);
-				log.info("login 성공=> " + HttpStatus.OK);
 				return ResponseEntity.ok(userDTO);
 
 			} else {
@@ -317,6 +316,6 @@ public class UserController {
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		session.invalidate();
-		return ResponseEntity.ok("로그아웃 성공!");
+		return ResponseEntity.ok("로그아웃되었습니다.");
 	}
 }

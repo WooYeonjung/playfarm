@@ -324,7 +324,16 @@
   padding: 1%;
 }
 
-.userInfo2>[class^=game] {
+.userInfo2>div {
+  justify-content: center;
+  height: 175px;
+}
+
+.userInfo2>div:hover {
+  cursor: pointer;
+}
+
+.userInfo2>div>[class^=game] {
   position: relative;
   display: grid;
   justify-content: center;
@@ -332,9 +341,10 @@
   border-radius: 10px;
   box-shadow: 1px 1px 3px 1px #dadce0;
   width: 90%;
-  height: 175px;
+  height: 100%;
   background-size: 100% 100%;
   background-position: center;
+  align-self: center;
 }
 
 /* .userInfo2>[class^=game]>a>p {
@@ -347,32 +357,29 @@
   color: rgb(167, 157, 177);
 } */
 
-.userInfo2>[class^=game] button {
+.userInfo2>div>button {
   font-weight: bold;
   align-self: end;
   /* padding-bottom: 10%; */
-  color: red;
+  color: rgba(253, 5, 5, 0.973);
   border: none;
   background: none;
   z-index: 10000;
-  /* transform: translateX(-20%) translateY(250%); */
-  position: absolute;
-  padding: 10px;
+  position: relative;
+  padding: 15px;
   /* right: 10%; */
+  top: -100%;
+  right: -75%;
 }
 
-.userInfo2>[class^=game] button {
-  top: 0;
-  right: 0;
 
-}
 
-.userInfo2>[class^=game] button:hover {
+.userInfo2>div>button:hover {
   transform: scale(1.2);
   cursor: pointer;
 }
 
-.userInfo2>[class^=game] button:active {
+.userInfo2>div>button:active {
   color: black;
 }
 

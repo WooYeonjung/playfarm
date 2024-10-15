@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
             sessionStorage.setItem("loginInfo", JSON.stringify(response));
             setIsLoggedIn(true);
             setLoginInfo(response);
-            alert("로그인 성공!");
+            alert("로그인이 되었습니다.");
             loginNavi('/');
         } catch (err) {
             setIsLoggedIn(false);
