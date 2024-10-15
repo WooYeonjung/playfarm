@@ -93,23 +93,8 @@ function List2() {
       window.location.reload();
 
     } catch (err) {
-      alert("게임 삭제중 문제가 발생하였습니다.")
+      alert("게임 삭제 중 문제가 발생하였습니다.")
     }
-
-
-    // 해당 게임을 제거한 새로운 배열 생성
-    // const updatedGames = userLikedGames.filter(game => game.id !== gameId);
-
-    // 업데이트된 배열을 로컬 스토리지에 다시 저장
-    //storedData[userId] = updatedGames;
-    //localStorage.setItem('likedGames', JSON.stringify(storedData));
-
-    // 상태 업데이트
-    //setLikedGames(updatedGames);
-
-    // if ((currentPage - 1) * itemsPerPage >= updatedGames.length) {
-    //   setCurrentPage(Math.max(1, Math.ceil(updatedGames.length / itemsPerPage)));
-    // }
   };
 
   function clickImg(gameId) {
@@ -142,7 +127,7 @@ function List2() {
 
       );
     }) :
-    <div>
+    <div className="nodata">
       <p>위시리스트가 존재하지 않습니다.</p>
     </div>;
 
@@ -157,8 +142,6 @@ function List2() {
         <div className='userInfo2'>
           {gameBox}
         </div>
-        {/* {Array.from({ length: totalPages }, (_, i) => ( */}
-        {/* // ))} */}
       </div>
       <PagiNation currentPage={currentPage} totalPages={totalPages} onPageChange={handelPageChange} />
     </div>

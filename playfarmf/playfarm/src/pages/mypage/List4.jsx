@@ -174,7 +174,7 @@ function List4() {
           </div>
         </div>
       ))
-    : <div>
+    : <div className="nodata" style={{ placeItems: 'center' }}>
       <p>구매 데이터가 존재하지 않습니다.</p>
     </div>;
 

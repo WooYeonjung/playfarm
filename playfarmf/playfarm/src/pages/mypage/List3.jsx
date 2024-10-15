@@ -46,7 +46,7 @@ function List3() {
   // const userPayData = JSON.parse(localStorage.getItem('userData'));
 
   // let storedGameData = [];
-  let userPayData = JSON.parse(localStorage.getItem('userData'));
+
   const fetchList = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/mypage/mygamelist`, {
@@ -134,7 +134,7 @@ function List3() {
           <button onClick={() => openModalPlay(item)}>게임하러가기</button>
         </div>
       ))
-    : <div>
+    : <div className="nodata" style={{ placeItems: 'center' }}>
       <p>게임 데이터가 존재하지 않습니다.</p>
     </div>;
 

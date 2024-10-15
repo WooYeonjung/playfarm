@@ -70,7 +70,7 @@ public class MypageController {
 			List<MyGameDTO> dto = myservice.selectMygameList(userId);	
 			System.out.println(dto);
 			  if (dto == null || dto.isEmpty()) {
-			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
+			        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 			    }
 			    return ResponseEntity.ok(dto);
 			
@@ -89,7 +89,7 @@ public class MypageController {
 			List<MyGameDTO> dto = myservice.selectPurchaseList(userId);	
 
 			  if (dto == null || dto.isEmpty()) {
-			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
+			        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 			    }
 			    return ResponseEntity.ok(dto);
 			

@@ -383,6 +383,12 @@
   color: black;
 }
 
+.nodata {
+  grid-column: 1/4;
+  justify-self: center;
+  place-content: center;
+}
+
 /* ==================================================================== */
 /* list3 css */
 
@@ -485,7 +491,7 @@
   display: grid;
   grid-template-rows: 1fr;
   gap: 5px;
-  height: 100%;
+  height: 175px;
 
 }
 
