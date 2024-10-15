@@ -68,6 +68,7 @@
   /* grid-template-columns: 300px 1fr;
   grid-template-rows: 1fr 100px; */
   justify-content: center;
+  min-height: 50vh;
   gap: 2%;
   /* margin-bottom: 5%; */
 }
@@ -190,6 +191,7 @@
 
 .userInfo>button:hover {
   transform: scale(1.1);
+  cursor: pointer;
 }
 
 .userInfo>div:nth-of-type(6) {
@@ -224,6 +226,7 @@
 
 .userInfoBtn>button:hover {
   transform: scale(1.1);
+  cursor: pointer;
 }
 
 /* ============================================================================== */
@@ -255,7 +258,8 @@
 
 .container_box>div>.conItem1:hover,
 .container_box>div>.conItem2:hover,
-.container_box>div>.conItem3:hover .container_box>div>.conItem4:hover {
+.container_box>div>.conItem3:hover,
+.container_box>div>.conItem4:hover {
   transition-duration: 150ms;
   box-shadow: 0 5px 20px 5px #00000044;
   filter: blur(3px);
@@ -327,40 +331,48 @@
   align-items: center;
   border-radius: 10px;
   box-shadow: 1px 1px 3px 1px #dadce0;
-  width: 100%;
+  width: 90%;
   height: 175px;
   background-size: 100% 100%;
   background-position: center;
 }
 
-.userInfo2>[class^=game]>a>p {
+/* .userInfo2>[class^=game]>a>p {
   font-size: large;
   font-weight: bold;
   align-self: end;
-  padding-bottom: 8%;
-  color: blueviolet;
-}
+  padding-bottom: 50%;
+  width: 100%;
+  height: 140px;
+  color: rgb(167, 157, 177);
+} */
 
-.userInfo2>[class^=game]>button {
+.userInfo2>[class^=game] button {
   font-weight: bold;
   align-self: end;
-  padding-bottom: 8%;
+  /* padding-bottom: 10%; */
   color: red;
   border: none;
   background: none;
+  z-index: 10000;
+  /* transform: translateX(-20%) translateY(250%); */
+  position: absolute;
+  padding: 10px;
+  /* right: 10%; */
 }
 
-.userInfo2+div>button {
+.userInfo2>[class^=game] button {
   top: 0;
   right: 0;
-  transform: translateX(-10%) translateY(20%);
+
 }
 
-.userInfo2>[class^=game]>button:hover {
+.userInfo2>[class^=game] button:hover {
   transform: scale(1.2);
+  cursor: pointer;
 }
 
-.userInfo2>[class^=game]>button:active {
+.userInfo2>[class^=game] button:active {
   color: black;
 }
 
@@ -394,9 +406,10 @@
   grid-row: 1 / 2;
   position: relative;
   display: grid;
-  width: 100%;
+  width: 90%;
   height: 100%;
   grid-template-columns: 1fr 1fr;
+  justify-self: center;
 
   align-items: center;
   border-radius: 10px;
@@ -421,6 +434,7 @@
 .userInfo3>div>[class^=game]>div:nth-of-type(1)>button:hover {
   transform: scale(1.15) translateX(-20%) translateY(20%);
   transform: 2s;
+  cursor: pointer;
 }
 
 .userInfo3>div>[class^=game]>div:nth-of-type(1)>button:active {
@@ -432,12 +446,119 @@
 .userInfo3>div>button {
   grid-column: 1 / 3;
   grid-row: 2 / 3;
+  width: 90%;
+  height: 80%;
+  background-color: rgba(66, 48, 48, 0.601);
+  justify-self: center;
+  border: none;
+  color: aliceblue;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+/* ==================================================================== */
+/* list4 css */
+
+.userInfo4 {
+  display: grid;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-auto-flow: dense;
+  width: 78%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  gap: 10px;
+  padding: 1%;
+}
+
+.userInfo4>div {
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 5px;
+  height: 100%;
+
+}
+
+.userInfo4>div>[class^=list] {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  position: relative;
+  display: grid;
+  width: 90%;
+  /* height: 100%; */
+  height: 175px;
+  grid-template-columns: 1fr .1fr;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  background-size: 100% 100%;
+  background-position: center;
+  padding-left: 10px;
+}
+
+.userInfo4 .listOfList {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* grid-template-rows: 1fr 1fr; */
+}
+
+.listOfList ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.listOfList ul:nth-of-type(1) {
+  font-weight: bold;
+  color: rgb(119, 115, 115);
+}
+
+.listOfList div:nth-of-type(2) li {
+  text-decoration: underline;
+
+}
+
+
+.userInfo4>div>[class^=list]>div:nth-of-type(2)>button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  transform: translateX(-20%) translateY(20%);
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  background-color: white;
+}
+
+.userInfo4>div>[class^=list]>div:nth-of-type(2)>button:hover {
+  transform: scale(1.15) translateX(-20%) translateY(20%);
+  transform: 2s;
+  cursor: pointer;
+}
+
+.userInfo4>div>[class^=list]>div:nth-of-type(2)>button:active {
+  transform: scale(1) translateX(-20%) translateY(20%);
+  transform: 2s;
+  background-color: lightgray;
+}
+
+.userInfo4>div>button {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
   width: 100%;
   height: 80%;
   background-color: red;
   justify-self: center;
   border: none;
 }
+
+
 
 /* ======================================================================= */
 /* pagination css */
@@ -458,6 +579,7 @@
 
 .userInfoBox+.pagination1>button:hover {
   transform: scale(1.2);
+  cursor: pointer;
 }
 
 .userInfoBox+.pagination1>button.active {
@@ -486,7 +608,7 @@
   border-radius: 10px;
   outline: none;
   width: 50%;
-  height: 43em;
+  height: 35em;
 }
 
 .Overlay {
@@ -535,6 +657,7 @@
 
 .Modal>div>div:nth-of-type(1)>span>button:hover {
   transform: scale(1.2);
+  cursor: pointer;
 }
 
 .Modal>div>div:nth-of-type(1)>span>button:active {
@@ -563,7 +686,7 @@
 }
 
 /* ============================================================================= */
-/* modal2 css */
+/* modal1 css */
 
 .Modal1 {
   position: absolute;
@@ -577,11 +700,11 @@
   margin-right: -50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   outline: none;
   width: 1160px;
-  height: 780px;
+  height: 38em;
 }
 
 
@@ -622,10 +745,12 @@
   right: 10px;
   background: none;
   border: none;
+
 }
 
 .Modal1>div>div:nth-of-type(1)>span>button:hover {
   transform: scale(1.2);
+  cursor: pointer;
 }
 
 .Modal1>div>div:nth-of-type(1)>span>button:active {
@@ -668,6 +793,7 @@
   box-shadow: 1px 1px 3px 1px #dadce0;
   width: 20%;
   height: 20%;
+
   background: none;
   border: none;
 }
@@ -692,9 +818,137 @@
 .downloadActions>button {
   box-shadow: 1px 1px 3px 1px #dadce0;
   width: 100%;
-  height: 20%;
+  height: 40%;
   background: none;
   border: none;
+}
+
+/* ============================================================================= */
+/* modal2 css */
+
+.Modal2 {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr .1fr;
+  grid-template-rows: .2fr 1fr;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  width: 500px;
+  height: auto;
+}
+
+
+.Modal2>div {
+  grid-column: 1 /3;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-columns: 1fr .11fr;
+  grid-template-rows: .2fr 1fr;
+}
+
+.Modal2>div>div:nth-of-type(1) {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  width: 100%;
+  justify-self: center;
+  align-content: center;
+}
+
+.Modal2>div>div:nth-of-type(1) h1 {
+  /* position: relative; */
+  grid-column: 1 / 3;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+}
+
+.Modal2>div>div:nth-of-type(1)>span {
+  /* position: absolute; */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-content: center;
+}
+
+.Modal2>div>div:nth-of-type(1)>span>button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+
+}
+
+.Modal2>div>div:nth-of-type(1)>span>button:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.Modal2>div>div:nth-of-type(1)>span>button:active {
+  transform: scale(1);
+}
+
+.payContent {
+  display: grid;
+  grid-column: 1 / 3;
+  grid-template-rows: repeat(2, .15fr) repeat(2, 1fr);
+}
+
+.payDate {
+  padding: 10px;
+  text-align-last: end;
+  font-weight: 500;
+  border-bottom: #00000044 dotted 2px;
+}
+
+.payContentListTitle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: space-around;
+  font-weight: 500;
+  border-bottom: #00000044 dotted 2px;
+  padding: 10px;
+}
+
+.payContentListTitle>p,
+.payDetailList>img,
+.payDetailList>p,
+.payTotalPrice>p {
+  justify-self: center;
+
+}
+
+.payDetailList>.payDetailListTitle,
+.payTotalPrice>.payTotalPriceTotal {
+  justify-self: left;
+}
+
+.payDetails {
+  display: grid;
+  margin-top: 10px;
+}
+
+.payDetailList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 50px;
+}
+
+
+.payTotalPrice {
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: #00000044 dotted 2px;
 }
 
 /* ================================================================ */
@@ -812,6 +1066,11 @@
   }
 
   .userInfo3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  .userInfo4 {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, 1fr);
   }

@@ -45,7 +45,7 @@ const NavBarW = () => {
         <li><Link to={'/membership'}><span>{fontElement[0]}</span><span>Membership</span></Link></li>
         <li><Link to={'/mygame'}><span>{fontElement[1]}</span><span>My Game</span></Link></li>
         <li><Link to={'/wishlist'}><span>{fontElement[3]}</span><span>Wish List</span></Link></li>
-        <li><Link to={'/shoppinglist'}><span>{fontElement[2]}</span><span>Shopping List</span></Link></li>
+        <li><Link to={'/purchasehistory'}><span>{fontElement[2]}</span><span>Purchase History</span></Link></li>
         {/* <li key={4}><NavLink to={'/list4'}>{fontElement[3]} Wish List</NavLink></li> */}
       </ul>
     </article>
@@ -94,7 +94,7 @@ const PageNation = () => {
     history('/wishlist');
   }
   const handlePage4 = () => {
-    history('/shoppinglist');
+    history('/purchasehistory');
   }
   return (
     <div className='container_box'>
@@ -112,7 +112,7 @@ const PageNation = () => {
       </div>
       <div className='containerItem4'>
         <div className='conItem4' onClick={handlePage4} />
-        <span>Shopping List</span>
+        <span>Purchase History</span>
       </div>
     </div>
   )

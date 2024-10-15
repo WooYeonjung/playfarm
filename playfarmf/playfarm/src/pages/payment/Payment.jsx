@@ -148,7 +148,7 @@ export default function Payment() {
             // eslint-disable-next-line no-restricted-globals
             const paymentConfirm = confirm('결제가 완료되었습니다! 지금 게임하러 가시겠습니까?');
             if (paymentConfirm) {
-                navigate('/list3')
+                navigate('/mygame')
             } else {
                 navigate('/')
             }

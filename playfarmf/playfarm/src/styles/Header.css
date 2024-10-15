@@ -259,6 +259,20 @@
     cursor: pointer;
 }
 
+.Header_top_third {
+    display: grid;
+    grid-template-columns: 1fr .5fr;
+}
+
+.Header_top_third>p {
+    font-weight: bold;
+    justify-content: center;
+}
+
+.Header_top_third>span {
+    justify-self: right;
+}
+
 /* @media (width<865px) {
 
     .Header_bottom ul {

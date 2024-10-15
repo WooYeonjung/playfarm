@@ -10,4 +10,6 @@ public interface MypageService {
 	void deleteWish(WishListDTO dto, String userId);
 	void save(WishListDTO dto, String userId);
 	List<MyGameDTO> selectMygameList(String userId);
+	List<MyGameDTO> selectPurchaseList(String userId);
+	List<MyGameDTO> selectPurchaseDetail(int purchId);
 }

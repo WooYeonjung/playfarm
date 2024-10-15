@@ -5,6 +5,8 @@ import { NavBarW } from './Mypages';
 import { useNavigate } from 'react-router-dom';
 import { apiCall } from '../../service/apiService';
 import { useAuth } from '../../service/context/AuthProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 Modal.setAppElement('#root'); // 애플리케이션의 루트 요소를 설정합니다.
 
 const Membership = () => {
@@ -107,43 +109,46 @@ const Membership = () => {
                     contentLabel="비밀번호 변경"
                     style={customStyles}
                 >
-                    <form onSubmit={handlePasswordChange} id="changePw">
-                        <h2>비밀번호 변경</h2>
-                        <div >
-                            <div >
-                                <label htmlFor="currentPassword">현재 비밀번호</label>
-                                <input
-                                    name="password"
-                                    id="currentPassword"
-                                    type="password"
-                                    value={currentPassword}
-                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                />
+                    <form onSubmit={handlePasswordChange} className='PModalForm' id="changePw">
+                        <div className='PModal'>
+                            <div>
+                                <h2>비밀번호 변경</h2>
+                                <button onClick={closePasswordModal}> <FontAwesomeIcon icon={faXmark} size='2xl' /></button>
                             </div>
                             <div >
-                                <label htmlFor="newPassword">새 비밀번호</label>
-                                <input id="newPassword"
-                                    type="password"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                                <div className='errorMsg'>{pwErrMsg}</div>
-                            </div>
-                            <div>
-                                <label htmlFor="confirmPassword">새 비밀번호 확인</label>
-                                <input
-                                    id="confirmPassword"
-                                    type="password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <button type="submit">수정</button>
-                                <button onClick={closePasswordModal}>닫기</button>
+                                <div >
+                                    <label htmlFor="currentPassword">현재 비밀번호</label>
+                                    <input
+                                        name="password"
+                                        id="currentPassword"
+                                        type="password"
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div >
+                                    <label htmlFor="newPassword">새 비밀번호</label>
+                                    <input id="newPassword"
+                                        type="password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
+                                    <div className='errorPWMsg'>{pwErrMsg}</div>
+                                </div>
+                                <div>
+                                    <label htmlFor="confirmPassword">새 비밀번호 확인</label>
+                                    <input
+                                        id="confirmPassword"
+                                        type="password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <button type="submit">수정</button>
+                                </div>
                             </div>
                         </div>
-
                     </form>
                 </Modal>
             </div>

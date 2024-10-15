@@ -151,7 +151,7 @@ function App() {
           <Route path="/myInfo" element={<List1 />} />
           <Route path="/wishlist" element={<List2 />} />
           <Route path="/mygame" element={<List3 />} />
-          <Route path="/shoppinglist" element={<List4 />} />
+          <Route path="/purchasehistory" element={<List4 />} />
           <Route path="/customerboard" element={<CustomerBoard />} />
           <Route path="/InquiryForm" element={<InquiryForm />} />
           <Route path="/inquiry-form" element={<InquiryForm />} />

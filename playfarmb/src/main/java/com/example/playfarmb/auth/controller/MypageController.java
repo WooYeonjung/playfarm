@@ -67,7 +67,8 @@ public class MypageController {
 	public ResponseEntity<?> mygameList(@AuthenticationPrincipal String userId){
 			
 		try {
-			List<MyGameDTO> dto = myservice.selectMygameList(userId);		
+			List<MyGameDTO> dto = myservice.selectMygameList(userId);	
+			System.out.println(dto);
 			  if (dto == null || dto.isEmpty()) {
 			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
 			    }
@@ -81,6 +82,45 @@ public class MypageController {
 		}
 	
 	}
+	
+	@GetMapping("/purchaselist")
+	public ResponseEntity<?> purchaseList(@AuthenticationPrincipal String userId){
+		try {
+			List<MyGameDTO> dto = myservice.selectPurchaseList(userId);	
+
+			  if (dto == null || dto.isEmpty()) {
+			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
+			    }
+			    return ResponseEntity.ok(dto);
+			
+		}catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("알 수 없는 오류가 발생하였습니다.");
+		}
+	}
+	
+	@GetMapping("/purchasedetail")
+	public ResponseEntity<?> purchaseDetail(int purchId){
+		try {
+			System.out.println(purchId);
+			List<MyGameDTO> dto = myservice.selectPurchaseDetail(purchId);	
+			System.out.println(dto);
+			  if (dto == null || dto.isEmpty()) {
+			        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게임 목록을 찾을 수 없습니다.");
+			    }
+			    return ResponseEntity.ok(dto);
+			
+		}catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("알 수 없는 오류가 발생하였습니다.");
+		}
+	}
+	
+	
 	
 
 	

@@ -215,22 +215,22 @@ function List2() {
   };
 
   // 현재 페이지에 따라 보여질 게임 목록
-  const gameBox = likedGames
+  const gameBox = (likedGames && likedGames.length > 0) ? likedGames
     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     .map((item, i) => {
       return (
-
-        <div className={`game${i}`} style={{ backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})` }} key={item.id}>
-          <Link to={`/store/detail/${item.gameId}`}>
-            <p>{item.gameTitle}</p>
-          </Link>
-          <button onClick={() => handleRemoveGame(item.gameId)} className="remove-btn">
-            {fontEle}
-          </button>
-        </div>
-
+        <Link to={`/store/detail/${item.gameId}`} className={`game${i}`} style={{ backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})` }} >
+          <div key={item.id}>
+            <button onClick={() => handleRemoveGame(item.gameId)} className="remove-btn">
+              {fontEle}
+            </button>
+          </div>
+        </Link>
       );
-    });
+    }) :
+    <div>
+      <p>위시리스트가 존재하지 않습니다.</p>
+    </div>;
 
   // 전체 페이지 수 계산
   const totalPages = Math.ceil(likedGames.length / itemsPerPage);
@@ -238,7 +238,7 @@ function List2() {
   return (
     <div className='myPageMain'>
       <NavBarW />
-      <div className="userInfoBox">
+      <div className="userInfoBox ">
         <h1>Wish List</h1>
         <div className='userInfo2'>
           {gameBox}

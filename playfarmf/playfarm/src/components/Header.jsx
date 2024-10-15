@@ -37,6 +37,7 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     // 추가
     const handleLogout = () => {
         onLogout();
+        setIsMenuOpen(false);
 
     }
     const mypageClick = () => {
@@ -88,7 +89,9 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
                                 <h2><span>P</span><span>l</span><span>a</span><span>y</span><span>F</span><span>a</span><span>r</span><span>m</span> </h2>
                             </a>
                         </div>
+
                         <div className='Header_top_third' onClick={toggleMenu} >
+                            <p>{loginInfo && loginInfo.nickname} {loginInfo && '님'}</p>
                             <span><FontAwesomeIcon icon={faBars} size='lg' /></span>
                         </div>
                         <ul className={`menu ${isMenuOpen ? 'open' : ''}`} onMouseLeave={toggleMenuLeave}>

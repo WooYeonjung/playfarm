@@ -7,6 +7,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import PagiNation from '../Pagination';
+import { API_BASE_URL } from '../../service/app-config';
 
 Modal.setAppElement('#root');
 
@@ -14,45 +15,70 @@ function List3() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  // const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
   const { isLoggedIn, loginInfo } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloadComplete, setIsDownloadComplete] = useState(false);
+  const [storedGameData, setStoredGameData] = useState([]);
 
-  const today = new Date();
-  const day = `${today.getFullYear()} / ${today.getMonth() + 1} / ${today.getDate()}`;
+  // const today = new Date();
+  // const day = `${today.getFullYear()} / ${today.getMonth() + 1} / ${today.getDate()}`;
 
   const fontEle = [
     <FontAwesomeIcon icon={faMagnifyingGlass} />,
     <FontAwesomeIcon icon={faXmark} size='2xl' />
   ];
 
-  useEffect(() => {
-    const storageUser = localStorage.getItem('userData');
-    if (storageUser) {
-      const user = JSON.parse(storageUser);
-      setUsername(user.name);
-      setEmail(user.email);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storageUser = localStorage.getItem('userData');
+  //   if (storageUser) {
+  //     const user = JSON.parse(storageUser);
+  //     setUsername(user.name);
+  //     setEmail(user.email);
+  //   }
+  // }, []);
 
   // const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
   // const userPayData = JSON.parse(localStorage.getItem('userData'));
 
-  const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
-  const userPayData = JSON.parse(localStorage.getItem('userData'));
+  // let storedGameData = [];
+  let userPayData = JSON.parse(localStorage.getItem('userData'));
+  const fetchList = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/mypage/mygamelist`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + loginInfo.token
+        }
+      });
+      return response.data || [];
+    }
+    catch (err) {
+      alert(err.response.data);
+      return [];
+    }
+  }
 
-  // useEffect(async() => {
-  //   if (isLoggedIn) {
-  //     await axios.get('/mypage/mygamelist')
-  //   }
-  // },[isLoggedIn]);
+  useEffect(() => {
+
+    if (loginInfo) {
+      fetchList().then(res => {
+        setStoredGameData(res);
+      })
+    } else {
+      setStoredGameData([]);
+    }
+
+  }, [isLoggedIn]);
+
+  console.log(storedGameData);
 
   const openModal = (game) => {
+
     setSelectedGame(game);
     setModalIsOpen(true);
   };
@@ -78,21 +104,45 @@ function List3() {
 
   const totalPages = Math.ceil(storedGameData.length / itemsPerPage);
 
-  const gameBox = storedGameData
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-    .map((item, i) => (
-      <div key={i}>
-        <div className={`game${i}`}
-          style={{
-            backgroundImage: `url(${item.src})`
-          }}>
-          <div>
-            <button onClick={() => openModal(item)}>{fontEle[0]}</button>
+  // const gameBox = storedGameData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  //   .map((item, i) => (
+  //     <div key={i}>
+  //       <div className={`game${i}`}
+  //         style={{
+  //           backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})`
+  //         }}>
+  //         <div>
+  //           <button onClick={() => openModal(item)}>{fontEle[0]}</button>
+  //         </div>
+  //       </div>
+  //       <button onClick={() => openModalPlay(item)}>게임하러가기</button>
+  //     </div>
+  //   ));
+
+  const gameBox = (storedGameData && storedGameData.length > 0)
+    ? storedGameData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+      .map((item, i) => (
+        <div key={i}>
+          <div className={`game${i}`}
+            style={{
+              backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})`
+            }}>
+            <div>
+              <button onClick={() => openModal(item)}>{fontEle[0]}</button>
+            </div>
           </div>
+          <button onClick={() => openModalPlay(item)}>게임하러가기</button>
         </div>
-        <button onClick={() => openModalPlay(item)}>게임하러가기</button>
-      </div>
-    ));
+      ))
+    : <div>
+      <p>게임 데이터가 존재하지 않습니다.</p>
+    </div>;
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('ko-KR', options).replace(/\./g, '.');
+  };
+
 
   useEffect(() => {
     function handleResize() {
@@ -125,7 +175,7 @@ function List3() {
       }
     }, 1000);
   };
-
+  // console.log(selectedGame);
   return (
     <div className='myPageMain'>
       <NavBarW />
@@ -142,27 +192,29 @@ function List3() {
         contentLabel="Game Detail"
         className="Modal"
         overlayClassName="Overlay"
+
       >
         {selectedGame && (
           <div>
             <div className='gamePro'>
-              <div><img src={selectedGame.src} alt={selectedGame.title} style={{ width: '100%', height: '100%' }} /></div>
+              <div><img src={`${API_BASE_URL}/resources/images/game/${selectedGame.titleImg}`} alt={selectedGame.gameTitle} style={{ width: '100%', height: '100%' }} /></div>
               <span>
                 <button onClick={closeModal}>{fontEle[1]}</button>
-                <h2>{selectedGame.title}</h2>
+                <h2>{selectedGame.gameTitle}</h2>
               </span>
             </div>
             <div className='gamePayUser'>
-              {/* <div>Price </div>
-              <p>{selectedGame.price} 원</p> */}
-              <div>Date of purchase </div>
-              <p>{day}</p>
-              <div>User Ninkname </div>
-              <p>{userPayData.name}</p>
-              <div>E-mail </div>
-              <p>{userPayData.email}</p>
-              <div>Platform </div>
-              <p>{selectedGame.playtype}</p>
+
+              <div style={{ fontWeight: 'bold', color: '#444' }}>Date of purchase </div>
+              <p style={{ fontWeight: 'bold' }}>{formatDate(selectedGame.purchDate)}</p>
+              <div style={{ fontWeight: 'bold', color: '#444' }}>User Ninkname </div>
+              <p style={{ fontWeight: 'bold' }}>{loginInfo.nickname}</p>
+              <div style={{ fontWeight: 'bold', color: '#444' }}>E-mail </div>
+              <p style={{ fontWeight: 'bold' }}> {loginInfo.email}</p>
+              <div style={{ fontWeight: 'bold', color: '#444' }}>Platform </div>
+              <p style={{ fontWeight: 'bold' }}>
+                {selectedGame.playtype === 'pc' ? 'PC' : selectedGame.playtype === 'nin' ? 'Nintendo' : 'Playstation'}</p>
+              {/* <p>{selectedGame.playtype}</p> */}
             </div>
           </div>
         )}
@@ -177,9 +229,9 @@ function List3() {
         {selectedGame && (
           <div>
             <div className='gamePro'>
-              <div><img src={selectedGame.src} alt={selectedGame.title} style={{ width: '100%', height: '100%' }} /></div>
+              <div><img src={`${API_BASE_URL}/resources/images/game/${selectedGame.titleImg}`} alt={selectedGame.gameTitle} style={{ width: '100%', height: '80%' }} /></div>
               <span>
-                <button onClick={closeSecondModal}>{fontEle[1]}</button>
+                <button onClick={closeSecondModal} style={{ color: 'white' }}>{fontEle[1]}</button>
               </span>
             </div>
 
@@ -199,7 +251,7 @@ function List3() {
               </div>
               {isDownloadComplete ? null : (
                 <div className='downloadActions'>
-                  <h3>{selectedGame.title}</h3>
+                  <h3>{selectedGame.gameTitle}</h3>
                   {!isDownloading && (
                     <button onClick={startDownload}>다운로드 시작</button>
                   )}

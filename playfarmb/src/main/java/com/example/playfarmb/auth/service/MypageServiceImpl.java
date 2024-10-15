@@ -112,36 +112,48 @@ public class MypageServiceImpl implements MypageService {
 //	}
 	@Override
 	public List<MyGameDTO> selectMygameList(String userId) {
-		//1. userId 로 구매리스트 불러오기
-//		List<Purchaselist> purchaselist = purchaseRepository.findAllByUserId(userId);
-//
-//	    if (purchaselist != null && !purchaselist.isEmpty()) {
-//	    	//2. 구매리스트에서 구매id 로 구매 상세내역의 구매내용 가지고 오기
-//	        List<Integer> puchIdList = purchaselist.stream()
-//	            .map(Purchaselist::getPurchId)
-//	            .collect(Collectors.toList());
-//
-//	        List<Listdetail> detailList = listdetailRepository.findAllBy(puchIdList);
-// 
-//	        if (detailList != null && !detailList.isEmpty()) {
-//	        	//3. 상세 내역의 gameId 가지고 오기
-//	        	List<Integer> gameIdList = detailList.stream()
-//	                .map(detail -> detail.getPurchId().getGameId()) 
-//	                .collect(Collectors.toList());
-//
-//	            List<Game> gameList = gameRepository.findAllById(gameIdList);
-//	            
-//	            if (gameIdList != null && !gameIdList.isEmpty()) {
-//	            // gameList 의 데이터를 이용하여 만들어죽
-//	            	List<MyGameDTO> mygameList 
-//	            }
-//
-//	        }
-//	    }
-	    return null;
+		List<MyGameDTO> dtoList = myDSLRepository.findMygameList(userId); 
+	 
+
+        for (MyGameDTO dto : dtoList) {
+//            // 포맷된 날짜 설정
+//            dto.setFormattedPurchDate(dateUtil.getFormattedDate(dto.getPurchDate()));
+
+            // 포맷된 금액 설정
+            dto.setFormattedTotalPrice(formatPrice(dto.getTotalPrice()));
+        }
+
+        return dtoList;
+
 	}
 
+	private String formatPrice(int price) {
+        return String.format("%,d", price);
+	}
+	
+	public List<MyGameDTO> selectPurchaseList(String userId){
+		List<MyGameDTO> dtoList = myDSLRepository.findPurchaseList(userId); 
+		for (MyGameDTO dto : dtoList) {
+//          // 포맷된 날짜 설정
+//          dto.setFormattedPurchDate(dateUtil.getFormattedDate(dto.getPurchDate()));
 
+          // 포맷된 금액 설정
+          dto.setFormattedTotalPrice(formatPrice(dto.getTotalPrice()));
+      }
+
+      return dtoList;
+
+	}
+	public List<MyGameDTO> selectPurchaseDetail(int purchId){
+		List<MyGameDTO> dtoList = myDSLRepository.findPurchaseDetail(purchId); 
+		for (MyGameDTO dto : dtoList) {
+		dto.setFormattedEachPrice(formatPrice(dto.getPrice()));
+          dto.setFormattedTotalPrice(formatPrice(dto.getTotalPrice()));
+      }
+      return dtoList;
+
+	}
+	
 	
 
 }
