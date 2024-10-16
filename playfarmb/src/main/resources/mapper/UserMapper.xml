@@ -4,7 +4,7 @@
 
 
   <select id="findAgeGroupCounts" resultType="com.example.playfarmb.auth.domain.AgeGroupCountDTO">
-        SELECT CASE 
+          <![CDATA[ SELECT CASE 
             WHEN age < 20 THEN '10대'
             WHEN age BETWEEN 20 AND 29 THEN '20대'
             WHEN age BETWEEN 30 AND 39 THEN '30대'
@@ -19,6 +19,7 @@
              FROM user) AS c 
         GROUP BY age_group 
         ORDER BY age_group
+        ]]>
     </select>
 
 

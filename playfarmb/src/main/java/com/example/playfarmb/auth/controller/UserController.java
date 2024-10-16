@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.domain.PasswordDTO;
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.domain.UserRole;
@@ -318,4 +320,15 @@ public class UserController {
 		session.invalidate();
 		return ResponseEntity.ok("로그아웃되었습니다.");
 	}
+	
+	
+	
+	//-------------jsp
+	
+
+
+    @GetMapping("/age-group-counts")
+    public List<AgeGroupCountDTO> getAgeGroupCounts() {
+        return uservice.getAgeGroupCounts();
+    }
 }
