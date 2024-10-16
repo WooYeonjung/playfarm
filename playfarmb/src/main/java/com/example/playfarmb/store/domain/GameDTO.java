@@ -7,6 +7,15 @@ import java.util.List;
 import com.example.playfarmb.common.domain.ImageDTO;
 import com.example.playfarmb.store.entity.Requirement;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class GameDTO {
 	private int gameId;
 	private String gameTitle;

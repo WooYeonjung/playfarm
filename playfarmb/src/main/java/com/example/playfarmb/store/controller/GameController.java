@@ -33,10 +33,10 @@ public class GameController {
 	@Resource(name = "GameService")
 	private GameService gservice;
 	
-//	@GetMapping("/detaildata/{id}")
-//	public GameDTO gameDetailData(@PathVariable("id") int gameId) {
-//		return gservice.gameDetailData(gameId);
-//	}
+	@GetMapping("/detaildata/{id}")
+	public List<GameDTO> gameDetailData(@PathVariable("id") int gameId) {
+		return gservice.gameDetailData(gameId);
+	}
 	
 	@GetMapping("/gamelist")
 	public List<Game> gamelist() {

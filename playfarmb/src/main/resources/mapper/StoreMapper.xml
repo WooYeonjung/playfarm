@@ -4,38 +4,8 @@
 
 
 
-	<select id="gameDetailData" resultType="com.example.playfarmb.store.domain.GameDTO">
-		SELECT 
-            g.game_id AS gameId,
-            g.game_title AS gameTitle,
-            g.release_date AS releaseDate,
-            g.price,
-            g.discount,
-            g.discend_date AS discendDate,
-            g.playtype,
-            g.tag,
-            g.title_img AS titleImg,
-            g.age_rating AS ageRating,
-            g.detail_con AS detailCon,
-            g.mode_name1 AS modeName1,
-            g.mode_desc1 AS modeDesc1,
-            g.mode_name2 AS modeName2,
-            g.mode_desc2 AS modeDesc2,
-            g.mode_name3 AS modeName3,
-            g.mode_desc3 AS modeDesc3,
-            g.useyn,
-            g.file_group_id AS fileGroupId,
-            g.reg_date AS regDate,
-            g.mod_date AS modDate,
-            r.requirement_id AS requirements,
-            i.image_id AS imageId,
-            i.path AS imagePath,
-            i.origin_name AS imageOriginName,
-            i.after_name AS imageAfterName
-        FROM game g
-        LEFT JOIN image i ON g.file_group_id = i.file_group_id
-        LEFT JOIN requirement r ON g.game_id = r.game_id
-        WHERE g.game_id = #{gameId} 
+	<select id="gameDetailData" parameterType="int" resultType="com.example.playfarmb.store.domain.GameDTO">
+		select game_title from game where game_id = #{gameId}
 	</select>
 
 

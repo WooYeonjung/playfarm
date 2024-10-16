@@ -34,12 +34,16 @@ public class GameServiceImpl implements GameService {
 	UserRepository userRepository;
 	
 	@Autowired
-//    private StoreMapper storeMapper;
+    private StoreMapper storeMapper;
+    
+    public GameServiceImpl(StoreMapper storeMapper) {
+        this.storeMapper = storeMapper;
+    }
 
-//	@Override
-//    public GameDTO gameDetailData(int gameId) {
-//        return storeMapper.gameDetailData(gameId);
-//    }
+	@Override
+    public List<GameDTO> gameDetailData(int gameId) {
+        return storeMapper.gameDetailData(gameId);
+    }
 
 	@Override
 	public List<Game> getGameList() {
