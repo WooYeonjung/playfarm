@@ -41,7 +41,7 @@ public class GameServiceImpl implements GameService {
     }
 
 	@Override
-    public List<GameDTO> gameDetailData(int gameId) {
+    public GameDTO gameDetailData(int gameId) {
         return storeMapper.gameDetailData(gameId);
     }
 

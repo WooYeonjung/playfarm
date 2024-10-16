@@ -15,5 +15,5 @@ public interface GameService {
 	List<Requirement> gameRequirement(int gameId);
 	Buy saveBuy(BuyDTO buyDTO);
 	
-	List<GameDTO> gameDetailData(int gameId);
+	GameDTO gameDetailData(int gameId);
 }

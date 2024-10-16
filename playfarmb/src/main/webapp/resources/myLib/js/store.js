@@ -164,18 +164,20 @@ function gameListDetail(event, gameId) {
     axios.get(`/game/detaildata/${gameId}`)
         .then(response => {
             let gameDetail = response.data;
+			console.log(gameDetail);
             
 			const gameDetailArea = document.getElementById("detailArea");
             const gameDetailContent = document.getElementById("detailContent");
             gameDetailContent.innerHTML = `
                 <p><strong>Title:</strong> ${gameDetail.gameTitle}</p>
-                <p><strong>Release Date:</strong> ${new Date(gameDetail.releaseDate).toLocaleDateString()}</p>
+				<p><strong>Release Date:</strong> ${new Date(gameDetail.releaseDate).toLocaleDateString()}</p>
                 <p><strong>Price:</strong> ${gameDetail.price.toLocaleString()}</p>
                 <p><strong>Discount:</strong> ${gameDetail.discount}</p>
                 <p><strong>Playtype:</strong> ${gameDetail.playtype}</p>
                 <p><strong>Tag:</strong> ${gameDetail.tag}</p>
                 <p><strong>Age Rating:</strong> ${gameDetail.ageRating}</p>
-                <p><strong>Details:</strong> ${gameDetail.details}</p> <!-- 세부 내용 -->
+                <p><strong>Details:</strong> ${gameDetail.details}</p>
+                <!-- 세부 내용 -->
             `;
 			gameDetailArea.style.display = "block";
         })

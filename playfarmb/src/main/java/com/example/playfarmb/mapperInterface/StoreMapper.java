@@ -9,5 +9,5 @@ import com.example.playfarmb.store.domain.GameDTO;
 
 @Mapper
 public interface StoreMapper {
-	public List<GameDTO> gameDetailData(@Param("gameId")int gameId);
+	public GameDTO gameDetailData(@Param("gameId")int gameId);
 }
