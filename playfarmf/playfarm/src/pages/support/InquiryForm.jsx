@@ -8,7 +8,7 @@ import Modal from './Modal';
 import axios from 'axios';
 
 const InquiryForm = () => {
-    const { loginInfo } = useAuth();  // setLoginInfo를 제거하고 loginInfo만 사용
+    const { isLoggedIn, loginInfo } = useAuth();  // setLoginInfo를 제거하고 loginInfo만 사용
     const [formData, setFormData] = useState({
         email: '',  // 초기값을 빈 문자열로 설정
         inquiryType: '',  // 문의 유형의 codeid 값을 저장
@@ -78,7 +78,7 @@ const InquiryForm = () => {
     const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
 
-        if (!loginInfo) {
+        if (!isLoggedIn) {
             alert('로그인 후 이용해 주세요.');
             return;
         }
@@ -125,7 +125,7 @@ const InquiryForm = () => {
             console.error('Axios Error:', error);
             alert('서버와의 통신에 문제가 발생했습니다.');
         }
-    }, [formData, loginInfo, navigate]);
+    }, [formData, isLoggedIn, navigate]);
 
     // 모달 닫기
     const closeModal = () => {

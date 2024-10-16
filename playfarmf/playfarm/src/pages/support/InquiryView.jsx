@@ -3,18 +3,20 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import InquiryList from './InquiryList';
 import '../../styles/InquiryView.css';
 import axios from 'axios';
+import { useAuth } from '../../service/context/AuthProvider';
 
 const InquiryView = () => {
   const navigate = useNavigate();
   const [inquiryData, setInquiryData] = useState([]);  // 문의 데이터 상태 관리
   const [selectedArticle, setSelectedArticle] = useState(null);  // 선택된 글 상태 관리
   const [loading, setLoading] = useState(true);  // 로딩 상태
-
-  const storedLoginInfo = localStorage.getItem('loginInfo');
-  const loginInfo = storedLoginInfo ? JSON.parse(storedLoginInfo) : null;
+  // const storedLoginInfo = localStorage.getItem('loginInfo');
+  const { isLoggedIn, loginInfo } = useAuth();
+  console.log(isLoggedIn)
+  console.log(loginInfo)
 
   useEffect(() => {
-    if (!loginInfo) {
+    if (!isLoggedIn) {
       navigate('/login');
       return;
     }
@@ -35,7 +37,7 @@ const InquiryView = () => {
     };
 
     fetchInquiryData();
-  }, [navigate]);
+  }, [isLoggedIn]);
 
   const handleArticleClick = (article) => {
     // 이미 선택된 글이면 상세내용을 닫고, 그렇지 않으면 새로운 글을 열도록 상태 업데이트
@@ -62,7 +64,7 @@ const InquiryView = () => {
     }
   };
 
-  if (!loginInfo) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
 
