@@ -12,11 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserDSLRepository;
 import com.example.playfarmb.auth.repository.UserRepository;
 import com.example.playfarmb.common.domain.MailDTO;
+import com.example.playfarmb.mapperInterface.UserMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository urepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender mailSender;
-
+	private final UserMapper userMapper;
 	@Override
 	public List<User> findUser() {
 		// TODO Auto-generated method stub
@@ -245,6 +247,13 @@ public class UserServiceImpl implements UserService {
         message.setReplyTo("00_yj06@naver.com");
         System.out.println("message"+message);
         mailSender.send(message);
+    }
+    
+    
+    //------------------------------------jsp
+
+    public List<AgeGroupCountDTO> getAgeGroupCounts() {
+        return userMapper.findAgeGroupCounts();
     }
 
 	

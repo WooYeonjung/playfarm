@@ -3,6 +3,7 @@ package com.example.playfarmb.auth.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.common.domain.MailDTO;
@@ -39,5 +40,9 @@ public interface UserService {
 	String getTempPassword();
 
 	MailDTO createChangePassword(User entity);
+
+	
+	//-----------------jsp
+	List<AgeGroupCountDTO> getAgeGroupCounts();
 	 
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.entity.User;
 
 import jakarta.transaction.Transactional;
@@ -40,7 +41,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	
 	User findByUserIdAndEmail(String userId, String email);
 
-
+	// 연령대별 사용사 수
 
 	
 	
