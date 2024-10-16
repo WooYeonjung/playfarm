@@ -1,17 +1,165 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-var ctx = document.getElementById("resultArea1");
 
-const data = axois.get('/user/everageList')
 
-var myPieChart = new Chart(ctx, {
-  type: 'pie',
-  data: {
-    labels: ["Blue", "Red", "Yellow", "Green"],
-    datasets: [{
-      data: [12.21, 15.58, 11.25, 8.32],
-      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-    }],
-  },
+async function fetchData() {
+	try {
+		const response = await axios.get('/auth/dashboard/agecounts', {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		console.log('Axios response:', response);
+		return response.data;
+	} catch (err) {
+		console.error(err);
+		return [];
+	};
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+	const resultArea = document.getElementById("resultArea1");
+	resultArea.innerHTML = '';
+	const data = await fetchData();
+
+	if (!data) {
+		console.error("No data returned from fetchData.");
+		return;
+	}
+	const labels = data.map(item => item.ageGroup);
+	const counts = data.map(item => item.totalCnt);
+	resultArea.style.display="flex";
+	let pieHtml = `
+		<div class="row">
+									<div class="col-lg-6">
+		                                <div class="card mb-4">
+		                                    <div class="card-header">
+		                                        <i class="fas fa-chart-pie me-1"></i>
+		                                        연령별 회원 수
+		                                    </div>
+		                                    <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
+		                                    <div class="card-footer small text-muted"></div>
+		                                </div>
+		                            </div>
+									</div>
+				`;
+	resultArea.insertAdjacentHTML('beforeend', pieHtml);
+	// Create canvas element dynamically
+	const canvas = document.getElementById('myPieChart');
+	//canvas.id='myPieChart';
+	//  resultArea.appendChild(canvas);
+	//resultArea.style.width='600px';
+
+	const ctx = canvas.getContext('2d');
+
+	const myPieChart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: labels,
+			datasets: [{
+				data: counts,
+				backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
+			}],
+		},
+	});
+	const resultArea2 = document.getElementById("resultArea1");
+		resultArea.innerHTML = '';
+		const data2 = await phurchaseData();
+
+		if (!data) {
+			console.error("No data returned from fetchData.");
+			return;
+		}
+		const labels2 = data.map(item => item.month);
+		const total = data.map(item => item.total);
+		let barHtml = `
+			<div class="row">
+				<div class="col-lg-6">
+			        	<div class="card mb-4">
+			                   	 <div class="card-header">
+			                                	 <i class="fas fa-chart-bar me-1"></i>
+			                                        Bar Chart Example
+			                     </div>
+				           	<div class="card-body">
+								<canvas id="myBarChart" width="100%" height="50"></canvas>
+							</div>
+			   			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+					</div>
+			    </div>
+			</div>
+					`;
+		resultArea.insertAdjacentHTML('beforeend', barHtml);
+		// Create canvas element dynamically
+		const canvas2 = document.getElementById('myBarChart');
+		//canvas.id='myPieChart';
+		//  resultArea.appendChild(canvas);
+		//resultArea.style.width='600px';
+
+		const ctx2 = canvas2.getContext('2d');
+
+		const myBarChart = new Chart(ctx2, {
+			type: 'bar',
+			data: {
+				labels: labels2,
+				datasets: [{
+					data: total,
+					backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
+				}],
+			},
+			/*options: {
+				title: {
+					display: true,
+					text: '월별 매출 현황'
+				}
+			}*/
+			options: {
+			  scales: {
+			    xAxes: [{
+			      time: {
+			        unit: 'month'
+			      },
+			      gridLines: {
+			        display: false
+			      },
+			      ticks: {
+			        maxTicksLimit: 12
+			      }
+			    }],
+			    yAxes: [{
+			      ticks: {
+			        min: 0,
+			        max: 300000,
+			        maxTicksLimit: 5
+			      },
+			      gridLines: {
+			        display: true
+			      }
+			    }],
+			  },
+			  legend: {
+			    display: false
+			  }
+			}
+		});
+
 });
+
+
+async function phurchaseData() {
+	try {
+		const response = await axios.get('/auth/dashboard/purchasedata', {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		console.log('Axios response:', response);
+		return response.data;
+	} catch (err) {
+		console.error(err);
+		return [];
+	};
+}
+
+
+

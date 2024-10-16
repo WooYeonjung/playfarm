@@ -17,6 +17,9 @@
 <link href="/resources/myLib/css/styles.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
 	crossorigin="anonymous"></script>
+<script type="text/javascript">
+const authToken = '${sessionScope.token}';
+</script>
 
 </head>
 <body class="sb-nav-fixed">
@@ -180,6 +183,7 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
 		crossorigin="anonymous"></script>
 	<script src="/resources/myLib/js/chart-area-demo.js"></script>
+		<script src="/resources/myLib/js/statistics.js"></script>
 	<script src="/resources/myLib/js/chart-bar-demo.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"

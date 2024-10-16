@@ -3,7 +3,7 @@
 <mapper namespace="com.example.playfarmb.mapperInterface.UserMapper">
 
 
-  <select id="findAgeGroupCounts" resultType="com.example.playfarmb.auth.domain.AgeGroupCountDTO">
+  <select id="findAgeGroupCounts" resultType="com.example.playfarmb.admin.user.domain.AgeGroupCountDTO">
           <![CDATA[ SELECT CASE 
             WHEN age < 20 THEN '10대'
             WHEN age BETWEEN 20 AND 29 THEN '20대'
@@ -11,14 +11,14 @@
             WHEN age BETWEEN 40 AND 49 THEN '40대'
             WHEN age BETWEEN 50 AND 59 THEN '50대'
             WHEN age >= 60 THEN '60대 이상'
-            END AS age_group, 
-            COUNT(*) AS total_cnt 
+            END AS ageGroup, 
+            COUNT(*) AS totalCnt 
         FROM 
             (SELECT birthday, 
                 date_format(now(), '%Y') - date_format(birthday, '%Y') AS age 
              FROM user) AS c 
-        GROUP BY age_group 
-        ORDER BY age_group
+        GROUP BY ageGroup 
+        ORDER BY ageGroup
         ]]>
     </select>
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
+import com.example.playfarmb.admin.user.domain.AgeGroupCountDTO;
 
 @Mapper
 public interface UserMapper {
