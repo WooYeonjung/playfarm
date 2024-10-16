@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../../styles/CustomerBoard.css';
 import AccordionItem from './AccordionItem';
 import SearchBar from './SearchBar';
+import FaqPagination from './FaqPagination';
 
 // 초기 아코디언 아이템 목록
 const initialAccordionItems = [
@@ -28,14 +29,17 @@ const initialAccordionItems = [
   { title: '게임을 재설치해야 하나요?', content: '문제가 계속되면 재설치를 고려해보세요. 백업 후 진행하는 것을 추천합니다.', id: 20, faqType: 'techSup' }
 ];
 
+// 한 페이지에 표시할 항목 수
+const ITEMS_PER_PAGE = 5;
+
 const CustomerBoard = () => {
-  // 상태 변수를 정의
-  const [accordionItems, setAccordionItems] = useState(initialAccordionItems); // 아코디언 아이템 목록
+  // 상태 정의
+  const [accordionItems, setAccordionItems] = useState(initialAccordionItems); // FAQ 목록
   const [searchTerm, setSearchTerm] = useState(''); // 검색어
-  const [openIndex, setOpenIndex] = useState(null); // 열린 아코디언 아이템의 인덱스
+  const [openIndex, setOpenIndex] = useState(null); // 열려 있는 아코디언 인덱스
   const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리
   const [error, setError] = useState(null); // 에러 메시지
-  const [containerHeight, setContainerHeight] = useState('auto'); // 아코디언 컨테이너 높이
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
 
   // 카테고리 매핑
   const categoryMapping = {
@@ -45,63 +49,84 @@ const CustomerBoard = () => {
     '기타': 'oth',
   };
 
-  // 컴포넌트가 처음 렌더링될 때 FAQ 데이터를 가져옴
+  // 컴포넌트가 마운트될 때 FAQ 데이터를 가져오는 useEffect
   useEffect(() => {
     const fetchAccordionItems = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/faqs'); // API 호출
+        const response = await axios.get('http://localhost:8080/api/faqs');
         if (Array.isArray(response.data)) {
-          setAccordionItems(response.data); // 응답 데이터로 상태 업데이트
+          setAccordionItems(response.data);
         } else {
-          throw new Error('데이터 형식이 잘못되었습니다.'); // 데이터 형식 오류 처리
+          throw new Error('데이터 형식이 잘못되었습니다.');
         }
       } catch (err) {
-        console.error('Error fetching data:', err); // 에러 로그
+        console.error('Error fetching data:', err);
         setAccordionItems(initialAccordionItems); // 초기 데이터로 설정
       }
     };
 
-    fetchAccordionItems(); // 데이터 가져오기 호출
-  }, []); // 빈 배열을 통해 최초 렌더링 시에만 호출
+    fetchAccordionItems();
+  }, []);
 
-  // 검색 입력값 변경 처리
+  // 검색어 변경 시 호출되는 함수
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value); // 입력값 상태 업데이트
+    setSearchTerm(event.target.value);
   };
 
-  // 카테고리 버튼 클릭 처리
+  // 카테고리 클릭 시 호출되는 함수
   const handleCategoryClick = async (category) => {
-    const apiEndpoint = categoryMapping[category]; // 선택된 카테고리에 해당하는 API 엔드포인트
-    setSelectedCategory(apiEndpoint); // 선택된 카테고리 상태 업데이트
+    const apiEndpoint = categoryMapping[category]; // 카테고리에 맞는 API 엔드포인트
+    setSelectedCategory(apiEndpoint); // 선택된 카테고리 설정
+    setCurrentPage(1); // 페이지를 1로 초기화
 
     try {
-      const response = await axios.get(`http://localhost:8080/api/faqs/${apiEndpoint}`); // 카테고리 API 호출
+      const response = await axios.get(`http://localhost:8080/api/faqs/${apiEndpoint}`);
       if (Array.isArray(response.data)) {
-        setAccordionItems(response.data); // 응답 데이터로 상태 업데이트
+        setAccordionItems(response.data);
         setError(null); // 에러 초기화
-        setContainerHeight(''); // 높이 초기화
-        setTimeout(() => {
-          const container = document.querySelector('.accordion-items-container');
-          setContainerHeight(`${container.scrollHeight}px`); // 동적으로 높이 설정
-        }, 0);
       } else {
-        throw new Error('데이터 형식이 잘못되었습니다.'); // 데이터 형식 오류 처리
+        throw new Error('데이터 형식이 잘못되었습니다.');
       }
     } catch (err) {
-      console.error('Error fetching category data:', err); // 에러 로그
+      console.error('Error fetching category data:', err);
       setAccordionItems(initialAccordionItems); // 초기 데이터로 설정
-      setError('데이터를 가져오는 데 실패했습니다.'); // 에러 메시지 설정
+      setError('데이터를 가져오는 데 실패했습니다.');
     }
   };
 
-  // 검색 및 카테고리 필터링 처리
+  // 모두 보기 클릭 시 호출되는 함수
+  const handleShowAll = async () => {
+    setSelectedCategory(null); // 카테고리 초기화
+    setSearchTerm(''); // 검색어 초기화
+    setCurrentPage(1); // 페이지를 1로 초기화
+
+    try {
+      const response = await axios.get('http://localhost:8080/api/faqs'); // 모든 데이터 요청
+      if (Array.isArray(response.data)) {
+        setAccordionItems(response.data);
+        setError(null); // 에러 초기화
+      } else {
+        throw new Error('데이터 형식이 잘못되었습니다.');
+      }
+    } catch (err) {
+      console.error('Error fetching all data:', err);
+      setAccordionItems(initialAccordionItems); // 초기 데이터로 설정
+      setError('모든 데이터를 가져오는 데 실패했습니다.');
+    }
+  };
+
+  // 필터링된 FAQ 항목 계산
   const filteredAccordionItems = useMemo(() => {
     return accordionItems.filter(item => {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()); // 검색어와 일치하는지 확인
-      const matchesCategory = selectedCategory ? item.faqType === selectedCategory : true; // 선택된 카테고리와 일치하는지 확인
-      return matchesSearch && matchesCategory; // 두 조건 모두 만족해야 함
+      const matchesCategory = selectedCategory ? item.faqType === selectedCategory : true; // 카테고리와 일치하는지 확인
+      return matchesSearch && matchesCategory; // 둘 다 일치하는 경우에만 포함
     });
-  }, [accordionItems, searchTerm, selectedCategory]); // 의존성 배열
+  }, [accordionItems, searchTerm, selectedCategory]);
+
+  // 보여줄 항목 결정
+  const itemsToShow = filteredAccordionItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredAccordionItems.length / ITEMS_PER_PAGE); // 총 페이지 수 계산
 
   return (
     <div className="customer-board">
@@ -109,35 +134,50 @@ const CustomerBoard = () => {
         <h1 className="faq-title">자주 묻는 질문 (FAQ)</h1>
       </div>
 
-      <SearchBar searchTerm={searchTerm} handleSearchChange={handleSearchChange} /> {/* 검색 바 컴포넌트 */}
+      {/* 검색 바 컴포넌트 */}
+      <SearchBar searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
 
+      {/* 카테고리 선택 버튼들 */}
       <div className="button-container">
-        {/* 카테고리 버튼들 */}
         <button className="query-button" onClick={() => handleCategoryClick('상품 문의')}>상품 문의</button>
         <button className="query-button" onClick={() => handleCategoryClick('결제/환불')}>결제/환불</button>
         <button className="query-button" onClick={() => handleCategoryClick('컴퓨터/기술')}>컴퓨터/기술</button>
         <button className="query-button" onClick={() => handleCategoryClick('기타')}>기타</button>
+        
+        {/* 모두 보기 버튼 */}
+        <button className="query-button" onClick={handleShowAll}>
+          모두 보기
+        </button>
       </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* 에러 메시지 표시 */}
+      {/* 에러 메시지 출력 */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <div className="accordion-items-container" style={{ height: containerHeight }}>
-        {filteredAccordionItems.length > 0 ? (
-          // 필터링된 아코디언 아이템이 있을 경우
-          filteredAccordionItems.map((item, index) => (
+      {/* 아코디언 항목 출력 */}
+      <div className="accordion-items-container">
+        {itemsToShow.length > 0 ? (
+          itemsToShow.map((item, index) => (
             <AccordionItem
-              key={item.id} // 고유 키
+              key={item.id}
               item={item}
               index={index}
               openIndex={openIndex}
-              setOpenIndex={setOpenIndex} // 아코디언 아이템 상태 업데이트
+              setOpenIndex={setOpenIndex}
             />
           ))
         ) : (
-          // 검색 결과가 없을 경우 표시할 부분
-          null
+          <p>결과가 없습니다.</p> // 항목이 없는 경우 메시지 출력
         )}
       </div>
+
+      {/* 페이지네이션 컴포넌트 */}
+      {totalPages > 1 && (
+        <FaqPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage} // 페이지 변경 함수 전달
+        />
+      )}
     </div>
   );
 };

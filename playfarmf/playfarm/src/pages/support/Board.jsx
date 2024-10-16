@@ -18,13 +18,13 @@ const CustomerCenter = () => {
       <Link to={'/InquiryForm'} className="div2"><div><h3><FontAwesomeIcon icon={faHeadset} /> 1:1문의</h3></div></Link>
 
       {/* 세 번째 링크 - 닌텐도 스토어 링크 */}
-      <Link to={'/store/nintendo'} className="div3"><div></div></Link>
+      <Link to={'/store/nin'} className="div3"><div></div></Link>
 
       {/* 네 번째 링크 - PC 스토어 링크 */}
       <Link to={'/store/pc'} className="div4"><div></div></Link>
 
       {/* 다섯 번째 링크 - 플레이스테이션 스토어 링크 */}
-      <Link to={'/store/playstation'} className="div5"><div></div></Link>
+      <Link to={'/store/ps'} className="div5"><div></div></Link>
 
       {/* 여섯 번째 링크 - 자주 묻는 질문 (FAQ) */}
       <Link to={'/customerboard'} className="div6"><div><h3><FontAwesomeIcon icon={faQuestionCircle} /> 자주묻는 질문 (FAQ)</h3></div></Link>
