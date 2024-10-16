@@ -1,0 +1,27 @@
+.pagination {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  margin-top: 20px; /* 위쪽 여백 */
+}
+
+.pagination button {
+  margin: 0 5px; /* 버튼 간의 여백 */
+  padding: 8px 12px; /* 버튼 내 여백 */
+  border: 1px solid #007bff; /* 경계선 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  background-color: #fff; /* 배경색 */
+  color: #007bff; /* 글자색 */
+  cursor: pointer; /* 커서 변경 */
+  transition: background-color 0.3s, color 0.3s; /* 호버 효과를 위한 전환 */
+}
+
+.pagination button:hover {
+  background-color: #007bff; /* 호버 시 배경색 */
+  color: #fff; /* 호버 시 글자색 */
+}
+
+.pagination button.active {
+  background-color: #007bff; /* 현재 페이지 강조 배경색 */
+  color: #fff; /* 현재 페이지 강조 글자색 */
+  border: 1px solid #007bff; /* 현재 페이지 강조 경계선 */
+}
