@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserRepository;
+import com.example.playfarmb.mapperInterface.StoreMapper;
 import com.example.playfarmb.store.domain.BuyDTO;
+import com.example.playfarmb.store.domain.GameDTO;
 import com.example.playfarmb.store.entity.Buy;
 import com.example.playfarmb.store.entity.Game;
 import com.example.playfarmb.store.entity.Requirement;
@@ -30,6 +32,18 @@ public class GameServiceImpl implements GameService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+    private StoreMapper storeMapper;
+    
+    public GameServiceImpl(StoreMapper storeMapper) {
+        this.storeMapper = storeMapper;
+    }
+
+	@Override
+    public List<GameDTO> gameDetailData(int gameId) {
+        return storeMapper.gameDetailData(gameId);
+    }
 
 	@Override
 	public List<Game> getGameList() {

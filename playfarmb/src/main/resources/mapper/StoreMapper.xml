@@ -4,7 +4,9 @@
 
 
 
-
+	<select id="gameDetailData" parameterType="int" resultType="com.example.playfarmb.store.domain.GameDTO">
+		select game_title from game where game_id = #{gameId}
+	</select>
 
 
 

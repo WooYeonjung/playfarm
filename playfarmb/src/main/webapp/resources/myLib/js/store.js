@@ -161,7 +161,7 @@ function gameData() {
 function gameListDetail(event, gameId) {
 	event.stopPropagation();
 	console.log(`Game ID clicked: ${gameId}`);
-    axios.get(`/game/gamedetail/${gameId}`)
+    axios.get(`/game/detaildata/${gameId}`)
         .then(response => {
             let gameDetail = response.data;
             

@@ -61,8 +61,8 @@ export default function GameDetailsPage({ gameId }) {
 
         const fetchGameDetail = async () => {
             try {
-                const gameResponse = await axios.get(`/game/gamedetail/${id}`);
-                const requirementResponse = await axios.get(`/game/requirement/${id}`);
+                const gameResponse = await axios.get(`${API_BASE_URL}/game/gamedetail/${id}`);
+                const requirementResponse = await axios.get(`${API_BASE_URL}/game/requirement/${id}`);
                 setGameDetail(gameResponse.data);
                 setRqmData(requirementResponse.data);
             } catch (error) {
@@ -72,8 +72,8 @@ export default function GameDetailsPage({ gameId }) {
 
         const fetchCodeData = async () => {
             try {
-                const codeResponse = await axios.get('/code/codedv/tag');
-                const playtypeResponse = await axios.get('/code/codedv/playtype');
+                const codeResponse = await axios.get(`${API_BASE_URL}/code/codedv/tag`);
+                const playtypeResponse = await axios.get(`${API_BASE_URL}/code/codedv/playtype`);
                 setCodeTag(codeResponse.data);
                 setCodePlaytype(playtypeResponse.data);
             } catch (error) {
@@ -83,7 +83,7 @@ export default function GameDetailsPage({ gameId }) {
 
         const fetchImageData = async () => {
             try {
-                const imageResponse = await axios.get(`/image/game/${id}`);
+                const imageResponse = await axios.get(`${API_BASE_URL}/image/game/${id}`);
                 setImageData(imageResponse.data);
             } catch (error) {
                 console.error('이미지 데이터를 가져오는데 실패했습니다.', error);
@@ -93,7 +93,7 @@ export default function GameDetailsPage({ gameId }) {
         if (isLoggedIn) {
             const fetchPurchasedGame = async () => {
                 try {
-                    const purchasedList = await axios.get('/purchase/gamelist', {
+                    const purchasedList = await axios.get(`${API_BASE_URL}/purchase/gamelist`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer ' + loginInfo.token,
