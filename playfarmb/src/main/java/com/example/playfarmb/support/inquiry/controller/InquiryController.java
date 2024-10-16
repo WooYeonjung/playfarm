@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.playfarmb.support.inquiry.dto.InquiryDTO;
 import com.example.playfarmb.support.inquiry.service.InquiryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/inquiries")
 public class InquiryController {
@@ -28,7 +30,7 @@ public class InquiryController {
     
     // 1:1 문의 저장
     @PostMapping
-    public ResponseEntity<String> createInquiry(@RequestBody InquiryDTO inquiryDTO) {
+    public ResponseEntity<String> createInquiry(@RequestBody @Valid InquiryDTO inquiryDTO) {
         try {
             inquiryService.saveInquiry(inquiryDTO);
             return ResponseEntity.ok("문의가 성공적으로 제출되었습니다.");
