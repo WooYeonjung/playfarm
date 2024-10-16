@@ -45,7 +45,7 @@
 				<div class="sb-sidenav-menu">
 					<div class="nav">
 						<div class="sb-sidenav-menu-heading">Admin_Home</div>
-						<a class="nav-link" href="index.html">
+						<a class="nav-link" href="">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-tachometer-alt"></i>
 							</div> Dashboard
@@ -56,7 +56,7 @@
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-user"></i>
-							</div> User
+							</div> 
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
 							</div>
@@ -64,7 +64,7 @@
 						<div class="collapse" id="collapseUser"
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="layout-static.html">Static
+								<a class="nav-link" href="#">Static
 									Navigation</a> <a class="nav-link" href="layout-sidenav-light.html">Light
 									Sidenav</a>
 							</nav>
