@@ -1,27 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapperInterface.StoreMapper">
+<mapper namespace="com.example.playfarmb.mapperInterface.StoreMapper">
 
+    <!-- 이미지 DTO 정의 -->
+    <resultMap id="ImageResultMap" type="com.example.playfarmb.common.domain.ImageDTO">
+        <id property="imageId" column="imageId"/>
+        <result property="path" column="imagePath"/>
+        <result property="originName" column="imageOriginName"/>
+        <result property="afterName" column="imageAfterName"/>
+    </resultMap>
 
+    <!-- 게임 DTO 정의 -->
+    <resultMap id="GameResultMap" type="com.example.playfarmb.store.domain.GameDTO">
+        <id property="gameId" column="gameId"/>
+        <result property="gameTitle" column="gameTitle"/>
+        <result property="releaseDate" column="releaseDate"/>
+        <result property="price" column="price"/>
+        <result property="discount" column="discount"/>
+        <result property="discendDate" column="discendDate"/>
+        <result property="playtype" column="playtype"/>
+        <result property="tag" column="tag"/>
+        <result property="titleImg" column="titleImg"/>
+        <result property="ageRating" column="ageRating"/>
+        <result property="detailCon" column="detailCon"/>
+        <result property="modeName1" column="modeName1"/>
+        <result property="modeDesc1" column="modeDesc1"/>
+        <result property="modeName2" column="modeName2"/>
+        <result property="modeDesc2" column="modeDesc2"/>
+        <result property="modeName3" column="modeName3"/>
+        <result property="modeDesc3" column="modeDesc3"/>
+        <result property="useyn" column="useyn"/>
+        <result property="fileGroupId" column="fileGroupId"/>
+        <result property="regDate" column="regDate"/>
+        <result property="modDate" column="modDate"/>
+        <collection property="images" ofType="com.example.playfarmb.store.domain.ImageDTO" resultMap="ImageResultMap"/>
+    </resultMap>
 
-	<select id="gameDetailData" parameterType="int" resultType="com.example.playfarmb.store.domain.GameDTO">
-		select game_title from game where game_id = #{gameId}
-	</select>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <select id="gameDetailData" parameterType="int" resultMap="GameResultMap">
+        SELECT 
+            g.game_id AS gameId,
+            g.game_title AS gameTitle,
+            g.release_date AS releaseDate,
+            g.price,
+            g.discount,
+            g.discend_date AS discendDate,
+            g.playtype,
+            g.tag,
+            g.title_img AS titleImg,
+            g.age_rating AS ageRating,
+            g.detail_con AS detailCon,
+            g.mode_name1 AS modeName1,
+            g.mode_desc1 AS modeDesc1,
+            g.mode_name2 AS modeName2,
+            g.mode_desc2 AS modeDesc2,
+            g.mode_name3 AS modeName3,
+            g.mode_desc3 AS modeDesc3,
+            g.useyn,
+            g.file_group_id AS fileGroupId,
+            g.reg_date AS regDate,
+            g.mod_date AS modDate,
+            i.image_id AS imageId,
+            i.path AS imagePath,
+            i.origin_name AS imageOriginName,
+            i.after_name AS imageAfterName
+        FROM game g
+        LEFT JOIN image i ON g.file_group_id = i.file_group_id
+        LEFT JOIN requirement r ON g.game_id = r.game_id
+        WHERE g.game_id = #{gameId};
+    </select>
 </mapper>
