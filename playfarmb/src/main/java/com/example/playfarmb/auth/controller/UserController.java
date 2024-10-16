@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
+import com.example.playfarmb.admin.user.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.domain.PasswordDTO;
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.domain.UserRole;
@@ -111,9 +111,10 @@ public class UserController {
 				uservice.save(entity);
 				session.setAttribute("loginId", entity.getUserId());
 				session.setAttribute("loginNickname", entity.getNickname());
+			
 				// => Token
 				final String token = tokenProvider.createToken(entity.claimList());
-
+				session.setAttribute("token", token);
 				// => 전송할 UserDTO 객체생성
 				// 빌더패턴 적용, 값변경을 예방을 위해 final 적용
 				UserDTO userDTO = UserDTO.of(entity);
@@ -323,12 +324,5 @@ public class UserController {
 	
 	
 	
-	//-------------jsp
-	
 
-
-    @GetMapping("/age-group-counts")
-    public List<AgeGroupCountDTO> getAgeGroupCounts() {
-        return uservice.getAgeGroupCounts();
-    }
 }
