@@ -190,34 +190,79 @@ function gameListDetail(event, gameId) {
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div class="card-header">
-	                    <i class="fas fa-chart-pie me-1"></i>
-	                    Image Data
-	                </div>
-					<div class="card-body">
-					<img 
-						src="/resources/images/game/${gameDetail.titleImg}"
-						alt="${gameDetail.titleImg}"
-						style="width: 300px; height: 200px;"
-					/>
-					${gameDetail.images.map((image) => `
-                        <img 
-                            src="${image.path}/${image.originName}" 
-                            alt="${image.originName}"
-							style="width: 300px; height: 400px;" 
-                        />
-                    `).join('')}
-					</div>
-                    
-                </div>
+				    <div class="card-header">
+				        <i class="fas fa-chart-pie me-1"></i> Image Data
+				    </div>
+				    <div class="card-body">
+				        <!-- Bootstrap Carousel -->
+						<div id="gameImageCarousel" class="carousel slide" data-bs-ride="false">
+				            <div class="carousel-inner">
+				                <!-- Main Title Image -->
+				                <div class="carousel-item active">
+				                    <img src="/resources/images/game/${gameDetail.titleImg}" 
+				                         alt="${gameDetail.titleImg}" 
+				                         class="d-block w-100" 
+				                         style="width: 300px; height: 400px;" />
+									<p><strong>Name:</strong> ${gameDetail.titleImg}</p>
+				                </div>
+				                
+				                <!-- Additional Images from gameDetail.images -->
+				                ${gameDetail.images.map((image, index) => `
+				                    <div class="carousel-item">
+				                        <img src="${image.path}/${image.originName}" 
+				                             alt="${image.originName}" 
+				                             class="d-block w-100"
+				                             style="width: 300px; height: 400px;" />
+										<p><strong>Name:</strong> ${image.originName}</p>
+				                    </div>
+				                `).join('')}
+				            </div>
+						            
+				            <!-- Image number display -->
+				            <div class="mt-3 text-center">
+				                <span id="carouselIndicator">1 / ${gameDetail.images.length + 1}</span> <!-- +1 for the main title image -->
+				            </div>
+					    </div>
+				            
+				            <!-- Carousel Controls -->
+				            <button class="carousel-control-prev" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="prev">
+				                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				                <span class="visually-hidden">Previous</span>
+				            </button>
+				            <button class="carousel-control-next" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="next">
+				                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				                <span class="visually-hidden">Next</span>
+				            </button>
+							
+				        
+				    </div>
+					
+				</div>
+				
 			</div>
 			</div>
+			
+			
                 /*<button onclick="editGameDetails(${gameId})">수정하기</button>*/
                 <div id="editForm" style="display:none;"></div>
 
                 <!-- 세부 내용 -->
             `;
 			gameDetailArea.style.display = "block";
+			
+			setTimeout(() => {
+                const carousel = document.getElementById('gameImageCarousel');
+                const indicator = document.getElementById('carouselIndicator');
+                const totalImages = gameDetail.images.length + 1; // Including main image
+
+                // Initialize indicator to show the first image (1-based index)
+                let currentSlideIndex = 1; // Start with the first image
+
+                carousel.addEventListener('slide.bs.carousel', function (event) {
+                    currentSlideIndex = event.to + 1; // event.to is 0-based, so add 1
+                    indicator.textContent = `${currentSlideIndex} / ${totalImages}`;
+                });
+            }, 0);
 		})
 		.catch(err => {
 			console.error("Error fetching game data:", err);
