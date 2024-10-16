@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapperInterface.PurchaseMapper">
+<mapper namespace="com.example.playfarmb.mapperInterface.PurchaseMapper">
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<select id="findPurchaseTotal" resultType="com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO">
+	select date_format(purch_date, '%Y-%m') AS MONTH, sum(total_price) as total FROM purchaselist
+GROUP BY  date_format(purch_date, '%Y-%m') order by month
+</select>
 
 
 </mapper>

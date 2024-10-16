@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.playfarmb.auth.domain.AgeGroupCountDTO;
 import com.example.playfarmb.auth.domain.UserDTO;
 import com.example.playfarmb.auth.entity.User;
 import com.example.playfarmb.auth.repository.UserDSLRepository;
@@ -250,12 +249,6 @@ public class UserServiceImpl implements UserService {
     }
     
     
-    //------------------------------------jsp
 
-    public List<AgeGroupCountDTO> getAgeGroupCounts() {
-        return userMapper.findAgeGroupCounts();
-    }
-
-	
 	
 }
