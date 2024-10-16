@@ -1,13 +1,19 @@
 package com.example.playfarmb.support.inquiry.controller;
 
-import com.example.playfarmb.support.inquiry.dto.InquiryDTO;
-import com.example.playfarmb.support.inquiry.service.InquiryService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
-import java.util.List;
+import com.example.playfarmb.support.inquiry.dto.InquiryDTO;
+import com.example.playfarmb.support.inquiry.service.InquiryService;
 
 @RestController
 @RequestMapping("/api/inquiries")
@@ -19,10 +25,10 @@ public class InquiryController {
     public InquiryController(InquiryService inquiryService) {
         this.inquiryService = inquiryService;
     }
-
+    
     // 1:1 문의 저장
     @PostMapping
-    public ResponseEntity<String> createInquiry(@RequestBody @Valid InquiryDTO inquiryDTO) {
+    public ResponseEntity<String> createInquiry(@RequestBody InquiryDTO inquiryDTO) {
         try {
             inquiryService.saveInquiry(inquiryDTO);
             return ResponseEntity.ok("문의가 성공적으로 제출되었습니다.");
