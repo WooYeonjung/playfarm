@@ -6,12 +6,13 @@ function gameData() {
 	axios.get('/game/gamelist')
 		.then(response => {
 			let listData = response.data;
-
+			
+			document.getElementById("resultArea1").innerHTML = "";
 			document.getElementById("title").innerHTML = "Store";
 			document.getElementById("subtitle1").innerHTML = "Game";
 
-			let TableArea1 = document.getElementById("resultArea3");
-			TableArea1.innerHTML = "";
+			let TableArea = document.getElementById("resultArea3");
+			TableArea.innerHTML = "";
 
 			let listHTML = `
 				<div class="card-header">
@@ -19,7 +20,7 @@ function gameData() {
 			    	GameList Table
 			    </div>
 				<div class="card-body">
-	                <table id="datatablesSimple1">
+	                <table id="datatablesSimple">
 	                    <thead>
 	                        <tr>
 	                            <th>Id</th>
@@ -71,75 +72,13 @@ function gameData() {
 				</div>
             `;
 
-			TableArea1.innerHTML = listHTML;
+			TableArea.innerHTML = listHTML;
 
-			/*			tr.onclick = function(event) {
-							console.log("Row clicked!");
-							gameListDetail(event, gameId);
-						};*/
+			const datatablesSimple = document.getElementById('datatablesSimple');
+			if (datatablesSimple) {
+				new simpleDatatables.DataTable(datatablesSimple);
 
-			/*			let TableArea2 = document.getElementById("resultArea4");
-						TableArea2.innerHTML = "";
-			
-						let dataHTML = `
-							<div class="card-header">
-								<i class="fas fa-table me-1"></i>
-								GameData Table
-							</div>
-							<div class="card-body">
-								<table id="datatablesSimple2">
-									<thead>
-										<tr>
-											<th>Id</th>
-											<th>Title Image</th>
-											<th>Detail Title</th>
-											<th>Detail Content</th>
-											<th>Mode1</th>
-											<th>Mode2</th>
-											<th>Mode3</th>
-										</tr>
-									</thead>
-									<tfoot>
-										<tr>
-											<th>Id</th>
-											<th>Title Image</th>
-											<th>Detail Title</th>
-											<th>Detail Content</th>
-											<th>Mode1</th>
-											<th>Mode2</th>
-											<th>Mode3</th>
-										</tr>
-									</tfoot>
-									<tbody>
-						`;
-			
-						listData.forEach(game => {
-							dataHTML += `
-								<tr>
-									<td>${game.gameId}</td>
-									<td>${game.gameTitle}</td>
-									<td>${game.playtype}</td>
-									<td>${game.tag}</td>
-									<td>${new Date(game.releaseDate).toLocaleDateString()}</td>
-									<td>${game.price.toLocaleString()}</td>
-									<td>${game.price.toLocaleString()}</td>
-								</tr>
-							`;
-						});
-			
-						dataHTML += `
-									</tbody>
-								</table>
-							</div>
-						`;
-			
-						TableArea2.innerHTML = dataHTML;*/
-
-			const datatablesSimple1 = document.getElementById('datatablesSimple1');
-			if (datatablesSimple1) {
-				new simpleDatatables.DataTable(datatablesSimple1);
-
-				const rows = datatablesSimple1.querySelectorAll('tbody tr');
+				const rows = datatablesSimple.querySelectorAll('tbody tr');
 				rows.forEach(row => {
 					row.onclick = function(event) {
 						const gameId = row.cells[0].innerText;
@@ -148,10 +87,6 @@ function gameData() {
 				});
 			}
 
-			/*const datatablesSimple2 = document.getElementById('datatablesSimple2');
-			if (datatablesSimple2) {
-				new simpleDatatables.DataTable(datatablesSimple2);
-			}*/
 		})
 		.catch(err => {
 			console.error("Error fetching game data:", err);
@@ -161,7 +96,7 @@ function gameData() {
 function gameListDetail(event, gameId) {
 	event.stopPropagation();
 	console.log(`Game ID clicked: ${gameId}`);
-	axios.get(`/game/detaildata/${gameId}`)
+	axios.get(`/admin/store/detaildata/${gameId}`)
 		.then(response => {
 			let gameDetail = response.data;
 			console.log(gameDetail);
