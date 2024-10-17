@@ -138,10 +138,6 @@ const authToken = '${sessionScope.token}';
 						</a>
 					</div>
 				</div>
-				<div class="sb-sidenav-footer">
-					<div class="small">Logged in as:</div>
-					Start Bootstrap
-				</div>
 			</nav>
 		</div>
 		<div id="layoutSidenav_content">
@@ -165,11 +161,11 @@ const authToken = '${sessionScope.token}';
 				<div class="container-fluid px-4">
 					<div
 						class="d-flex align-items-center justify-content-between small">
-						<div class="text-muted">Copyright &copy; Your Website 2023</div>
-						<div>
+						<div class="text-muted">Copyright &copy; Playfarm 2024</div>
+						<!-- <div>
 							<a href="#">Privacy Policy</a> &middot; <a href="#">Terms
 								&amp; Conditions</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</footer>

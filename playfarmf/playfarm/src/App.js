@@ -32,14 +32,22 @@ import EditCommunity from './pages/community/EditCommunity';
 import CommunityDetail from './pages/community/CommunityDetail';
 import Membership from './pages/mypage/Membership';
 import List4 from './pages/mypage/List4';
+import Modal from 'react-modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 // export const wholeVariable = React.createContext();
 
 function App() {
-
+  const [showModal, setShowModal] = useState(true); //안내창 모달 추가
   const nav = useNavigate();
+  // 모달 닫기 함수
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   //Scroll to top on first render
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -82,34 +90,17 @@ function App() {
     }
   }, [location.pathname]); // location.pathname이 변경될 때마다 실행
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    // JSON 파일을 가져오는 함수
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/db.json'); // JSON 파일 경로
-        const result = await response.json();
-        setData(result);
-        // if (!localStorage.getItem('cartJSON')) {
-        //   localStorage.setItem('cartJSON', JSON.stringify(result.cart));
-        // }
-        if (!localStorage.getItem('infoDataJSON')) {
-          localStorage.setItem('infoDataJSON', JSON.stringify(result.infoData));
-        }
-        if (!localStorage.getItem('payJSON')) {
-          localStorage.setItem('payJSON', JSON.stringify(result.pay));
-        }
-        // if (!localStorage.getItem('posts')) {
-        //   localStorage.setItem('postsJSON', JSON.stringify(result.posts));
-        // }
-      } catch (error) {
-        console.error('JSON 데이터를 가져오는 중 에러 발생:', error);
-      }
-    };
-
-    fetchData(); // 컴포넌트가 마운트될 때 fetchData 함수 호출
-  }, []); // 빈 배열을 두 번째 인자로 전달하여 최초 렌더링 시에만 실행
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '10px'
+    },
+  };
 
   return (
     <AuthProvider>
@@ -162,6 +153,26 @@ function App() {
         {!isLoginPage && <Footer />}
 
 
+        {/* 모달 추가 */}
+        <Modal
+          isOpen={showModal}
+          onRequestClose={handleCloseModal}
+          style={customStyles}
+          contentLabel="Welcome Modal"
+        >
+          <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Playfarm</h3>
+          <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+            <pre style={{ lineHeight: '20px', fontSize: '16px' }}> 안녕하세요! Playfarm 입니다.
+              <br />관리자로 로그인 하실 경우  <br />
+              <span style={{ textDecoration: 'underline', marginBottom: '10px', color: 'red' }}>ID: admin &nbsp;
+                PW: 12345!</span>
+              <br />을 사용하시면 됩니다.
+            </pre>
+          </div>
+          <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+            <button onClick={handleCloseModal}> <FontAwesomeIcon icon={faXmark} size='m' /></button>
+          </div>
+        </Modal>
       </div>
     </AuthProvider>
   );
