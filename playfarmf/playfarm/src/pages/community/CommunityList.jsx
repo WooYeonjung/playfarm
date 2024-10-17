@@ -61,16 +61,16 @@ const CommuListItem = ({ title, date, userName, type, reply }) => {
 }
 
 function CommunityList({ posttype, onPostListClick, search, onSearchChange, currentPage, setCurrentPage, postData }) {
+    
     // const [search, setSearch] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     // const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9; // 페이지당 아이템 수
-    // const userInfo = JSON.parse(localStorage.getItem("userData"));
     const navigate = useNavigate();
 
-    // const userposts = JSON.parse(localStorage.getItem("postsJSON"));
 
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
+    
     // CommunityWrite 이동
     const onWriteClick = () => {
         if (!isLoggedIn || !loginInfo || !loginInfo.userId) {

@@ -2,16 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.playfarmb.mapperInterface.StoreMapper">
 
-    <!-- 이미지 DTO 정의 -->
-    <resultMap id="ImageResultMap" type="com.example.playfarmb.common.domain.ImageDTO">
+    <resultMap id="ImageResultMap" type="com.example.playfarmb.admin.commondomain.AdminImageDTO">
         <id property="imageId" column="imageId"/>
         <result property="path" column="imagePath"/>
         <result property="originName" column="imageOriginName"/>
         <result property="afterName" column="imageAfterName"/>
     </resultMap>
 
-    <!-- 게임 DTO 정의 -->
-    <resultMap id="GameResultMap" type="com.example.playfarmb.store.domain.GameDTO">
+	<resultMap id="RequirementResultMap" type="com.example.playfarmb.admin.store.domain.AdminRequirementDTO">
+		<id property="reqId" column="reqId"/>
+		<result property="division" column="division"/>
+		<result property="opsys" column="opsys"/>
+		<result property="proc" column="proc"/>
+		<result property="memory" column="memory"/>
+		<result property="graphics" column="graphics"/>
+		<result property="dver" column="dver"/>
+		<result property="storage" column="storage"/>
+		<result property="scard" column="scard"/>
+	</resultMap>
+
+    <resultMap id="GameResultMap" type="com.example.playfarmb.admin.store.domain.StoreDTO">
         <id property="gameId" column="gameId"/>
         <result property="gameTitle" column="gameTitle"/>
         <result property="releaseDate" column="releaseDate"/>
@@ -33,7 +43,10 @@
         <result property="fileGroupId" column="fileGroupId"/>
         <result property="regDate" column="regDate"/>
         <result property="modDate" column="modDate"/>
-        <collection property="images" ofType="com.example.playfarmb.store.domain.ImageDTO" resultMap="ImageResultMap"/>
+        <collection property="images" 
+        	ofType="com.example.playfarmb.admin.commondomain.AdminImageDTO" resultMap="ImageResultMap"/>
+        <collection property="requirements" resultMap="RequirementResultMap"
+        	ofType="com.example.playfarmb.admin.store.domain.AdminRequirementDTO"/>
     </resultMap>
 
     <select id="gameDetailData" parameterType="int" resultMap="GameResultMap">
@@ -62,7 +75,16 @@
             i.image_id AS imageId,
             i.path AS imagePath,
             i.origin_name AS imageOriginName,
-            i.after_name AS imageAfterName
+            i.after_name AS imageAfterName,
+            r.req_id As reqId,
+            r.division As division,
+            r.opsys As opsys,
+            r.proc As proc,
+            r.memory As memory,
+            r.graphics As graphics,
+            r.dver As dver,
+            r.storage As storage,
+            r.scard As scard
         FROM game g
         LEFT JOIN image i ON g.file_group_id = i.file_group_id
         LEFT JOIN requirement r ON g.game_id = r.game_id

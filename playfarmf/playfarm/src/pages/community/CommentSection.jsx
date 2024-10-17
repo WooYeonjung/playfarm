@@ -4,12 +4,14 @@ import axios from 'axios';
 import { useAuth } from '../../service/context/AuthProvider';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
 export default function CommentSection({ postId, comments, setComments }) {
     // const [comments, setComments] = useState(JSON.parse(localStorage.getItem(`comments_${postId}`)) || []);
 
     const [newComment, setNewComment] = useState('');
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
+    const navigate = useNavigate();
     console.log(loginInfo)
     const handleAddComment = async () => {
         if (newComment.trim() === '') {
@@ -33,7 +35,21 @@ export default function CommentSection({ postId, comments, setComments }) {
             if (response.status === 200) {
                 alert('댓글을 등록하였습니다.');
                 setNewComment('');
+                const fetchReplies = async () => {
+                    try {
+                        const response = await axios.get(`/community/replies/${postId}`, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + loginInfo.token,
+                            }
+                        });
+                        setComments(response.data);
+                    } catch (error) {
+                        console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
+                    }
+                };
 
+                fetchReplies();
             }
         } catch (error) {
             alert('댓글 등록을 실패하였습니다.');

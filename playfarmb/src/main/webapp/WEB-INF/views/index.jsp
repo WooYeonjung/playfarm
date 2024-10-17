@@ -86,8 +86,7 @@ const authToken = '${sessionScope.token}';
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
 								<a class="nav-link" href="javascript:void(0);" onclick="gameData()">Game</a> 
-								<a class="nav-link" href="layout-sidenav-light.html">Light
-									Sidenav</a>
+								<a class="nav-link" href="javascript:void(0);" onclick="gameAdd()">Add</a>
 							</nav>
 						</div>
 						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

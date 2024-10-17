@@ -1,7 +1,6 @@
 "use strict"
 
 function gameData() {
-	console.log("Game clicked!");
 	/*e.preventDefault();*/
 	axios.get('/game/gamelist')
 		.then(response => {
@@ -103,30 +102,42 @@ function gameListDetail(event, gameId) {
 
 			const gameDetailArea = document.getElementById("detailArea");
 			const gameDetailContent = document.getElementById("detailContent");
+			
 			gameDetailContent.innerHTML = `
 			<div class="card mb-4">
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="card-header">
-	                    <i class="fas fa-chart-pie me-1"></i>
+	                    <i class="fas fa-database me-1"></i>
 	                    DetailData
 	                </div>
 					<div class="card-body">
-					
+		                <p><strong>ID:</strong> ${gameDetail.gameId}</p>
 		                <p><strong>Title:</strong> ${gameDetail.gameTitle}</p>
 						<p><strong>Release Date:</strong> ${new Date(gameDetail.releaseDate).toLocaleDateString()}</p>
 		                <p><strong>Price:</strong> ${gameDetail.price.toLocaleString()}</p>
 		                <p><strong>Discount:</strong> ${gameDetail.discount}</p>
-		                <p><strong>Playtype:</strong> ${gameDetail.playtype}</p>
+						${gameDetail.discount > 0 ? 
+							`<p><strong>DiscendDate:</strong> ${new Date(gameDetail.discendDate).toLocaleDateString()}</p>`:''}
+						<p><strong>Playtype:</strong> ${gameDetail.playtype}</p>
 		                <p><strong>Tag:</strong> ${gameDetail.tag}</p>
 		                <p><strong>Age Rating:</strong> ${gameDetail.ageRating}</p>
-		                <p><strong>Details:</strong> ${gameDetail.details}</p>
+		                <p><strong>DetailContent:</strong> ${gameDetail.detailCon}</p>
+		                <p><strong>Mode1:</strong> ${gameDetail.modeName1}</p>
+		                <p><strong>Mode1Con:</strong> ${gameDetail.modeDesc1}</p>
+		                <p><strong>Mode2:</strong> ${gameDetail.modeName2}</p>
+		                <p><strong>Mode2Con:</strong> ${gameDetail.modeDesc2}</p>
+		                <p><strong>Mode3:</strong> ${gameDetail.modeName3}</p>
+		                <p><strong>Mode3Con:</strong> ${gameDetail.modeDesc3}</p>
+		                <p><strong>등록일:</strong> ${new Date(gameDetail.regDate).toLocaleDateString()}</p>
+		                <p><strong>수정일:</strong> ${new Date(gameDetail.modDate).toLocaleDateString()}</p>
 					
 					</div>
+					<button onclick="editGameDetails(${gameId})">수정하기</button>
 				</div>
 				<div class="col-lg-6">
 				    <div class="card-header">
-				        <i class="fas fa-chart-pie me-1"></i> Image Data
+				        <i class="fas fa-images me-1"></i> Image Data
 				    </div>
 				    <div class="card-body">
 				        <!-- Bootstrap Carousel -->
@@ -158,27 +169,40 @@ function gameListDetail(event, gameId) {
 				                <span id="carouselIndicator">1 / ${gameDetail.images.length + 1}</span> <!-- +1 for the main title image -->
 				            </div>
 					    </div>
-				            
-				            <!-- Carousel Controls -->
-				            <button class="carousel-control-prev" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="prev">
-				                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				                <span class="visually-hidden">Previous</span>
-				            </button>
-				            <button class="carousel-control-next" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="next">
-				                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-				                <span class="visually-hidden">Next</span>
-				            </button>
-							
-				        
+			            <!-- Carousel Controls -->
+			            <button class="carousel-control-prev" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="prev">
+			                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			                <span class="visually-hidden">Previous</span>
+			            </button>
+			            <button class="carousel-control-next" type="button" data-bs-target="#gameImageCarousel" data-bs-slide="next">
+			                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			                <span class="visually-hidden">Next</span>
+			            </button>
+						
+						<div class="card-header">
+					        <i class="fas fa-circle-exclamation me-1"></i> Requirement Data
+					    </div>
+						<div class="card-body">
+							${gameDetail.requirements.map((req, index) => `
+			                    <div>
+									<p><strong>${req.division === 'min' ? '최소사양' : '권장사양'}</strong></p>
+									<p>OpearatingSystem: ${req.opsys}</p>
+									<p>Processor: ${req.proc}</p>
+									<p>Memory: ${req.memory}</p>
+									<p>Graphics: ${req.graphics}</p>
+									<p>DirectxVersion: ${req.dver}</p>
+									<p>Storage: ${req.storage}</p>
+									<p>SoundCard: ${req.scard}</p>
+			                    </div>
+			                `).join('')}
+						</div>
 				    </div>
-					
 				</div>
-				
+                
 			</div>
 			</div>
 			
 			
-                /*<button onclick="editGameDetails(${gameId})">수정하기</button>*/
                 <div id="editForm" style="display:none;"></div>
 
                 <!-- 세부 내용 -->
@@ -250,5 +274,40 @@ function submitEdit(gameId) {
         .catch(err => {
             console.error("Error updating game data:", err);
         });
+}
+
+function gameAdd() {
+	document.getElementById('resultArea1').addEventListener('submit', function (event) {
+	    event.preventDefault(); // 폼의 기본 제출 동작 방지
+
+	    const gameData = {
+	        gameTitle: document.getElementById('gameTitle').value,
+	        releaseDate: document.getElementById('releaseDate').value,
+	        price: parseInt(document.getElementById('price').value),
+	        discount: parseInt(document.getElementById('discount').value),
+	        playtype: document.getElementById('playtype').value,
+	        tag: document.getElementById('tag').value,
+	        ageRating: parseInt(document.getElementById('ageRating').value),
+	        detailCon: document.getElementById('detailCon').value,
+	        modeName1: document.getElementById('modeName1').value,
+	        modeDesc1: document.getElementById('modeDesc1').value,
+	        modeName2: document.getElementById('modeName2').value,
+	        modeDesc2: document.getElementById('modeDesc2').value,
+	        modeName3: document.getElementById('modeName3').value,
+	        modeDesc3: document.getElementById('modeDesc3').value
+	    };
+
+	    axios.post('/api/games', gameData)
+	        .then(response => {
+	            console.log('Game added successfully', response.data);
+	            alert('Game added successfully!');
+	            // 성공 시 추가 처리 (필요하다면)
+	        })
+	        .catch(error => {
+	            console.error('There was an error adding the game:', error);
+	            alert('Failed to add game. Please try again.');
+	        });
+	});
+
 }
 

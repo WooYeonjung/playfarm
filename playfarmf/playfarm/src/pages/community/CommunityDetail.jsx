@@ -20,7 +20,6 @@ export default function CommunityDetail() {
         window.scrollTo({
             top: 0
         })
-        console.log("postId:", postId);
         const fetchPostData = async () => {
             try {
                 const response = await axios.get(`/community/postdetail/${postId}`, {
@@ -48,9 +47,7 @@ export default function CommunityDetail() {
         //         console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
         //     }
         // };
-
         fetchPostData();
-
     }, [postId]);
     useEffect(() => {
 
@@ -69,7 +66,7 @@ export default function CommunityDetail() {
         };
 
         fetchReplies();
-    }, [comments]);
+    }, []);
     console.log(comments)
     // const formatUserId = (userId) => {
     //     if (!userId) return '';

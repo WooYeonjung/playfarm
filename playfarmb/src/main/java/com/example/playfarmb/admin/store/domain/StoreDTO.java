@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.playfarmb.admin.commondomain.AdminImageDTO;
 import com.example.playfarmb.common.domain.ImageDTO;
 import com.example.playfarmb.store.entity.Requirement;
 
@@ -38,8 +39,8 @@ public class StoreDTO {
     private String fileGroupId;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-    private List<ImageDTO> images;
-    private List<Requirement> requirements;
+    private List<AdminImageDTO> images;
+    private List<AdminRequirementDTO> requirements;
     
     
 }
