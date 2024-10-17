@@ -5,14 +5,12 @@ import com.example.playfarmb.support.inquiry.entity.Inquiry;
 import com.example.playfarmb.support.inquiry.repository.InquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class InquiryService {
-
     private final InquiryRepository inquiryRepository;
 
     @Autowired
@@ -31,7 +29,6 @@ public class InquiryService {
         inquiry.setEmail(inquiryDTO.getEmail());
         inquiry.setGameGenre(inquiryDTO.getGameGenre());  // 쉼표로 구분된 문자열로 변환
         inquiry.setRegDate(LocalDateTime.now());  // 등록일자 현재 시간으로 설정
-
         inquiryRepository.save(inquiry);
     }
 
@@ -47,6 +44,14 @@ public class InquiryService {
     // 모든 문의 조회
     public List<InquiryDTO> getAllInquiries() {
         List<Inquiry> inquiries = inquiryRepository.findAll();
+        return inquiries.stream()
+                        .map(this::convertToDTO)
+                        .collect(Collectors.toList());
+    }
+
+    // 사용자 ID로 문의 조회
+    public List<InquiryDTO> getInquiriesByUserId(String userId) {
+        List<Inquiry> inquiries = inquiryRepository.findByUserId(userId);
         return inquiries.stream()
                         .map(this::convertToDTO)
                         .collect(Collectors.toList());
@@ -73,6 +78,7 @@ public class InquiryService {
         inquiryDTO.setPlatformName(inquiry.getPlatformName());
         inquiryDTO.setEmail(inquiry.getEmail());
         inquiryDTO.setGameGenre(inquiry.getGameGenresList());
+        inquiryDTO.setRegDate(inquiry.getRegDate()); 
         return inquiryDTO;
     }
 }

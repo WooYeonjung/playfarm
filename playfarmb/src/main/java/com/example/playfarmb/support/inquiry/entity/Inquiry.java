@@ -1,18 +1,24 @@
 package com.example.playfarmb.support.inquiry.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
-@Table(name = "inquiries")  // 테이블 이름 설정
-public class Inquiry {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+@Entity
+@Table(name = "inquiries")
+@Data
+public class Inquiry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // 문의 ID
-
     private String userId;  // 사용자 ID
     private String inquiryType;  // 문의 유형
     private String title;  // 제목

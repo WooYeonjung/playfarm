@@ -1,9 +1,11 @@
 package com.example.playfarmb.support.inquiry.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class InquiryDTO {
-
     private Long id;  // 문의 ID
     private String userId;  // 사용자 ID
     private String inquiryType;  // 문의 유형
@@ -12,7 +14,8 @@ public class InquiryDTO {
     private String platformName;  // 플랫폼 이름
     private String email;  // 이메일
     private List<String> gameGenre;  // 게임 장르 리스트 (리스트로 받음)
-
+    private LocalDateTime regDate;
+    
     // 등록일, 응답일, 관리자 정보는 DTO로 보내지 않고 서비스/엔티티에서 처리
 
     public Long getId() {

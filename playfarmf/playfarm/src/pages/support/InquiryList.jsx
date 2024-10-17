@@ -8,7 +8,7 @@ const InquiryList = ({ inquiryData, handleArticleClick, handleDelete, selectedAr
       ) : (
         inquiryData.map((article, index) => {
           // 날짜 처리
-          const formattedDate = new Date(article.reg_date);
+          const formattedDate = new Date(article.regDate);
           const displayDate = isNaN(formattedDate.getTime()) ? '등록일 없음' : formattedDate.toLocaleString();
 
           return (

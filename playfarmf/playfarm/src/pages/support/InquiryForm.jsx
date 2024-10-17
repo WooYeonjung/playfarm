@@ -8,56 +8,63 @@ import Modal from './Modal';
 import axios from 'axios';
 
 const InquiryForm = () => {
-    const { isLoggedIn, loginInfo } = useAuth();  // setLoginInfo를 제거하고 loginInfo만 사용
+    const { loginInfo, setLoginInfo } = useAuth();  // loginInfo와 setLoginInfo를 가져옴
     const [formData, setFormData] = useState({
-        email: '',  // 초기값을 빈 문자열로 설정
-        inquiryType: '',  // 문의 유형의 codeid 값을 저장
+        email: '',
+        inquiryType: '',
         title: '',
         content: '',
-        platform: '',  // 게임 플랫폼의 codeid 값을 저장
-        genres: [],  // 체크된 장르의 codeid 값을 배열로 저장
-        userId: ''  // 로그인된 유저 정보
+        platform: '',
+        genres: [],
+        userId: ''
     });
 
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [inquiryTypes, setInquiryTypes] = useState([]);  // 문의 유형 데이터 상태 추가
+    const [platforms, setPlatforms] = useState([]);        // 게임 플랫폼 데이터 상태 추가
+    const [genres, setGenres] = useState([]);             // 게임 장르 데이터 상태 추가
     const navigate = useNavigate();
 
-    // 고정된 데이터
-    const inquiryTypes = [
-        { codeid: '1', codeinfo: '상품 문의' },
-        { codeid: '2', codeinfo: '결제/환불' },
-        { codeid: '3', codeinfo: '컴퓨터/기술' },
-        { codeid: '4', codeinfo: '기타' }
-    ];
+    // 로그인 상태를 localStorage에서 확인하고, 없으면 logout 상태로 처리
+    useEffect(() => {
+        const storedLoginInfo = localStorage.getItem('loginInfo');
+        if (storedLoginInfo) {
+            setLoginInfo(JSON.parse(storedLoginInfo));
+        }
+    }, [setLoginInfo]);
 
-    const platforms = [
-        { codeid: 'PC', codeinfo: 'PC' },
-        { codeid: 'PS', codeinfo: 'PlayStation' },
-        { codeid: 'NS', codeinfo: 'Nintendo Switch' }
-    ];
-
-    const genres = [
-        { codeid: 'Action', codeinfo: 'Action' },
-        { codeid: 'Adventure', codeinfo: 'Adventure' },
-        { codeid: 'Horror', codeinfo: 'Horror' },
-        { codeid: 'RPG', codeinfo: 'RPG' },
-        { codeid: 'Simulation', codeinfo: 'Simulation' },
-        { codeid: 'Strategy', codeinfo: 'Strategy' },
-        { codeid: 'Survival', codeinfo: 'Survival' }
-    ];
-
-    // useEffect로 로그인 정보 가져오기
+    // 로그인 상태에 따른 formData 업데이트
     useEffect(() => {
         if (loginInfo) {
             setFormData((prevData) => ({
                 ...prevData,
-                email: loginInfo.email,  // 로그인 정보로 이메일 자동 세팅
-                userId: loginInfo.userId  // 로그인 정보로 유저 아이디 세팅
+                email: loginInfo.email,
+                userId: loginInfo.userId
             }));
         }
     }, [loginInfo]);
 
+    // 서버에서 문의 유형, 플랫폼, 장르 데이터를 가져오는 useEffect
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const inquiryResponse = await axios.get('http://localhost:8080/api/inquiry-codes/inquiry-types');
+                setInquiryTypes(inquiryResponse.data);
+
+                const platformResponse = await axios.get('http://localhost:8080/api/inquiry-codes/game-platforms');  // 수정된 엔드포인트
+                setPlatforms(platformResponse.data);
+
+                const genreResponse = await axios.get('http://localhost:8080/api/inquiry-codes/game-genres');  // 수정된 엔드포인트
+                setGenres(genreResponse.data);
+            } catch (error) {
+                console.error('서버에서 데이터를 받아오는 중 오류 발생:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+console.log(platforms);
     // 입력값 처리
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -78,30 +85,21 @@ const InquiryForm = () => {
     const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
 
-        if (!isLoggedIn) {
+        if (!loginInfo) {
             alert('로그인 후 이용해 주세요.');
             return;
         }
 
-        const { title, content } = formData;
-
-        // 로컬 스토리지에서 마지막 문의 내역을 가져와서 중복 여부를 확인
-        const previousInquiry = JSON.parse(localStorage.getItem('lastInquiry')) || {};
-
-        // 제목과 내용이 동일한지 확인
-        if (previousInquiry.title === title && previousInquiry.content === content) {
-            alert('같은 제목과 내용으로 문의가 이미 등록되었습니다.');
-            return;
-        }
+        const { title, content, userId, inquiryType, platform, genres } = formData;
 
         const newInquiry = {
-            userId: formData.userId,
-            inquiryType: formData.inquiryType || '기타',  // inquiryType은 codeid로 전송
+            userId: userId,
+            inquiryType: inquiryType || '4',  // '기타'로 기본 값 설정
             title: title || 'Untitled',
             inquiryText: content || '',
-            platformName: formData.platform || 'Other',  // platform은 codeid로 전송
+            platformName: platform || 'Other',
             email: formData.email,
-            gameGenre: formData.genres,  // 장르는 배열로 전송
+            gameGenre: genres,  // 장르 배열
         };
 
         try {
@@ -112,11 +110,6 @@ const InquiryForm = () => {
             if (response.status === 200) {
                 setModalMessage("1:1 문의가 등록되었습니다.");
                 setShowModal(true);
-
-                // 로컬 스토리지에 마지막 문의를 저장
-                localStorage.setItem('lastInquiry', JSON.stringify({ title, content }));
-
-                // 폼 제출 후 '개인문의확인' 페이지로 이동
                 navigate('/inquiry-view');
             } else {
                 alert(`문의 제출에 실패했습니다: ${response.data.message}`);
@@ -125,9 +118,8 @@ const InquiryForm = () => {
             console.error('Axios Error:', error);
             alert('서버와의 통신에 문제가 발생했습니다.');
         }
-    }, [formData, isLoggedIn, navigate]);
+    }, [formData, loginInfo, navigate]);
 
-    // 모달 닫기
     const closeModal = () => {
         setShowModal(false);
         navigate('/inquiry-view');
@@ -138,10 +130,7 @@ const InquiryForm = () => {
             <div className="form-container">
                 <h2>1:1 문의</h2>
 
-                {/* 문의 확인 페이지로 이동하는 링크 */}
-                <Link to="/inquiry-view" className="inquiry-view-link">
-                    개인문의확인
-                </Link>
+                <Link to="/inquiry-view" className="inquiry-view-link">개인문의확인</Link>
 
                 {loginInfo ? (
                     <form onSubmit={handleSubmit}>
@@ -149,14 +138,14 @@ const InquiryForm = () => {
                             label="이메일"
                             type="email"
                             name="email"
-                            value={formData.email}  // 로그인된 이메일 자동으로 입력
+                            value={formData.email}
                             onChange={handleInputChange}
                             required
                             readOnly
                         />
                         <br />
 
-                        {/* 문의 유형 선택 */}
+                        {/* 문의 유형 추가 */}
                         <FormInput
                             label="문의 유형"
                             type="select"
@@ -166,15 +155,16 @@ const InquiryForm = () => {
                             required
                         >
                             <option value="">선택하세요</option>
-                            {inquiryTypes.map((type) => (
-                                <option key={type.codeid} value={type.codeid}>
-                                    {type.codeinfo}
-                                </option>
-                            ))}
+                            {inquiryTypes.length > 0 ? (
+                                inquiryTypes.map((type) => (
+                                    <option key={type.codeId} value={type.codeInfo}>{type.codeInfo}</option>
+                                ))
+                            ) : (
+                                <option value="">문의 유형을 불러오는 중...</option>
+                            )}
                         </FormInput>
                         <br />
 
-                        {/* 제목 입력 */}
                         <FormInput
                             label="제목"
                             type="text"
@@ -185,7 +175,6 @@ const InquiryForm = () => {
                         />
                         <br />
 
-                        {/* 문의 내용 입력 */}
                         <FormInput
                             label="문의 내용"
                             type="textarea"
@@ -197,7 +186,6 @@ const InquiryForm = () => {
                         />
                         <br />
 
-                        {/* 게임 플랫폼 선택 */}
                         <FormInput
                             label="게임 플랫폼"
                             type="select"
@@ -207,31 +195,36 @@ const InquiryForm = () => {
                             required
                         >
                             <option value="">선택하세요</option>
-                            {platforms.map((platform) => (
-                                <option key={platform.codeid} value={platform.codeid}>
-                                    {platform.codeinfo}
-                                </option>
-                            ))}
+                            {platforms.length > 0 ? (
+                                platforms.map((platform) => (
+                                    <option key={platform.codeId} value={platform.codeInfo}>{platform.codeInfo}</option>
+                                ))
+                            ) : (
+                                <option value="">게임 플랫폼을 불러오는 중...</option>
+                            )}
                         </FormInput>
                         <br />
 
-                        {/* 게임 장르 체크박스 */}
                         <div className="genres">
                             <h3>게임 장르</h3>
                             <div className="genre-checkboxes">
-                                {genres.map((genre) => (
-                                    <GenreCheckbox
-                                        key={genre.codeid}
-                                        genre={genre.codeid}
-                                        checked={formData.genres.includes(genre.codeid)}
-                                        onChange={() => toggleGenre(genre.codeid)}
-                                    />
-                                ))}
+                                {genres.length > 0 ? (
+                                    genres.map((genre) => (
+                                        <GenreCheckbox
+                                            key={genre.codeId}
+                                            genre={genre.codeInfo}
+                                            checked={formData.genres.includes(genre.codeInfo)}
+                                            onChange={() => toggleGenre(genre.codeInfo)}
+                                            label={genre.codeInfo}  
+                                        />
+                                    ))
+                                ) : (
+                                    <p>게임 장르를 불러오는 중...</p>
+                                )}
                             </div>
                         </div>
                         <br />
 
-                        {/* 등록하기 버튼 */}
                         <button type="submit" className="center-button">등록하기</button>
                         <br />
                     </form>
