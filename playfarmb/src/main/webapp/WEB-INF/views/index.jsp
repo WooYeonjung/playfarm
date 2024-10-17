@@ -59,7 +59,7 @@ const authToken = '${sessionScope.token}';
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-user"></i>
-							</div> 
+							</div> User
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
 							</div>
