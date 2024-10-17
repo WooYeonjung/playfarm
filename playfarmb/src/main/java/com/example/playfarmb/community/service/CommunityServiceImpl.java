@@ -121,7 +121,6 @@ public class CommunityServiceImpl implements CommunityService {
 		List<ImageDTO> imageDTO = images.stream().map(ImageDTO::of).collect(Collectors.toList());
 		
 		int replyCnt = replyRepository.countByPostId(postId);
-		System.out.println("replyCnt: " + replyCnt);
 		PostDTO postDTO = PostDTO.of(post);
 		postDTO.setImages(imageDTO);
 		postDTO.setReplyCnt(replyCnt);
