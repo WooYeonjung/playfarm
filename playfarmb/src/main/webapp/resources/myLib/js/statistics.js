@@ -17,6 +17,21 @@ async function fetchData() {
 		return [];
 	};
 }
+async function phurchaseData() {
+	try {
+		const response = await axios.get('/auth/dashboard/purchasedata', {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		console.log('Axios response:', response);
+		return response.data;
+	} catch (err) {
+		console.error(err);
+		return [];
+	};
+}
+
 
 document.addEventListener('DOMContentLoaded', async function() {
 	const resultArea = document.getElementById("resultArea1");
@@ -42,55 +57,54 @@ document.addEventListener('DOMContentLoaded', async function() {
 		                                    <div class="card-footer small text-muted"></div>
 		                                </div>
 		                            </div>
-									</div>
-				`;
-	resultArea.insertAdjacentHTML('beforeend', pieHtml);
+									
+	`;
+	/*resultArea.insertAdjacentHTML('beforeend', pieHtml);*/
 	// Create canvas element dynamically
-	const canvas = document.getElementById('myPieChart');
-	//canvas.id='myPieChart';
-	//  resultArea.appendChild(canvas);
-	//resultArea.style.width='600px';
 
-	const ctx = canvas.getContext('2d');
-
-	const myPieChart = new Chart(ctx, {
-		type: 'pie',
-		data: {
-			labels: labels,
-			datasets: [{
-				data: counts,
-				backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
-			}],
-		},
-	});
-	const resultArea2 = document.getElementById("resultArea1");
-		resultArea.innerHTML = '';
-		const data2 = await phurchaseData();
-
-		if (!data) {
-			console.error("No data returned from fetchData.");
-			return;
-		}
-		const labels2 = data.map(item => item.month);
-		const total = data.map(item => item.total);
 		let barHtml = `
-			<div class="row">
 				<div class="col-lg-6">
 			        	<div class="card mb-4">
 			                   	 <div class="card-header">
 			                                	 <i class="fas fa-chart-bar me-1"></i>
-			                                        Bar Chart Example
+			                                        월별 매출 현황
 			                     </div>
 				           	<div class="card-body">
 								<canvas id="myBarChart" width="100%" height="50"></canvas>
 							</div>
-			   			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+			   			<div class="card-footer small text-muted"></div>
 					</div>
 			    </div>
 			</div>
 					`;
-		resultArea.insertAdjacentHTML('beforeend', barHtml);
+					resultArea.innerHTML =  pieHtml+barHtml;
+		/*resultArea.insertAdjacentHTML('beforeend', pieHtml+barHtml);*/
 		// Create canvas element dynamically
+		const canvas = document.getElementById('myPieChart');
+		//canvas.id='myPieChart';
+		//  resultArea.appendChild(canvas);
+		//resultArea.style.width='600px';
+
+		const ctx = canvas.getContext('2d');
+
+		const myPieChart = new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: labels,
+				datasets: [{
+					data: counts,
+					backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
+				}],
+			},
+		});
+			const data2 = await phurchaseData();
+
+			if (!data2) {
+				console.error("No data returned from fetchData.");
+				return;
+			}
+			const labels2 = data2.map(item => item.month);
+			const total = data2.map(item => item.total);
 		const canvas2 = document.getElementById('myBarChart');
 		//canvas.id='myPieChart';
 		//  resultArea.appendChild(canvas);
@@ -104,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 				labels: labels2,
 				datasets: [{
 					data: total,
-					backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
+					backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d','#F5A9BC','#F5D0A9','#F5D0A9','#D8D8D8'],
 				}],
 			},
 			/*options: {
@@ -130,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			      ticks: {
 			        min: 0,
 			        max: 300000,
-			        maxTicksLimit: 5
+			        maxTicksLimit: 4
 			      },
 			      gridLines: {
 			        display: true
@@ -145,21 +159,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 });
 
-
-async function phurchaseData() {
-	try {
-		const response = await axios.get('/auth/dashboard/purchasedata', {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		console.log('Axios response:', response);
-		return response.data;
-	} catch (err) {
-		console.error(err);
-		return [];
-	};
-}
 
 
 
