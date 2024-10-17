@@ -1,8 +1,8 @@
 package com.example.playfarmb.admin.store.service;
 
-import com.example.playfarmb.store.domain.GameDTO;
+import com.example.playfarmb.admin.store.domain.StoreDTO;
 
 public interface StoreService {
 	
-	GameDTO gameDetailData(int gameId);
+	StoreDTO gameDetailData(int gameId);
 }

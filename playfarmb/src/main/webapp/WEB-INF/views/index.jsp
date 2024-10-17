@@ -59,7 +59,7 @@ const authToken = '${sessionScope.token}';
 							aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-user"></i>
-							</div> 
+							</div> User
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
 							</div>
@@ -86,8 +86,7 @@ const authToken = '${sessionScope.token}';
 							aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
 								<a class="nav-link" href="javascript:void(0);" onclick="gameData()">Game</a> 
-								<a class="nav-link" href="layout-sidenav-light.html">Light
-									Sidenav</a>
+								<a class="nav-link" href="javascript:void(0);" onclick="gameAdd()">Add</a>
 							</nav>
 						</div>
 						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

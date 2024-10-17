@@ -5,6 +5,7 @@ import CommunityAdvertising from './CommunityAdvertising';
 import NavbarCommu from './NavbarCommu';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../service/context/AuthProvider';
 
 function Community() {
 
@@ -30,6 +31,7 @@ function Community() {
     const [posttype, setPosttype] = useState(commuNav);
     const [tab, setTab] = useState({ selectTab: commuNav });
     const [currentPage, setCurrentPage] = useState(1);
+    const { isLoggedIn } = useAuth();
 
     const postTypeOnclick = (postType) => {
         setPosttype(postType);
@@ -40,8 +42,12 @@ function Community() {
 
     const navigate = useNavigate();
     const onPostListClick = (post) => {
-        navigate(`/community/detail/${post.postId}`);
-        console.log(post.postId);
+        if (!isLoggedIn) {
+            alert("로그인 후 이용 가능합니다.");
+            return navigate(`/community/all`);
+        } else {
+            navigate(`/community/detail/${post.postId}`);
+        }
     };
 
     // search bar
