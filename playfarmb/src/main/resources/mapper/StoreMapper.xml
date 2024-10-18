@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.playfarmb.mapperInterface.StoreMapper">
 
-    <resultMap id="ImageResultMap" type="com.example.playfarmb.admin.commondomain.AdminImageDTO">
+    <resultMap id="ImageResultMap" type="com.example.playfarmb.admin.common.domain.AdminImageDTO">
         <id property="imageId" column="imageId"/>
         <result property="path" column="imagePath"/>
         <result property="originName" column="imageOriginName"/>
@@ -90,4 +90,34 @@
         LEFT JOIN requirement r ON g.game_id = r.game_id
         WHERE g.game_id = #{gameId};
     </select>
+    
+    <insert id="insertGame" keyProperty="gameId">
+    	INSERT INTO game (
+    		game_title, release_date, price, discount, discend_date, playtype, 
+            tag, title_img, age_rating, detail_con, mode_name1, mode_desc1, 
+            mode_name2, mode_desc2, mode_name3, mode_desc3, useyn, file_group_id
+    	) VALUES (
+    		#{game.gameTitle}, #{game.releaseDate}, #{game.price}, #{game.discount}, 
+            #{game.discendDate}, #{game.playtype}, #{game.tag}, #{game.titleImg}, 
+            #{game.ageRating}, #{game.detailCon}, #{game.modeName1}, #{game.modeDesc1}, 
+            #{game.modeName2}, #{game.modeDesc2}, #{game.modeName3}, #{game.modeDesc3}, 
+            #{game.useyn}, #{game.fileGroupId}
+    	);
+    	
+    	INSERT INTO requirement (
+            game_id, opsys, proc, memory, graphics, dver, storage, scard, division
+        ) VALUES (
+            #{game.gameId}, #{requirement.opsys}, #{requirement.proc}, 
+            #{requirement.memory}, #{requirement.graphics}, #{requirement.dver}, 
+            #{requirement.storage}, #{requirement.scard}, #{requirement.division}
+        );
+    </insert>
+    
+    <insert id="insertImage">
+        INSERT INTO image (
+            path, origin_name, after_name, file_group_id
+        ) VALUES (
+            #{image.path}, #{image.originName}, #{image.afterName}, #{image.fileGroupId}
+        )
+    </insert>
 </mapper>

@@ -15,6 +15,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
     public StoreDTO gameDetailData(int gameId) {
+		
         return storeMapper.gameDetailData(gameId);
     }
 }

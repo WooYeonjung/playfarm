@@ -99,7 +99,7 @@ function gameListDetail(event, gameId) {
 		.then(response => {
 			let gameDetail = response.data;
 			console.log(gameDetail);
-
+			document.getElementById("detailTitle").innerHTML = "Detail";
 			const gameDetailArea = document.getElementById("detailArea");
 			const gameDetailContent = document.getElementById("detailContent");
 			
@@ -133,7 +133,8 @@ function gameListDetail(event, gameId) {
 		                <p><strong>수정일:</strong> ${new Date(gameDetail.modDate).toLocaleDateString()}</p>
 					
 					</div>
-					<button onclick="editGameDetails(${gameId})">수정하기</button>
+					<button onclick="modifyGameData(${gameId})">수정하기</button>
+					<button onclick="editGameDetails(${gameId})">삭제하기</button>
 				</div>
 				<div class="col-lg-6">
 				    <div class="card-header">
@@ -228,13 +229,13 @@ function gameListDetail(event, gameId) {
 		});
 }
 
-function editGameDetails(gameId) {
-    const editForm = document.getElementById("editForm");
+function modifyGameData(gameId) {
+    const modifyForm = document.getElementById("modifyForm");
     
     // 수정 폼 생성
-    editForm.innerHTML = `
+    modifyForm.innerHTML = `
         <h3>게임 수정</h3>
-        <form id="gameEditForm">
+        <form id="gamemodifyForm">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" required />
             <br/>
@@ -252,11 +253,11 @@ function editGameDetails(gameId) {
     `;
     
     // 폼 보이기
-    editForm.style.display = "block";
+    modifyForm.style.display = "block";
 }
 
 function submitEdit(gameId) {
-    const form = document.getElementById("gameEditForm");
+    const form = document.getElementById("gamemodifyForm");
     const formData = {
         title: form.title.value,
         price: form.price.value,
@@ -276,8 +277,213 @@ function submitEdit(gameId) {
         });
 }
 
-function gameAdd() {
-	document.getElementById('resultArea1').addEventListener('submit', function (event) {
+async function gameAdd() {
+	document.getElementById("resultArea3").innerHTML = "";
+	document.getElementById("detailArea").style.display = "none";
+	document.getElementById("title").innerHTML = "Store";
+	document.getElementById("subtitle1").innerHTML = "Add";
+	let playtypeCode = [];
+	await axios.get('/admin/code/list/playtype')
+		.then(res => {
+			playtypeCode = res.data;
+		})
+		.catch(err => {
+			console.error("Error fetching playtypeCode data:", err);
+		});
+	let tagCode = [];
+	await axios.get('/admin/code/list/tag')
+		.then(res => {
+			tagCode = res.data;
+		})
+		.catch(err => {
+			console.error("Error fetching tagCode data:", err);
+		});
+	let addGame = document.getElementById("resultArea1");
+		addGame.innerHTML = `
+			<form id="gameForm">
+			  <h3>Detail Data</h3>
+			  <div class="row">
+			    <div class="form-group col">
+			      <label for="gameTitle">Title</label>
+			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="gameTitle" 
+					name="gameTitle"
+					placeholder="게임 이름을 입력해주세요." 
+					required
+				  >
+			    </div>
+			    <div class="form-group col">
+			      <label for="releaseDate">Release Date</label>
+			      <input 
+				  	type="date" 
+					class="form-control" 
+					id="releaseDate" 
+					name="releaseDate" 
+					required
+				  >
+			    </div>
+			  </div>
+			  <div class="row">
+				  <div class="form-group col">
+				    <label for="price">Price</label>
+				    <input 
+					  type="number" 
+					  class="form-control" 
+					  id="price"
+					  name="price"
+					  placeholder="가격을 입력해주세요." 
+					  required
+					>
+				  </div>
+				  <div class="form-group col">
+				    <label for="discount">Discount</label>
+				    <input 
+					  type="number" 
+					  class="form-control" 
+					  id="discount"
+					  name="discount"
+					  placeholder="할인율을 입력해주세요." 
+					  min="0" max="100"
+					>
+				  </div>
+				  <div class="form-group col">
+				  	<label for="discendDate">Discend Date</label>
+				  	<input 
+					  type="date" 
+					  class="form-control" 
+					  id="discendDate"
+					  name="discendDate"
+					>
+				  </div>
+				  <div class="form-group col">
+    			    <label for="ageRating">Age Rating</label>
+    			    <input 
+					  type="number" 
+					  class="form-control" 
+					  id="ageRating" 
+					  name="ageRating" 
+					  placeholder="연령 제한을 입력해주세요." 
+					  min="0" max="30" 
+					  required
+					>
+    			  </div>
+			  </div>
+			  <div class="form-group">
+			  	Playtype
+				<br>
+			  ${playtypeCode.map((type, idx) => `
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="playtypeCheckbox${idx+1}" value="option${idx+1}">
+				  <label class="form-check-label" for="playtypeCheckbox${idx+1}">${type.codeInfo}</label>
+				</div>`
+			  ).join('')}
+			  </div>
+			  <div class="form-group">
+			  	Tag
+				<br>
+				${tagCode.map((tag, idx) => `
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="tagCheckbox${idx+1}" value="option${idx+1}">
+					  <label class="form-check-label" for="tagCheckbox${idx+1}">${tag.codeInfo}</label>
+					</div>`
+				).join('')}
+			  </div>
+			  <div class="form-group">
+			    <label for="detailCon">Detail Content</label>
+			    <input 
+				  type="text" 
+				  class="form-control" 
+				  id="detailCon" 
+				  name="detailCon" 
+				  placeholder="상품 상세의 게임 소개를 입력해주세요." 
+				  required
+				>
+			  </div>
+			  <div class="row">
+			  	<div class="form-group col-md-4">
+  			      <label for="modeName1">Mode Name 1</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeName1" 
+					name="modeName1" 
+					placeholder="모드 이름을 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  	<div class="form-group col-md-8">
+  			      <label for="modeDesc1">Mode Desc 1</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeDesc1" 
+					name="modeDesc1" 
+					placeholder="모드 소개를 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  </div>
+			  <div class="row">
+			  	<div class="form-group col-md-4">
+  			      <label for="modeName2">Mode Name 2</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeName2" 
+					name="modeName2" 
+					placeholder="모드 이름을 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  	<div class="form-group col-md-8">
+  			      <label for="modeDesc2">Mode Desc 2</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeDesc2" 
+					name="modeDesc2" 
+					placeholder="모드 소개를 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  </div>
+			  <div class="row">
+			  	<div class="form-group col-md-4">
+  			      <label for="modeName3">Mode Name 3</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeName3" 
+					name="modeName3" 
+					placeholder="모드 이름을 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  	<div class="form-group col-md-8">
+  			      <label for="modeDesc3">Mode Desc 3</label>
+  			      <input 
+				  	type="text" 
+					class="form-control" 
+					id="modeDesc3" 
+					name="modeDesc3" 
+					placeholder="모드 소개를 입력해주세요." 
+					required
+				  >
+  			    </div>
+			  </div>
+			  <h3>Image Data</h3>
+			  <div class="form-group">
+			      <label for="ImageFile">Image Data</label>
+			      <input type="file" class="form-control-file" id="ImageFile" name="GameImg" multiple>
+			  </div>
+			  
+			  <button type="submit" class="btn btn-primary">등록하기</button>
+			</form>
+			`;
+		
+	document.getElementById('gameForm').addEventListener('submit', function (event) {
 	    event.preventDefault(); // 폼의 기본 제출 동작 방지
 
 	    const gameData = {
@@ -297,11 +503,11 @@ function gameAdd() {
 	        modeDesc3: document.getElementById('modeDesc3').value
 	    };
 
-	    axios.post('/api/games', gameData)
+	    axios.post('/admin/store/add', gameData)
 	        .then(response => {
 	            console.log('Game added successfully', response.data);
 	            alert('Game added successfully!');
-	            // 성공 시 추가 처리 (필요하다면)
+				
 	        })
 	        .catch(error => {
 	            console.error('There was an error adding the game:', error);

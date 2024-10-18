@@ -1,4 +1,4 @@
-package com.example.playfarmb.admin.commondomain;
+package com.example.playfarmb.admin.common.domain;
 
 import com.example.playfarmb.common.entity.Image;
 
