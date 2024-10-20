@@ -22,7 +22,7 @@ export default function CommunityDetail() {
         })
         const fetchPostData = async () => {
             try {
-                const response = await axios.get(`/community/postdetail/${postId}`, {
+                const response = await axios.get(`${API_BASE_URL}/community/postdetail/${postId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + loginInfo.token,
@@ -53,7 +53,7 @@ export default function CommunityDetail() {
 
         const fetchReplies = async () => {
             try {
-                const response = await axios.get(`/community/replies/${postId}`, {
+                const response = await axios.get(`${API_BASE_URL}/community/replies/${postId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + loginInfo.token,

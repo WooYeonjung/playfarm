@@ -16,7 +16,7 @@ async function fetchData() {
 		console.error(err);
 		return [];
 	};
-}
+};
 async function phurchaseData() {
 	try {
 		const response = await axios.get('/auth/dashboard/purchasedata', {
@@ -30,7 +30,7 @@ async function phurchaseData() {
 		console.error(err);
 		return [];
 	};
-}
+};
 
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 					data: counts,
 					backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'],
 				}],
-			},
+			}
 		});
 			const data2 = await phurchaseData();
 
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			      gridLines: {
 			        display: true
 			      }
-			    }],
+			    }]
 			  },
 			  legend: {
 			    display: false

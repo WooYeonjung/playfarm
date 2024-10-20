@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.playfarmb.common.entity.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,12 +14,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="info")
 @Data
-public class Info {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Info extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,12 +60,16 @@ public class Info {
 	@Column(name="views")
 	private int views;
 	
+    @Column(name = "file_group_id", length = 200)
+    private String fileGroupId;
+    
 	@Column(name = "useyn", length = 3)
 	private String useyn;
 	
     @PrePersist
     public void init() {
     	this.useyn = this.useyn != null ? this.useyn : "y"; 
+    	this.views = 0;
     }
     
 	@Transient
