@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.playfarmb.admin.user.domain.AgeGroupCountDTO;
+import com.example.playfarmb.admin.user.domain.PopularTagDTO;
 import com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO;
 import com.example.playfarmb.mapperInterface.PurchaseMapper;
 import com.example.playfarmb.mapperInterface.UserMapper;
@@ -29,4 +30,9 @@ public class DashboardServiceImpl implements DashboardService{
     	return purchaseMapper.findPurchaseTotal();
     }
 	
+    @Override
+    public List<PopularTagDTO> popularTagCount() {
+    	// TODO Auto-generated method stub
+    	return purchaseMapper.popularTagCount();
+    }
 }

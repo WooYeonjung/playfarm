@@ -3,6 +3,7 @@ package com.example.playfarmb.admin.user.service;
 import java.util.List;
 
 import com.example.playfarmb.admin.user.domain.AgeGroupCountDTO;
+import com.example.playfarmb.admin.user.domain.PopularTagDTO;
 import com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO;
 
 public interface DashboardService {
@@ -11,5 +12,7 @@ public interface DashboardService {
 		List<AgeGroupCountDTO> getAgeGroupCounts();
 
 		List<PurchaseStatisticDTO> getPurchaseData();
+
+		List<PopularTagDTO> popularTagCount();
 
 }

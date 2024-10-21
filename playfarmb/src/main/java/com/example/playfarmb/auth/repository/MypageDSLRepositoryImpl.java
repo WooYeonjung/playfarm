@@ -1,16 +1,16 @@
 package com.example.playfarmb.auth.repository;
 
-import static com.example.playfarmb.auth.entity.QWishList.wishList;
-import static com.example.playfarmb.store.entity.QGame.game;
-import static com.example.playfarmb.store.entity.QListdetail.listdetail;
-import static com.example.playfarmb.store.entity.QPurchaselist.purchaselist;
-import static com.example.playfarmb.common.entity.QCode.code;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.example.playfarmb.auth.domain.MyGameDTO;
 import com.example.playfarmb.auth.domain.WishListDTO;
+import static com.example.playfarmb.auth.entity.QWishList.wishList;
+import static com.example.playfarmb.store.entity.QGame.game;
+import static com.example.playfarmb.store.entity.QPurchaselist.purchaselist;
+import static com.example.playfarmb.store.entity.QListdetail.listdetail;
+import static com.example.playfarmb.common.entity.QCode.code;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

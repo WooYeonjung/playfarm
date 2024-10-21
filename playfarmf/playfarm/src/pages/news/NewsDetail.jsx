@@ -4,17 +4,20 @@ import '../../styles/NewsDetail.css'
 // import BackButton from './BackButton.jsx'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios";
+import { API_BASE_URL } from "../../service/app-config";
 
 
-const getInfoData = (id) => {
+const getInfoData = async (id) => {
     try {
-        const data = JSON.parse(localStorage.getItem("infoDataJSON"));
-        console.log(data);
-        if (data) {
-            return data.find((item) => item.id === id);
-        } else {
-            throw new Error("No data found in local storage.");
-        }
+        const data = axios.get(`${API_BASE_URL}/info/infodetail?id=${id}`);
+        return data;
+        // console.log(data);
+        // if (data) {
+        //     return data.find((item) => item.id === id);
+        // } else {
+        //     throw new Error("No data found in local storage.");
+        // }
     } catch (error) {
         console.error(error);
         return null;
@@ -24,25 +27,6 @@ const getInfoData = (id) => {
 
 export default function NewsDetail() {
 
-    // before code
-
-    // // const selectTab = tab.selectTap;
-    // // console.log('****' + selectTab);
-    // const { id } = useParams();
-    // const [findData, setFindData] = useState(null);
-
-    // useEffect(() => {
-    //     // console.log("mount");
-    //     getInfoData(id).then(res => setFindData(res))
-    //         .catch(err => console.log(err));
-    //     console.log(findData);
-    // }, [])
-
-    // const back = useNavigate();
-    // const handleGoBack = () => {
-    //     back('/news')
-    // }
-
     const { id } = useParams();
     const [findData, setFindData] = useState(null);
     const navigate = useNavigate();
@@ -50,9 +34,9 @@ export default function NewsDetail() {
 
 
     useEffect(() => {
-        const fetchData = () => {
+        const fetchData = async () => {
             try {
-                const data = getInfoData(id);
+                const data = await getInfoData(id);
                 setFindData(data);
                 console.log(data);
             } catch (error) {
@@ -67,6 +51,14 @@ export default function NewsDetail() {
         navigate(-1);
 
     };
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        let formatDate2 = new Date(dateString).toLocaleDateString('ko-KR', options).replace(/\./g, '.');
+        // if (formatDate2.endsWith('-')) {
+        //   formatDate2 = formatDate2.slice(0, -1);
+        // }
+        return formatDate2;
+    };
 
 
     return (
@@ -75,10 +67,10 @@ export default function NewsDetail() {
             {findData ? (
                 <>
                     <div className="newsDetail_top">
-                        <img src={findData.src} alt={findData.alt} />
+                        <img src={`${API_BASE_URL}/resources/images/info/${findData.data.titleImg}`} alt={findData.data.infoTitle} />
                         <div className="detail_title">
-                            <h1>{findData.title}</h1>
-                            <p>이벤트 기간 : 2024.06.30 ~ 2024.07.10</p>
+                            <h1>{findData.data.infoTitle}</h1>
+                            <p>이벤트 기간 : {formatDate(findData.data.startDate)} ~ {formatDate(findData.data.endDate)}</p>
                         </div>
                         {/* <div>
                             <div class="front"><FontAwesomeIcon icon={faArrowRotateLeft} /></div>
@@ -94,12 +86,12 @@ export default function NewsDetail() {
                         </div>
                     </div>
                     <div className="newsDetail_middle">
-                        <p>{findData.subTitle}</p>
-                        <p>{findData.detail1}</p>
-                        <img src={`${findData.detailImg}`} />
-                        <p>{findData.detail2_title}</p>
-                        {`${findData.detail2_detail}` && <p>{findData.detail2_detail}</p>}
-                        {`${findData.detail2_detail_img}` && <img src={findData.detail2_detail_img} />}
+                        <p>{findData.data.subtitle}</p>
+                        <p>{findData.data.detailCon}</p>
+                        {findData.data.afterName && findData.data.afterName[0] && <img src={`${API_BASE_URL}/resources/images/info/${findData.data.afterName[0]}`} />}
+                        <p>{findData.data.sectionTitle}</p>
+                        {findData.data.sectionCon && <p>{findData.data.sectionCon}</p>}
+                        {findData.data.afterName && findData.data.afterName[1] && <img src={`${API_BASE_URL}/resources/images/info/${findData.data.afterName[1]}`} />}
 
                     </div>
                 </>

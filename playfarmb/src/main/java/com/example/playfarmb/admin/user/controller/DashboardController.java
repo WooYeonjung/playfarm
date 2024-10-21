@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.playfarmb.admin.user.domain.AgeGroupCountDTO;
+import com.example.playfarmb.admin.user.domain.PopularTagDTO;
 import com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO;
 import com.example.playfarmb.admin.user.service.DashboardService;
 
@@ -31,5 +32,10 @@ public class DashboardController {
     @GetMapping("/purchasedata")
     public List<PurchaseStatisticDTO> getPurchaseData(){
     	return dashuservice.getPurchaseData();
+    }
+    
+    @GetMapping("/populartag")
+    public List<PopularTagDTO> popularTagCount(){
+    	return dashuservice.popularTagCount();
     }
 }
