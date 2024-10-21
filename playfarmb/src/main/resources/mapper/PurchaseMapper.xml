@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.playfarmb.mapperInterface.PurchaseMapper">
+<mapper
+	namespace="com.example.playfarmb.mapperInterface.PurchaseMapper">
 
 
 
 
-<select id="findPurchaseTotal" resultType="com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO">
-	select date_format(purch_date, '%Y-%m') AS MONTH, sum(total_price) as total FROM purchaselist
-GROUP BY  date_format(purch_date, '%Y-%m') order by month
-</select>
+	<select id="findPurchaseTotal"
+		resultType="com.example.playfarmb.admin.user.domain.PurchaseStatisticDTO">
+		select date_format(purch_date, '%Y-%m') AS MONTH, sum(total_price) as total
+		FROM purchaselist
+		GROUP BY date_format(purch_date, '%Y-%m') order by month
+	</select>
 
+	<select id="popularTagCount" resultType="com.example.playfarmb.admin.user.domain.PopularTagDTO">
+
+		SELECT c.codeinfo As codeInfo,
+		c.codeid AS codeId,
+		COUNT(DISTINCT g.game_id) AS tagCount,
+		GROUP_CONCAT(DISTINCT c.codeinfo) AS allCodeInfo
+		FROM code c
+		LEFT JOIN game g ON FIND_IN_SET(c.codeid, g.tag) > 0
+		LEFT JOIN listdetail l ON l.game_id = g.game_id
+		WHERE c.codedv = 'tag'
+		GROUP BY c.codeid
+	</select>
 
 </mapper>
