@@ -36,9 +36,9 @@ const Step3 = ({ formData, setFormData, prevStep, nextStep }) => {
     e.preventDefault();
     if (hadleCheckDupName()) {
       nextStep();
-      console.log("닉네임 유효함, 폼을 제출합니다.");
+      //console.log("닉네임 유효함, 폼을 제출합니다.");
     } else {
-      console.log("닉네임이 유효하지 않음, 제출을 중단합니다.");
+      //console.log("닉네임이 유효하지 않음, 제출을 중단합니다.");
     }
   }
 

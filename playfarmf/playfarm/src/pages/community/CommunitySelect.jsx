@@ -6,12 +6,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../service/app-config';
 
 
-// export const options = [
-//     { value: 'find', label: '유저찾기', icon: <FontAwesomeIcon icon={faHandshake} /> },
-//     { value: 'free', label: '자유', icon: <FontAwesomeIcon icon={faComments} /> },
-//     { value: 'question', label: '질문', icon: <FontAwesomeIcon icon={faCircleQuestion} /> },
-//     { value: 'fanArt', label: '팬아트', icon: <FontAwesomeIcon icon={faPalette} /> },
-// ];
+
 const customStyles = {
     control: (provided) => ({
         ...provided,
@@ -86,7 +81,7 @@ const CommunitySelect = ({ value, onChange }) => {
                 });
                 setOptions(option);
             } catch (err) {
-                console.log("게시물타입을 불러오는것을 실패하였습니다.");
+                alert("게시물타입을 불러오는것을 실패하였습니다.");
             }
         }
         fetchTypeList();

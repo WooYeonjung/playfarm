@@ -113,27 +113,9 @@ export default function GameDetailsPage({ gameId }) {
 
     }, [gameId]);
 
-    // useEffect(() => {
-    //     const fetchPurchasedGame = async () => {
-    //         try {
-    //             const purchasedList = await axios.get('/purchase/gamelist', {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     'Authorization': 'Bearer ' + loginInfo.token,
-    //                 }
-    //             })
-    //             setPurchaseData(purchasedList.data);
-    //         } catch (error) {
-    //             console.error('구매 게임 데이터를 가져올 수 없습니다.', error);
-    //         }
-    //     }
-    //     fetchPurchasedGame();
-    // }, [loginInfo.token])
 
     const imgName = imageData.map(image => image.originName);
-    // console.log(loginInfo.token)
-    // console.log(purchaseData)
-    // console.log(gameDetail[`modeDesc${id}`])
+
 
     const item = gameDetail;
 
@@ -170,7 +152,7 @@ export default function GameDetailsPage({ gameId }) {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
-        }; console.log(type);
+        }; 
         axios.post("/cart", cartData, { headers: headers }, token)
             .then(res => {
                 let cartConfirm = window.confirm(res.data);
@@ -215,17 +197,7 @@ export default function GameDetailsPage({ gameId }) {
         } catch (error) {
             console.error('구매 정보를 알 수 없습니다', error.message);
         }
-        //바로 payment페이지로 보내야함. 
-        // let payData = JSON.parse(localStorage.getItem('pay')) || [];
-        // const existingIndex = payData.findIndex(pay => pay.userid === loginInfo.userId);
 
-        // if (existingIndex === -1) {
-        //     payData.push(data);
-        // } else {
-        //     payData[existingIndex] = data;
-        // }
-
-        // localStorage.setItem('pay', JSON.stringify(payData));
 
         navigate('/payment');
     };

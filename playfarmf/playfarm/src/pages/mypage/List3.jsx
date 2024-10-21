@@ -33,20 +33,7 @@ function List3() {
     <FontAwesomeIcon icon={faXmark} size='2xl' />
   ];
 
-  // useEffect(() => {
-  //   const storageUser = localStorage.getItem('userData');
-  //   if (storageUser) {
-  //     const user = JSON.parse(storageUser);
-  //     setUsername(user.name);
-  //     setEmail(user.email);
-  //   }
-  // }, []);
-
-  // const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
-  // const userPayData = JSON.parse(localStorage.getItem('userData'));
-
-  // let storedGameData = [];
-
+  
   const fetchList = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/mypage/mygamelist`, {
@@ -75,7 +62,7 @@ function List3() {
 
   }, [isLoggedIn]);
 
-  console.log(storedGameData);
+  //console.log(storedGameData);
 
   const openModal = (game) => {
 

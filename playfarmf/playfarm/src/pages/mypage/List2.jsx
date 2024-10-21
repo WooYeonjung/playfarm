@@ -107,15 +107,6 @@ function List2() {
     .map((item, i) => {
       return (
 
-        // <Link to={`/store/detail/${item.gameId}`} className={`game${i}`} style={{ backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})` }} >
-        //   <div key={item.id}>
-        //     <button onClick={() => handleRemoveGame(item.gameId)} className="remove-btn">
-        //       {fontEle}
-        //     </button>
-        //   </div>
-        // </Link>
-
-
         <div key={i} className='gameDiv'>
           <div onClick={() => { clickImg(item.gameId) }} className={`game${i}`} style={{ backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})` }}>
 

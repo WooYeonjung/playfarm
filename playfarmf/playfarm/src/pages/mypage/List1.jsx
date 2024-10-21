@@ -59,7 +59,7 @@ function List1() {
         setMyInfo(response);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   }
 
@@ -196,7 +196,7 @@ function List1() {
         // onLogout();
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   }
 

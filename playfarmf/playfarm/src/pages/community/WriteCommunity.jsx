@@ -31,7 +31,7 @@ const WriteCommunity = () => {
 
     };
 
-    console.log(postType)
+   // console.log(postType)
 
 
     const handleLinkChange = (e) => {
@@ -99,7 +99,7 @@ const WriteCommunity = () => {
         const formData = new FormData(document.getElementById('postFrom'));
         const token = loginInfo.token;
         const existFile = document.getElementById('file');
-        console.log(existFile);
+        //console.log(existFile);
         let headers;
         if (existFile) {
             headers = {

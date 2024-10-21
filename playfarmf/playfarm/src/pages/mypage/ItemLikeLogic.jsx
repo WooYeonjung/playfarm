@@ -7,31 +7,7 @@ const useLikedGames = () => {
   const { isLoggedIn, loginInfo } = useAuth();
   // const userId = loginInfo.userId;
   const [likedGames, setLikedGames] = useState([]);
-  // const [likedGames, setLikedGames] = useState(() => {
-  //   const storedData = JSON.parse(localStorage.getItem('likedGames')) || {};
-  //   return storedData[userId] || [];
-  // });
 
-  // useEffect(async () => {
-  //   await axios.get('/mypage/wishlist', {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       "Authorization": 'Bearer ' + loginInfo.token
-  //     }
-  //   }).then(res => {
-  //     setLikedGames(res.data);
-  //   }).catch(err => {
-  //     alert(err.response.data);
-  //   })
-
-
-
-
-
-  //   // const storedData = JSON.parse(localStorage.getItem('likedGames')) || {};
-  //   // const userLikedGames = storedData[userId] || [];
-  //   // setLikedGames(userLikedGames);
-  // }, [userId]);
 
   const fetchGameData = async () => {
 
@@ -68,8 +44,8 @@ const useLikedGames = () => {
 
   const fetchAddWish = async (item, token) => {
 
-    console.log(item.gameId);
-    console.log(token);
+  //  console.log(item.gameId);
+   // console.log(token);
     await axios.post(`${API_BASE_URL}/mypage/addwish`, { gameId: item.gameId }, {
       headers: {
         'Content-Type': 'application/json',

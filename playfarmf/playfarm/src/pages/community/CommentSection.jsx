@@ -13,7 +13,7 @@ export default function CommentSection({ postId, comments, setComments }) {
     const [newComment, setNewComment] = useState('');
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
     const navigate = useNavigate();
-    console.log(loginInfo)
+    //console.log(loginInfo)
     const handleAddComment = async () => {
         if (newComment.trim() === '') {
             alert('댓글을 입력해주세요!');
@@ -56,16 +56,6 @@ export default function CommentSection({ postId, comments, setComments }) {
             alert('댓글 등록을 실패하였습니다.');
             console.error('댓글 등록을 실패하였습니다.', error);
         }
-
-        // const comment = {
-        //     id: comments.length + 1,
-        //     content: newComment,
-        //     date: new Date().toISOString(),
-        // };
-        // const updatedComments = [...comments, comment];
-        // setComments(updatedComments);
-        // localStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments));
-        // setNewComment('');
     };
 
     const deleteMyReply = async (replyId) => {

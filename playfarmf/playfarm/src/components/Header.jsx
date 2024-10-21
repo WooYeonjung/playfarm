@@ -18,15 +18,6 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     const navigate = useNavigate();
     // const logOutNavi = useNavigate('/');
 
-
-    // useEffect(() => {
-    //     const loginUser = sessionStorage.getItem(JSON.stringify('loginInfo'));
-    //     if (loginUser != null) {
-    //         setLoginId(loginUser.userId);
-    //         console.log(loginId);
-    //     }
-    // }, []);
-
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     }

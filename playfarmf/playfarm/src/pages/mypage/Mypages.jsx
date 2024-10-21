@@ -67,7 +67,7 @@ const PageNation = () => {
         setMyInfo(response);
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
     }
   }
   // 새로고침해도 정보 그대로 있음

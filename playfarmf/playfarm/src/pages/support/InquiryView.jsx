@@ -38,7 +38,6 @@ const InquiryView = () => {
       setLoading(false);
     }
   }, [loginInfo?.userId]);
-  console.log(inquiryData);
   // 로그인 상태가 변경될 때마다 실행
   useEffect(() => {
     if (isLoggedIn) {

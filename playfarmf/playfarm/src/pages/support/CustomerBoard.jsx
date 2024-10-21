@@ -61,7 +61,7 @@ const CustomerBoard = () => {
           throw new Error('데이터 형식이 잘못되었습니다.');
         }
       } catch (err) {
-        console.error('Error fetching data:', err);
+        alert('Error fetching data:');
         setAccordionItems(initialAccordionItems); // 초기 데이터로 설정
       }
     };

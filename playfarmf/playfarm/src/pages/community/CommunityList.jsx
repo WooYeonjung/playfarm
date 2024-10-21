@@ -61,7 +61,7 @@ const CommuListItem = ({ title, date, userName, type, reply }) => {
 }
 
 function CommunityList({ posttype, onPostListClick, search, onSearchChange, currentPage, setCurrentPage, postData }) {
-    
+
     // const [search, setSearch] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     // const [currentPage, setCurrentPage] = useState(1);
@@ -70,7 +70,7 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
 
 
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
-    
+
     // CommunityWrite 이동
     const onWriteClick = () => {
         if (!isLoggedIn || !loginInfo || !loginInfo.userId) {
@@ -82,19 +82,13 @@ function CommunityList({ posttype, onPostListClick, search, onSearchChange, curr
         } else {
             navigate('/community/write');
         }
-        // navigate('/community/write');
-        console.log(sessionStorage.getItem("loginInfo"));
+
     };
 
     useEffect(() => {
-        console.log("isLoggedIn: ", isLoggedIn);
-        console.log("loginInfo: ", loginInfo);
+        // console.log("isLoggedIn: ", isLoggedIn);
+        // console.log("loginInfo: ", loginInfo);
     }, [isLoggedIn, loginInfo]);
-    // useEffect(() => {
-    //     if (userInfo && userInfo.userid) {
-    //         setLoginUserId(userInfo.userid);
-    //     }
-    // }, [userInfo]);
 
     const handleChange = (e) => {
         setSearchTerm(e.target.value);

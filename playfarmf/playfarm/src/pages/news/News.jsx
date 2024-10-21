@@ -59,7 +59,7 @@ export default function News() {
                     localStorage.setItem("infoTab", tab);
                     // navigate('/info/' + tab);
                 }).catch(err => {
-                    console.log(err);
+                    //console.log(err);
                 });
             }
         }
@@ -89,7 +89,7 @@ export default function News() {
             setPage(page + 1);
             setLastPage(res.isLastPage);
         }).catch(err => {
-            console.log(err);
+           // console.log(err);
         });
     }
 
