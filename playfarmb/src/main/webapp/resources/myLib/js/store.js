@@ -273,7 +273,7 @@ function disusedGame(event, gameId) {
     axios.put(`/admin/store/changestatus/${gameId}`)
         .then(response => {
             alert("판매중인 상품에서 삭제되었습니다. 사용하지 않는 상태의 게임은 Status Page에서 확인 가능합니다.");
-            gameListDetail(gameId);
+			location.reload();
         })
         .catch(err => {
             console.error("Error updating game data:", err);
@@ -281,6 +281,7 @@ function disusedGame(event, gameId) {
 }
 
 async function gameAdd() {
+	document.getElementById("resultArea2").innerHTML = "";
 	document.getElementById("resultArea3").innerHTML = "";
 	document.getElementById("detailArea").style.display = "none";
 	document.getElementById("title").innerHTML = "Store";
@@ -610,7 +611,7 @@ async function gameAdd() {
 			  </div>
 
 
-			  
+			  <br>
 			  <button type="submit" class="btn btn-primary">등록하기</button>
 			</form>
 			`;
@@ -704,6 +705,7 @@ async function gameAdd() {
 	        .then(response => {
 	            console.log('Game added successfully', response.data);
 	            alert('Game added successfully!');
+				location.reload();
 				
 	        })
 	        .catch(error => {
