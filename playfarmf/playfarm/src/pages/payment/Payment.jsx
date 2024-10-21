@@ -30,7 +30,7 @@ export default function Payment() {
                 const playTypeCodeResponse = await axios.get(`${API_BASE_URL}/code/codedv/playtype`);
                 setPlaytypeCode(playTypeCodeResponse.data);
             } catch (error) {
-                console.log('코드 데이터를 가져오지 못했습니다.', error);
+                alert('코드 데이터를 가져오지 못했습니다.');
             }
         };
 
@@ -42,8 +42,6 @@ export default function Payment() {
             if (isLoggedIn && loginInfo.userId) {
                 const selectedGames = location.state?.selectedGames;
 
-                console.log('Selected Games:', selectedGames);
-                console.log('Playtype Code:', playtypeCode);
                 if (selectedGames && selectedGames.length > 0) {
                     // 장바구니에서 선택한 게임들만 필터링하여 가져오는 로직
                     const formattedGames = selectedGames.map(game => {
@@ -78,7 +76,7 @@ export default function Payment() {
                             playtype: playtype
                         }]);
                     } catch (error) {
-                        console.log('구매 정보를 찾을 수 없습니다.', error);
+                        alert('구매 정보를 찾을 수 없습니다.');
                     }
                 }
             }
@@ -100,18 +98,8 @@ export default function Payment() {
             return total + price;
         }, 0);
 
-        // const totalPrice = payData.reduce((total, item) => {
-        //     const price = (item.discount > 0 && (item.discendDate !== null && new Date(item.discendDate) >= new Date()))
-        //         ? item.price - (item.price * item.discount / 100)
-        //         : item.price;
-        //     return total + price;
-        // }, 0);
-
         const payMethodCode = payTypeCode.find(type => type.codeInfo === selectedPaymentMethod);
-        // const payPlaytypeCode = playtypeCode.filter(type => 
-        //     payData.some(item => item.playtype === type.codeInfo)
-        // );
-        // console.log(payPlaytypeCode)
+
 
         const purchaseData = {
             userId: loginInfo.userId,
@@ -135,7 +123,6 @@ export default function Payment() {
                 }
             })
         };
-        console.log(purchaseData)
         try {
             await axios.post(`${API_BASE_URL}/purchase/completed`, purchaseData, {
                 headers: {
@@ -186,7 +173,7 @@ export default function Payment() {
 
     const isPaymentButtonEnabled = acknowledgeWarning && selectedPaymentMethod !== '';
     let method = selectedPaymentMethod;
-    console.log(payData)
+
     return (
         <div>
             <h1 className="payment_h1">Payment</h1>

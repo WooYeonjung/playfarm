@@ -142,7 +142,7 @@ const EditCommunity = () => {
         formData.append('postContent', postContent);
         formData.append('link', link);
         formData.append('postType', selectType);
-        console.log(post.postId);
+       // console.log(post.postId);
         debugger;
 
         // 파일이 있을 경우 FormData에 추가
@@ -156,7 +156,7 @@ const EditCommunity = () => {
             }
         }
         const token = loginInfo.token;
-        console.log(existFile);
+        //console.log(existFile);
         let headers;
         if (existFile && existFile.files.length > 0) {
             headers = {
@@ -204,14 +204,7 @@ const EditCommunity = () => {
         }
 
 
-        // const updatedPosts = posts.map((p) =>
-        //     p.postId === post.postId
-        //         ? { ...p, postTitle, postType: postType, link, postContent, files }
-        //         : p
-        // );
-
-        // setPosts(updatedPosts);
-        //navigate('/community/all');
+        
     };
     return (
         <div className="total_wrapper">

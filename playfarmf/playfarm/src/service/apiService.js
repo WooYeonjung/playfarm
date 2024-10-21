@@ -48,9 +48,6 @@ export async function apiCall(url, method, requestData, token) {
     options.data = requestData;
   }
 
-  console.log(`** apiCall options.method=${options.method}`);
-  console.log(`** apiCall options.url=${options.url}`);
-  console.log(`** apiCall options.data=${options.headers}`);
   //alert(`** apiCall 전달된 Data 확인: options.data=${options.data}`);
   // => 전달된 options 값들 확인
 
@@ -59,17 +56,9 @@ export async function apiCall(url, method, requestData, token) {
     .then(response => {
       return response.data;
     }).catch(err => {
-      console.error(`** apiCall Error status=${err.response.status}, message=${err.message}`);
+      //  console.error(`** apiCall Error status=${err.response.status}, message=${err.message}`);
 
-      // => 403 오류 처리
-      //    한군데서 처리하면 좋겠지만 
-      //    요청에 따라 오류가 이중으로 처리될수 있고 화면흐름상 요청지에서 처리함. 
-      /*  if (err.response.status===403) {
-          alert(`** Server Reject : 접근권한이 없습니다. => ${err.response.status}`);
-          window.location.href = "/"; // 일단 첫화면으로 보냄
-        } else 
-          return Promise.reject(err.response.status);
-      */
+
       return Promise.reject(err);   //err 은 일종의 String
       // => Promise.reject(err) 의 인자 err 은 객체형이 아니고, 문자형 단일값만 
       //    전달하기때문에 필요한 정보 (err.response.status) 만 전달함 

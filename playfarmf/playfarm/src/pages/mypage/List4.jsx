@@ -30,17 +30,6 @@ function List4() {
     <FontAwesomeIcon icon={faXmark} size='2xl' />
   ];
 
-  // useEffect(() => {
-  //   const storageUser = localStorage.getItem('userData');
-  //   if (storageUser) {
-  //     const user = JSON.parse(storageUser);
-  //     setUsername(user.name);
-  //     setEmail(user.email);
-  //   }
-  // }, []);
-
-  // const storedGameData = JSON.parse(localStorage.getItem('pay')) || [];
-  // const userPayData = JSON.parse(localStorage.getItem('userData'));
 
   // let storedGameData = [];
   let userPayData = JSON.parse(localStorage.getItem('userData'));
@@ -120,21 +109,6 @@ function List4() {
   };
 
   const totalPages = Math.ceil(storedGameData.length / itemsPerPage);
-
-  // const gameBox = storedGameData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-  //   .map((item, i) => (
-  //     <div key={i}>
-  //       <div className={`game${i}`}
-  //         style={{
-  //           backgroundImage: `url(${API_BASE_URL}/resources/images/game/${item.titleImg})`
-  //         }}>
-  //         <div>
-  //           <button onClick={() => openModal(item)}>{fontEle[0]}</button>
-  //         </div>
-  //       </div>
-  //       <button onClick={() => openModalPlay(item)}>게임하러가기</button>
-  //     </div>
-  //   ));
 
   const gameBox = (storedGameData && storedGameData.length > 0)
     ? storedGameData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)

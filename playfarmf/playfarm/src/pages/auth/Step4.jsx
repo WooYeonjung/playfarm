@@ -49,13 +49,13 @@ const Step4 = ({ formData, setFormData, prevStep }) => {
       localStorage.setItem('usersJSON', JSON.stringify(updatedUsers));
 
       // 업데이트 후 데이터 확인용 콘솔 로그 추가
-      console.log('Updated users:', updatedUsers);
+      // console.log('Updated users:', updatedUsers);
 
-      console.log('데이터가 성공적으로 저장되었습니다:', formData);
+      // console.log('데이터가 성공적으로 저장되었습니다:', formData);
       alert('환영합니다~!!');
       navigate('/login');
     } else {
-      console.log("이메일이 유효하지 않음, 제출을 중단합니다.");
+      // console.log("이메일이 유효하지 않음, 제출을 중단합니다.");
     }
   }
 

@@ -57,7 +57,7 @@ const WrittenByMe = () => {
 
     }, [loginInfo]); // loginUserId가 변경될 때마다 useEffect 실행  // 변경전 [isLoggedIn, loginInfo]
 
-    console.log(posts);
+   // console.log(posts);
     // 게시글 삭제 핸들러
     const handleDelete = (postId) => {
         let confirm = window.confirm("삭제 하시겠습니까?");

@@ -28,29 +28,17 @@ export default function Store() {
 
     // navbar_category(playtype)
     const [category, setCategory] = useState(storeNav);
-    console.log(category)
+
     const [tab, setTab] = useState({ selectTab: storeNav })
 
     const categoryOnclick = (playtype) => {
         setCategory(playtype);
-        // switch (playtype) {
-        //     case 'nin':
-        //         playtype = 'nintendo';
-        //         break;
-        //     case 'ps':
-        //         playtype = 'playstation';
-        //         break;
 
-        //     default:
-        //         playtype = playtype;
-        //         break;
-        // }
         setTab({ selectTab: playtype });
     };
 
     // checkbox ischecked true 값 담아오기
     const [selectcheck, setSelectcheck] = useState({ playtype: [], tag: [] });
-    // console.log(selectcheck);
 
     // gameitem container click > details component
     const navigate = useNavigate();

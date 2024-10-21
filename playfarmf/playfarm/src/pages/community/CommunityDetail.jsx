@@ -28,25 +28,13 @@ export default function CommunityDetail() {
                         'Authorization': 'Bearer ' + loginInfo.token,
                     }
                 });
-                console.log("Response Data:", response.data);
+                //  console.log("Response Data:", response.data);
                 setPostData(response.data);
             } catch (err) {
-                console.error('게시물 데이터를 찾지 못했습니다', err);
+                // console.error('게시물 데이터를 찾지 못했습니다', err);
             }
         };
-        // const fetchReplies = async () => {
-        //     try {
-        //         const response = await axios.get(`/community/replies/${postId}`, {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': 'Bearer ' + loginInfo.token,
-        //             }
-        //         });
-        //         setComments(response.data);
-        //     } catch (error) {
-        //         console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
-        //     }
-        // };
+
         fetchPostData();
     }, [postId]);
     useEffect(() => {

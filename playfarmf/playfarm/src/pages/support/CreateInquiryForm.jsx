@@ -30,7 +30,7 @@ const CreateInquiryForm = () => {
                 alert('문의가 성공적으로 제출되었습니다.');
             })
             .catch((error) => {
-                console.error('Error submitting inquiry:', error);
+                //console.error('Error submitting inquiry:', error);
                 alert('문의 제출에 실패했습니다.');
             });
     };

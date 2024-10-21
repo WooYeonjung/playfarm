@@ -12,12 +12,7 @@ const getInfoData = async (id) => {
     try {
         const data = axios.get(`${API_BASE_URL}/info/infodetail?id=${id}`);
         return data;
-        // console.log(data);
-        // if (data) {
-        //     return data.find((item) => item.id === id);
-        // } else {
-        //     throw new Error("No data found in local storage.");
-        // }
+  
     } catch (error) {
         console.error(error);
         return null;
@@ -38,9 +33,9 @@ export default function NewsDetail() {
             try {
                 const data = await getInfoData(id);
                 setFindData(data);
-                console.log(data);
+            //    console.log(data);
             } catch (error) {
-                console.log(error);
+             //   console.log(error);
             }
         };
 

@@ -3,7 +3,7 @@ import React from "react";
 const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
   const handleChange = (e) => {
     const value = e.target.value.replace(/\s/g, '');
-    setFormData({ ...formData, password:value });
+    setFormData({ ...formData, password: value });
   }
 
   const hadleCheckDupPw = () => {
@@ -33,9 +33,9 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
     e.preventDefault();
     if (hadleCheckDupPw()) {
       nextStep();
-      console.log("비밀번호 유효함, 폼을 제출합니다.");
+      //  console.log("비밀번호 유효함, 폼을 제출합니다.");
     } else {
-      console.log("비밀번호가 유효하지 않음, 제출을 중단합니다.");
+      //console.log("비밀번호가 유효하지 않음, 제출을 중단합니다.");
     }
   }
 

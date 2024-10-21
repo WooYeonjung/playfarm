@@ -48,7 +48,7 @@ function SignUp() {
   // id 유효성 및 중복체크 
   const handleCheckDuplicate = async (e) => {
     e.preventDefault();
-    const url = `${API_BASE_URL}/user/idcheck/${formData.userId}`;
+    const url = `/user/idcheck/${formData.userId}`;
     // const data = { userId: formData.userId }
     if (!formData.userId || formData.userId.length < 5 || formData.userId.length > 10) {
       setIdErrMsg('아이디는 5자 이상 10자 이하로 입력해주세요.');
@@ -60,7 +60,6 @@ function SignUp() {
     }
     try {
       const reponse = await apiCall(url, 'GET');
-      console.log(reponse);
       if (!reponse) {
         setIdErrMsg('');
         setIdCheckMsg('사용 가능한 아이디입니다.');
@@ -113,8 +112,8 @@ function SignUp() {
 
   // 닉네임
   const handleCheckDupName = async (e) => {
-    const url = `${API_BASE_URL}/user/nickcheck/${formData.nickname}`;
-    console.log(formData.nickname);
+    const url = `/user/nickcheck/${formData.nickname}`;
+
     if (!formData.nickname || formData.nickname.length < 3 || formData.nickname.length > 10) {
       setNickNameErrMsg('닉네임은 3자 이상 10자 이하로 입력해주세요.');
       return false;
@@ -128,7 +127,6 @@ function SignUp() {
 
     try {
       const response = await apiCall(url, 'GET');
-      console.log(response);
       if (!response) {
         setNickNameErrMsg('사용 가능한 닉네임입니다.');
         setIsNickNameChecked(true);
@@ -163,10 +161,9 @@ function SignUp() {
 
       return false;
     }
-    const url = `${API_BASE_URL}/user/emailcheck/${formData.email}`;
+    const url = `/user/emailcheck/${formData.email}`;
     try {
       const response = await apiCall(url, 'GET',);
-      console.log(response);
       if (!response) {
         setEmailErrMsg('사용 가능한 이메일니다.');
         setIsEmailErrMsg('true')
@@ -225,18 +222,13 @@ function SignUp() {
         alert("회원가입에 실패하였습니다. 다시 시도하세요.");
         navigate('/signup');
       } else {
-        console.log(`err=${err}`);
+        //  console.log(`err=${err}`);
         navigate('/signup');
       }
     }
 
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleNextStep();
-  //   }
-  // };
 
   return (
     <>

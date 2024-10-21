@@ -65,7 +65,6 @@ const InquiryForm = () => {
 
         fetchData();
     }, []);
-    console.log(platforms);
     // 입력값 처리
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -116,7 +115,6 @@ const InquiryForm = () => {
                 alert(`문의 제출에 실패했습니다: ${response.data.message}`);
             }
         } catch (error) {
-            console.error('Axios Error:', error);
             alert('서버와의 통신에 문제가 발생했습니다.');
         }
     }, [formData, loginInfo, navigate]);

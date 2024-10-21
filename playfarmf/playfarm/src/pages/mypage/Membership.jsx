@@ -66,7 +66,7 @@ const Membership = () => {
         formData.append('newPassword', newPassword);
 
         const token = loginInfo.token;
-        console.log(formData);
+        //console.log(formData);
         try {
 
             const response = await apiCall('/user/updatepw', 'POST', formData, token);
