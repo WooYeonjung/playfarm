@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.example.playfarmb.admin.commondomain.AdminImageDTO;
-import com.example.playfarmb.common.domain.ImageDTO;
-import com.example.playfarmb.store.entity.Requirement;
+import com.example.playfarmb.admin.common.domain.AdminImageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

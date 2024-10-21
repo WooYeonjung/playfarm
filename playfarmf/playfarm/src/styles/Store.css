@@ -9,6 +9,7 @@
 }
 
 .container {
+    height: 1200px;
     background: #fff;
     transition: 0.5s;
 }
