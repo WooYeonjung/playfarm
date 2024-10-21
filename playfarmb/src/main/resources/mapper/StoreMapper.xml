@@ -1,31 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.playfarmb.mapperInterface.StoreMapper">
-	
-	<resultMap id="GameListMap" type="com.example.playfarmb.admin.store.domain.StoreDTO">
-		<id property="gameId" column="gameId"/>
-        <result property="gameTitle" column="gameTitle"/>
-        <result property="releaseDate" column="releaseDate"/>
-        <result property="price" column="price"/>
-        <result property="discount" column="discount"/>
-        <result property="discendDate" column="discendDate"/>
-        <result property="playtype" column="playtype"/>
-        <result property="tag" column="tag"/>
-        <result property="ageRating" column="ageRating"/>
-	</resultMap>
-	
-	<select id="gameList" resultMap="GameListMap">
-		SELECT 
-			game_id AS gameId, game_title AS gameTitle, 
-			release_date AS releaseDate, price, 
-			discount, discend_date AS discendDate, 
-			playtype, tag, age_rating AS ageRating
-		FROM game
-		WHERE useyn='y'
-	</select>
-	
-	
-    <resultMap id="ImageResultMap" type="com.example.playfarmb.admin.common.domain.AdminImageDTO">
+
+    <resultMap id="ImageResultMap" type="com.example.playfarmb.admin.commondomain.AdminImageDTO">
         <id property="imageId" column="imageId"/>
         <result property="path" column="imagePath"/>
         <result property="originName" column="imageOriginName"/>
@@ -111,79 +88,6 @@
         FROM game g
         LEFT JOIN image i ON g.file_group_id = i.file_group_id
         LEFT JOIN requirement r ON g.game_id = r.game_id
-        WHERE g.game_id = #{gameId}
+        WHERE g.game_id = #{gameId};
     </select>
-    
-    <update id="disusedStatus" parameterType="int">
-    	UPDATE game SET useyn='n' 
-    	WHERE game_id = #{gameId}
-    </update>
-    
-   
-    
-    <insert id="insertGame" parameterType="com.example.playfarmb.admin.store.domain.StoreDTO" useGeneratedKeys="true" keyProperty="gameId">
-        INSERT INTO game (
-            game_title,
-            release_date,
-            price,
-            discount,
-            discend_date, 
-            title_img,
-            age_rating,
-            detail_con,
-            mode_name1,
-            mode_desc1,
-            mode_name2,
-            mode_desc2,
-            mode_name3,
-            mode_desc3,
-            playtype,
-            tag
-        ) VALUES (
-            #{gameTitle},
-            #{releaseDate},
-            #{price},
-            #{discount},
-            #{discendDate},
-			'sdsd',            
-            #{ageRating},
-            #{detailCon},
-            #{modeName1},
-            #{modeDesc1},
-            #{modeName2},
-            #{modeDesc2},
-            #{modeName3},
-            #{modeDesc3},
-            #{playtype},
-            #{tag}
-        )
-    </insert>
-
-    <insert id="insertRequirements" parameterType="java.util.List">
-        INSERT INTO requirement (
-            game_id,
-            opsys,
-            proc,
-            memory,
-            graphics,
-            dver,
-            storage,
-            scard,
-            division
-        ) VALUES
-        <foreach collection="list" item="requirement" separator=",">
-            (
-                #{requirement.game.gameId},
-                #{requirement.opsys},
-                #{requirement.proc},
-                #{requirement.memory},
-                #{requirement.graphics},
-                #{requirement.dver},
-                #{requirement.storage},
-                #{requirement.scard},
-                #{requirement.division}
-            )
-        </foreach>
-    </insert>
-
 </mapper>
