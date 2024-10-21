@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion, faComments, faHandshake, faPalette } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { API_BASE_URL } from '../../service/app-config';
 
 
 // export const options = [
@@ -49,7 +50,7 @@ const CommunitySelect = ({ value, onChange }) => {
     useEffect(() => {
         const fetchTypeList = async () => {
             try {
-                const response = await axios.get("/code/typelist");
+                const response = await axios.get(`${API_BASE_URL}/code/typelist`);
                 const option = response.data.map((option) => {
                     let icon;
                     let label;

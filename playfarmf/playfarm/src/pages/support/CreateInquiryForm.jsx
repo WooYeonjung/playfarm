@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../service/app-config';
 
 const CreateInquiryForm = () => {
     const [inquiryData, setInquiryData] = useState({
@@ -24,7 +25,7 @@ const CreateInquiryForm = () => {
         e.preventDefault();
 
         // API로 문의 생성 요청
-        axios.post('http://localhost:8080/api/inquiries', inquiryData)
+        axios.post(`${API_BASE_URL}/api/inquiries`, inquiryData)
             .then((response) => {
                 alert('문의가 성공적으로 제출되었습니다.');
             })

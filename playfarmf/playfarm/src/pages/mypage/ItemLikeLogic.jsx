@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../service/context/AuthProvider';
 import axios from 'axios';
+import { API_BASE_URL } from '../../service/app-config';
 
 const useLikedGames = () => {
   const { isLoggedIn, loginInfo } = useAuth();
@@ -35,7 +36,7 @@ const useLikedGames = () => {
   const fetchGameData = async () => {
 
     try {
-      const response = await axios.get('/mypage/wishlist', {
+      const response = await axios.get(`${API_BASE_URL}/mypage/wishlist`, {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": 'Bearer ' + loginInfo.token
@@ -69,7 +70,7 @@ const useLikedGames = () => {
 
     console.log(item.gameId);
     console.log(token);
-    await axios.post('http://localhost:8080/mypage/addwish', { gameId: item.gameId }, {
+    await axios.post(`${API_BASE_URL}/mypage/addwish`, { gameId: item.gameId }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
@@ -92,7 +93,7 @@ const useLikedGames = () => {
     const token = loginInfo.token
     if (isLiked) {
       try {
-        const response = await axios.delete(`/mypage/deletewish`, {
+        const response = await axios.delete(`${API_BASE_URL}/mypage/deletewish`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + loginInfo.token

@@ -132,7 +132,7 @@ function List1() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = 'http://localhost:8080/user/update';
+    const url = `${API_BASE_URL}/user/update`;
     const token = loginInfo.token;
     const headers = {
       'Content-Type': 'multipart/form-data',
@@ -186,7 +186,7 @@ function List1() {
     // }
     const token = storedLoginInfo.token;
     try {
-      const response = await apiCall("/user/withdraw", "GET", '', token);
+      const response = await apiCall(`${API_BASE_URL}/user/withdraw`, "GET", '', token);
       if (response) {
         // setMyInfo(response);
         setLoginInfo(null);

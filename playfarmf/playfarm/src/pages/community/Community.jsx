@@ -6,6 +6,7 @@ import NavbarCommu from './NavbarCommu';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../service/context/AuthProvider';
+import { API_BASE_URL } from '../../service/app-config';
 
 function Community() {
 
@@ -14,7 +15,7 @@ function Community() {
 
     useEffect(() => {
         const fetchPostData = async () => {
-            await axios.get('/community/postlist')
+            await axios.get(`${API_BASE_URL}/community/postlist`)
                 .then(response => {
                     console.log(response)
 

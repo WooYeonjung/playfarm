@@ -4,6 +4,7 @@ import '../../styles/CustomerBoard.css';
 import AccordionItem from './AccordionItem';
 import SearchBar from './SearchBar';
 import FaqPagination from './FaqPagination';
+import { API_BASE_URL } from '../../service/app-config';
 
 // 초기 아코디언 아이템 목록
 const initialAccordionItems = [
@@ -53,7 +54,7 @@ const CustomerBoard = () => {
   useEffect(() => {
     const fetchAccordionItems = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/faqs');
+        const response = await axios.get(`${API_BASE_URL}/api/faqs`);
         if (Array.isArray(response.data)) {
           setAccordionItems(response.data);
         } else {
@@ -80,7 +81,7 @@ const CustomerBoard = () => {
     setCurrentPage(1); // 페이지를 1로 초기화
 
     try {
-      const response = await axios.get(`http://localhost:8080/api/faqs/${apiEndpoint}`);
+      const response = await axios.get(`${API_BASE_URL}/api/faqs/${apiEndpoint}`);
       if (Array.isArray(response.data)) {
         setAccordionItems(response.data);
         setError(null); // 에러 초기화
@@ -101,7 +102,7 @@ const CustomerBoard = () => {
     setCurrentPage(1); // 페이지를 1로 초기화
 
     try {
-      const response = await axios.get('http://localhost:8080/api/faqs'); // 모든 데이터 요청
+      const response = await axios.get(`${API_BASE_URL}/api/faqs`); // 모든 데이터 요청
       if (Array.isArray(response.data)) {
         setAccordionItems(response.data);
         setError(null); // 에러 초기화
@@ -143,7 +144,7 @@ const CustomerBoard = () => {
         <button className="query-button" onClick={() => handleCategoryClick('결제/환불')}>결제/환불</button>
         <button className="query-button" onClick={() => handleCategoryClick('컴퓨터/기술')}>컴퓨터/기술</button>
         <button className="query-button" onClick={() => handleCategoryClick('기타')}>기타</button>
-        
+
         {/* 모두 보기 버튼 */}
         <button className="query-button" onClick={handleShowAll}>
           모두 보기
