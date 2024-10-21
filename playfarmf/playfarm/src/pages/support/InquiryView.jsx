@@ -4,6 +4,7 @@ import '../../styles/InquiryView.css';
 import axios from 'axios';
 import { useAuth } from '../../service/context/AuthProvider';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../service/app-config';
 
 const InquiryView = () => {
   const { isLoggedIn, loginInfo } = useAuth();  // 로그인 상태 및 사용자 정보 가져오기
@@ -22,7 +23,7 @@ const InquiryView = () => {
     try {
       setLoading(true);
       setError(null);  // 오류 상태 초기화
-      const response = await axios.get(`http://localhost:8080/api/inquiries/user/${loginInfo.userId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/inquiries/user/${loginInfo.userId}`);
 
       // 응답 데이터가 있고, 배열 형식일 때
       if (response.data && Array.isArray(response.data)) {
@@ -37,7 +38,7 @@ const InquiryView = () => {
       setLoading(false);
     }
   }, [loginInfo?.userId]);
-console.log(inquiryData);
+  console.log(inquiryData);
   // 로그인 상태가 변경될 때마다 실행
   useEffect(() => {
     if (isLoggedIn) {
@@ -57,7 +58,7 @@ console.log(inquiryData);
 
     if (window.confirm("정말로 이 문의를 삭제하시겠습니까?")) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/inquiries/${id}`);
+        const response = await axios.delete(`${API_BASE_URL}/api/inquiries/${id}`);
         if (response.status === 200) {
           setInquiryData(prevData => prevData.filter(article => article.id !== id));
           alert('문의가 삭제되었습니다.');

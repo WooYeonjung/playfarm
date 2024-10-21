@@ -5,6 +5,7 @@ import { useAuth } from '../../service/context/AuthProvider';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../service/app-config';
 
 export default function CommentSection({ postId, comments, setComments }) {
     // const [comments, setComments] = useState(JSON.parse(localStorage.getItem(`comments_${postId}`)) || []);
@@ -25,7 +26,7 @@ export default function CommentSection({ postId, comments, setComments }) {
         };
 
         try {
-            const response = await axios.post('/community/reply', commentData, {
+            const response = await axios.post(`${API_BASE_URL}/community/reply`, commentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + loginInfo.token,
@@ -37,7 +38,7 @@ export default function CommentSection({ postId, comments, setComments }) {
                 setNewComment('');
                 const fetchReplies = async () => {
                     try {
-                        const response = await axios.get(`/community/replies/${postId}`, {
+                        const response = await axios.get(`${API_BASE_URL}/community/replies/${postId}`, {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization': 'Bearer ' + loginInfo.token,
@@ -69,7 +70,7 @@ export default function CommentSection({ postId, comments, setComments }) {
 
     const deleteMyReply = async (replyId) => {
         try {
-            const response = await axios.delete(`/community/reply/${replyId}`, {
+            const response = await axios.delete(`${API_BASE_URL}/community/reply/${replyId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + loginInfo.token,

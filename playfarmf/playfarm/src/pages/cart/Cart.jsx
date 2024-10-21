@@ -214,7 +214,7 @@ export default function Cart() {
         const fetchCartData = async () => {
             try {
                 const token = loginInfo.token
-                const response = await axios.get("/cart/cartlist", {
+                const response = await axios.get(`${API_BASE_URL}/cart/cartlist`, {
                     headers:
                     {
                         'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ export default function Cart() {
         if (userConfirmed) {
             try {
                 const token = loginInfo.token
-                const response = await axios.delete("/cart/cartdelete", {
+                const response = await axios.delete(`${API_BASE_URL}/cart/cartdelete`, {
                     headers:
                     {
                         'Content-Type': 'application/json',

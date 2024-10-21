@@ -150,7 +150,7 @@ export default function GameDetailsPage({ gameId }) {
                 if (isPurchased) {
                     let gameConfirm = window.confirm('이미 구매한 게임입니다. 게임하러 가시겠습니까?');
                     if (gameConfirm) {
-                        navigate('/list3')
+                        navigate('/mygame')
                     }
                     return;
                 }
@@ -211,7 +211,7 @@ export default function GameDetailsPage({ gameId }) {
         };
 
         try {
-            const response = axios.post('/game/buy', buyData);
+            const response = axios.post(`${API_BASE_URL}/game/buy`, buyData);
         } catch (error) {
             console.error('구매 정보를 알 수 없습니다', error.message);
         }

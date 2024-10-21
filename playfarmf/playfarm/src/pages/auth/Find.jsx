@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/Find.css';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from './../../service/app-config';
 
 const Find = () => {
   const [activeTab, setActiveTab] = useState('findId');
@@ -34,7 +35,7 @@ const Find = () => {
 
     if (emailCofirm()) {
       try {
-        const response = await axios.get(`/user/findid/${email}`);
+        const response = await axios.get(`${API_BASE_URL}API_BASE_URL/user/findid/${email}`);
         if (response) {
           setUserId(response.data);
           setMessage('');
@@ -69,7 +70,7 @@ const Find = () => {
     const requestData = { 'email': email, 'userId': userId }
     if (emailCofirm() && idCheck()) {
       try {
-        const response = await axios.post(`/user/findpw`, requestData);
+        const response = await axios.post(`${API_BASE_URL}/user/findpw`, requestData);
         setUserId('');
         setMessage('');
         alert(response.data);

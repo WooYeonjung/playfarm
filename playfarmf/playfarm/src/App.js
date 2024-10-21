@@ -45,6 +45,7 @@ function App() {
   // 모달 닫기 함수
   const handleCloseModal = () => {
     setShowModal(false);
+    localStorage.setItem('isModalClosed', 'true');
   };
   //Scroll to top on first render
 
@@ -52,6 +53,11 @@ function App() {
     window.scrollTo({
       top: 0,
     })
+    const isModalClosed = localStorage.getItem('isModalClosed');
+    if (isModalClosed) {
+      setShowModal(false);
+    }
+
   }, []);
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import '../../styles/SignUp.css';
 import { apiCall } from '../../service/apiService';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../service/app-config';
 
 function SignUp() {
   const [idErrMsg, setIdErrMsg] = useState('');
@@ -47,7 +48,7 @@ function SignUp() {
   // id 유효성 및 중복체크 
   const handleCheckDuplicate = async (e) => {
     e.preventDefault();
-    const url = `/user/idcheck/${formData.userId}`;
+    const url = `${API_BASE_URL}/user/idcheck/${formData.userId}`;
     // const data = { userId: formData.userId }
     if (!formData.userId || formData.userId.length < 5 || formData.userId.length > 10) {
       setIdErrMsg('아이디는 5자 이상 10자 이하로 입력해주세요.');
@@ -112,7 +113,7 @@ function SignUp() {
 
   // 닉네임
   const handleCheckDupName = async (e) => {
-    const url = `/user/nickcheck/${formData.nickname}`;
+    const url = `${API_BASE_URL}/user/nickcheck/${formData.nickname}`;
     console.log(formData.nickname);
     if (!formData.nickname || formData.nickname.length < 3 || formData.nickname.length > 10) {
       setNickNameErrMsg('닉네임은 3자 이상 10자 이하로 입력해주세요.');
@@ -162,7 +163,7 @@ function SignUp() {
 
       return false;
     }
-    const url = `/user/emailcheck/${formData.email}`;
+    const url = `${API_BASE_URL}/user/emailcheck/${formData.email}`;
     try {
       const response = await apiCall(url, 'GET',);
       console.log(response);

@@ -6,6 +6,7 @@ import GenreCheckbox from './GenreCheckbox';
 import FormInput from './FormInput';
 import Modal from './Modal';
 import axios from 'axios';
+import { API_BASE_URL } from '../../service/app-config';
 
 const InquiryForm = () => {
     const { loginInfo, setLoginInfo } = useAuth();  // loginInfo와 setLoginInfo를 가져옴
@@ -49,13 +50,13 @@ const InquiryForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const inquiryResponse = await axios.get('http://localhost:8080/api/inquiry-codes/inquiry-types');
+                const inquiryResponse = await axios.get(`${API_BASE_URL}/api/inquiry-codes/inquiry-types`);
                 setInquiryTypes(inquiryResponse.data);
 
-                const platformResponse = await axios.get('http://localhost:8080/api/inquiry-codes/game-platforms');  // 수정된 엔드포인트
+                const platformResponse = await axios.get(`${API_BASE_URL}/api/inquiry-codes/game-platforms`);  // 수정된 엔드포인트
                 setPlatforms(platformResponse.data);
 
-                const genreResponse = await axios.get('http://localhost:8080/api/inquiry-codes/game-genres');  // 수정된 엔드포인트
+                const genreResponse = await axios.get(`${API_BASE_URL}/api/inquiry-codes/game-genres`);  // 수정된 엔드포인트
                 setGenres(genreResponse.data);
             } catch (error) {
                 console.error('서버에서 데이터를 받아오는 중 오류 발생:', error);
@@ -64,7 +65,7 @@ const InquiryForm = () => {
 
         fetchData();
     }, []);
-console.log(platforms);
+    console.log(platforms);
     // 입력값 처리
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -103,7 +104,7 @@ console.log(platforms);
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/api/inquiries', newInquiry, {
+            const response = await axios.post(`${API_BASE_URL}/api/inquiries`, newInquiry, {
                 headers: { 'Content-Type': 'application/json' }
             });
 
@@ -215,7 +216,7 @@ console.log(platforms);
                                             genre={genre.codeInfo}
                                             checked={formData.genres.includes(genre.codeInfo)}
                                             onChange={() => toggleGenre(genre.codeInfo)}
-                                            label={genre.codeInfo}  
+                                            label={genre.codeInfo}
                                         />
                                     ))
                                 ) : (

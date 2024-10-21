@@ -46,7 +46,7 @@ const EditCommunity = () => {
         const fetchPost = async () => {
             if (isLoggedIn && loginInfo.userId) {
                 try {
-                    const response = await axios.get(`/image/detailpost/${fileGroupId}`);
+                    const response = await axios.get(`${API_BASE_URL}/image/detailpost/${fileGroupId}`);
 
                     return response.data
                 } catch (error) {
@@ -171,7 +171,7 @@ const EditCommunity = () => {
         }
 
         try {
-            const response = await axios.put('/community/updatepost', formData, {
+            const response = await axios.put(`${API_BASE_URL}/community/updatepost`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + token

@@ -9,6 +9,7 @@ import '../../styles/WrittenByMe.css';
 import CommunityAdvertising from "./CommunityAdvertising";
 import { useAuth } from '../../service/context/AuthProvider';
 import axios from 'axios';
+import { API_BASE_URL } from "../../service/app-config";
 
 const WrittenByMe = () => {
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
@@ -30,7 +31,7 @@ const WrittenByMe = () => {
                 setLoginUserId(loginInfo.userId); // 로그인된 사용자 ID 설정
                 const token = loginInfo.token
                 try {
-                    const response = await axios.get(`/community/mypost`, {
+                    const response = await axios.get(`${API_BASE_URL}/community/mypost`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer ' + token

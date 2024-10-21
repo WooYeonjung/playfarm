@@ -5,6 +5,7 @@ import '../../styles/WriteCommunity.css';
 import CommunitySelect from './CommunitySelect';
 import CommunityAdvertising from './CommunityAdvertising';
 import { useAuth } from '../../service/context/AuthProvider';
+import { API_BASE_URL } from '../../service/app-config';
 
 const WriteCommunity = () => {
     const [loginUserId, setLoginUserId] = useState(''); // 로그인 되어있는 userId 담기
@@ -112,7 +113,7 @@ const WriteCommunity = () => {
             }
         }
         try {
-            const response = await axios.post('/community/uploadpost', formData, {
+            const response = await axios.post(`${API_BASE_URL}/community/uploadpost`, formData, {
                 headers: headers
             });
             if (response.status === 200) {

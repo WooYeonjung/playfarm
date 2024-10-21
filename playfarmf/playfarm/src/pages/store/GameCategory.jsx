@@ -3,6 +3,7 @@ import '../../styles/GameCategory.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { API_BASE_URL } from '../../service/app-config';
 
 const CheckboxCategory = ({ data, onChange }) => {
     const playtypeData = data.filter(item => item.codeDv === 'playtype');
@@ -70,7 +71,7 @@ function GameCategory({ category, setSelectcheck, theme, setTheme }) {
     const [codeData, setCodeData] = useState([]);
 
     useEffect(() => {
-        axios.get('/code/codelist')
+        axios.get(`${API_BASE_URL}/code/codelist`)
             .then(response => {
                 const codeData = response.data.map(item => ({
                     ...item,

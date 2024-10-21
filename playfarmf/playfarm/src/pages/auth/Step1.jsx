@@ -19,7 +19,6 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
       alert('아이디는 5자 이상 15자 이하로 입력해주세요.');
       return false;
     }
-    debugger
     const foundUser = storedUsers.find(user => user.userid === formData.userid);
 
     if (foundUser) {
