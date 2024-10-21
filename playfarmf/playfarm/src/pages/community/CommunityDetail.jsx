@@ -14,7 +14,7 @@ export default function CommunityDetail() {
     const [comments, setComments] = useState([]);
     const { isLoggedIn, loginInfo, onLogout } = useAuth();
     // const item = userposts.find((item) => item.postId === parseInt(postId));
-
+    console.log(loginInfo);
 
     useEffect(() => {
         window.scrollTo({

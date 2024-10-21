@@ -2,13 +2,13 @@
 
 function gameData() {
 	/*e.preventDefault();*/
-	axios.get('/game/gamelist')
+	axios.get('/admin/store/gamelist')
 		.then(response => {
 			let listData = response.data;
-			
 			document.getElementById("resultArea1").innerHTML = "";
+			document.getElementById("resultArea2").innerHTML = "";
 			document.getElementById("title").innerHTML = "Store";
-			document.getElementById("subtitle1").innerHTML = "Game";
+			document.getElementById("subtitle1").innerHTML = "List of Games on sale";
 
 			let TableArea = document.getElementById("resultArea3");
 			TableArea.innerHTML = "";
@@ -57,7 +57,9 @@ function gameData() {
                         <td>${new Date(game.releaseDate).toLocaleDateString()}</td>
                         <td>${game.price.toLocaleString()}</td>
                         <td>${game.discount}</td>
-						<td>${new Date(game.discendData).toLocaleDateString()}</td>
+						${game.discendDate !== null ?
+							`<td>${new Date(game.discendDate).toLocaleDateString()}</td>`
+							: `<td>null</td>`}
                         <td>${game.playtype}</td>
                         <td>${game.tag}</td>
                         <td>${game.ageRating}</td>
@@ -94,11 +96,9 @@ function gameData() {
 
 function gameListDetail(event, gameId) {
 	event.stopPropagation();
-	console.log(`Game ID clicked: ${gameId}`);
 	axios.get(`/admin/store/detaildata/${gameId}`)
 		.then(response => {
 			let gameDetail = response.data;
-			console.log(gameDetail);
 			document.getElementById("detailTitle").innerHTML = "Detail";
 			const gameDetailArea = document.getElementById("detailArea");
 			const gameDetailContent = document.getElementById("detailContent");
@@ -133,8 +133,8 @@ function gameListDetail(event, gameId) {
 		                <p><strong>수정일:</strong> ${new Date(gameDetail.modDate).toLocaleDateString()}</p>
 					
 					</div>
-					<button onclick="modifyGameData(${gameId})">수정하기</button>
-					<button onclick="editGameDetails(${gameId})">삭제하기</button>
+					<button class="btn btn-primary" onclick="updateGameData(event, ${gameId})">수정하기</button>
+					<button class="btn btn-primary" onclick="disusedGame(event, ${gameId})">삭제하기</button>
 				</div>
 				<div class="col-lg-6">
 				    <div class="card-header">
@@ -229,11 +229,13 @@ function gameListDetail(event, gameId) {
 		});
 }
 
-function modifyGameData(gameId) {
-    const modifyForm = document.getElementById("modifyForm");
+function updateGameData(event, gameId) {
+	event.stopPropagation();
+	alert("수정 기능 점검중에 있습니다.. (Game ID: " + gameId + ")");
+    /*const modifyForm = document.getElementById("modifyForm");*/
     
     // 수정 폼 생성
-    modifyForm.innerHTML = `
+    /*modifyForm.innerHTML = `
         <h3>게임 수정</h3>
         <form id="gamemodifyForm">
             <label for="title">제목:</label>
@@ -253,24 +255,25 @@ function modifyGameData(gameId) {
     `;
     
     // 폼 보이기
-    modifyForm.style.display = "block";
+    modifyForm.style.display = "block";*/
 }
 
-function submitEdit(gameId) {
-    const form = document.getElementById("gamemodifyForm");
+function disusedGame(event, gameId) {
+	event.stopPropagation();
+	/*event.stopPropagation();*/
+    /*const form = document.getElementById("gamemodifyForm");
     const formData = {
         title: form.title.value,
         price: form.price.value,
         discount: form.discount.value,
         details: form.details.value,
-    };
+    };*/
 
     // 서버에 수정 요청 보내기
-    axios.put(`/game/update/${gameId}`, formData)
+    axios.put(`/admin/store/changestatus/${gameId}`)
         .then(response => {
-            alert("게임 정보가 수정되었습니다.");
-            // 수정 후 다시 상세 정보를 가져오거나 UI 업데이트
-            gameListDetail(event, gameId);
+            alert("판매중인 상품에서 삭제되었습니다. 사용하지 않는 상태의 게임은 Status Page에서 확인 가능합니다.");
+            gameListDetail(gameId);
         })
         .catch(err => {
             console.error("Error updating game data:", err);
@@ -298,6 +301,8 @@ async function gameAdd() {
 		.catch(err => {
 			console.error("Error fetching tagCode data:", err);
 		});
+		
+		
 	let addGame = document.getElementById("resultArea1");
 		addGame.innerHTML = `
 			<form id="gameForm">
@@ -366,7 +371,6 @@ async function gameAdd() {
 					  name="ageRating" 
 					  placeholder="연령 제한을 입력해주세요." 
 					  min="0" max="30" 
-					  required
 					>
     			  </div>
 			  </div>
@@ -398,7 +402,6 @@ async function gameAdd() {
 				  id="detailCon" 
 				  name="detailCon" 
 				  placeholder="상품 상세의 게임 소개를 입력해주세요." 
-				  required
 				>
 			  </div>
 			  <div class="row">
@@ -434,7 +437,6 @@ async function gameAdd() {
 					id="modeName2" 
 					name="modeName2" 
 					placeholder="모드 이름을 입력해주세요." 
-					required
 				  >
   			    </div>
 			  	<div class="form-group col-md-8">
@@ -469,15 +471,145 @@ async function gameAdd() {
 					id="modeDesc3" 
 					name="modeDesc3" 
 					placeholder="모드 소개를 입력해주세요." 
-					required
 				  >
   			    </div>
 			  </div>
-			  <h3>Image Data</h3>
-			  <div class="form-group">
-			      <label for="ImageFile">Image Data</label>
-			      <input type="file" class="form-control-file" id="ImageFile" name="GameImg" multiple>
+			  <br>
+			  <h3>Requirement Data</h3>
+			  <!-- 최소 사양 -->
+			  <div class="form-group row">
+			      <label for="DivisionMin" class="col-sm-2 col-form-label"><strong>최소사양</strong></label>
+			      <div class="col-sm-10">
+			          <input type="text" readonly 
+					  		 class="form-control-plaintext" 
+							 id="DivisionMin" 
+							 name="division"
+							 value="min"
+					  >
+			      </div>
 			  </div>
+			  <div class="row" data-type="min">
+			      <div class="form-group col-md-2">
+			          <label for="SelectedOpsysMin">Operating System</label>
+			          <select class="form-control" id="SelectedOpsysMin" name="opsys">
+			              <option value="Windows 10 (64bit)">Windows 10 (64bit)</option>
+			              <option value="Windows 11 (64bit)">Windows 11 (64bit)</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedProcMin">Processor</label>
+			          <select class="form-control" id="SelectedProcMin" name="proc">
+			              <option>Intel Core i7-8700K / AMD Ryzen 5 1600X</option>
+			              <option>Intel Core i7-7700K / AMD Ryzen 7 2700X</option>
+			              <option>Intel Core i7-6700K / AMD Ryzen 5 1600</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-2">
+			          <label for="SelectedMemoryMin">Memory</label>
+			          <select class="form-control" id="SelectedMemoryMin" name="memory">
+			              <option>8 GB RAM</option>
+			              <option>16 GB RAM</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedGraphicsMin">Graphics</label>
+			          <select class="form-control" id="SelectedGraphicsMin" name="graphics">
+			              <option>NVIDIA GeForce GTX 1080</option>
+			              <option>NVIDIA GeForce GTX 1070</option>
+			          </select>
+			      </div>
+			  </div>
+			  <div class="row" data-type="min">
+			      <div class="form-group col-md-2">
+			          <label for="SelectedDverMin">Directx Version</label>
+			          <select class="form-control" id="SelectedDverMin" name="dver">
+			              <option>Version 12</option>
+			              <option>Version 11</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedStorageMin">Storage</label>
+			          <select class="form-control" id="SelectedStorageMin" name="storage">
+			              <option>12 GB available space</option>
+			              <option>10 GB available space</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedScardMin">Sound Card</label>
+			          <select class="form-control" id="SelectedScardMin" name="scard">
+			              <option>DirectX 9.0c Compliant</option>
+			              <option>DirectX 8.0c Compliant</option>
+			          </select>
+			      </div>
+			  </div>
+			  <br>
+			  <!-- 권장 사양 -->
+			  <div class="form-group row">
+			      <label for="DivisionRec" class="col-sm-2 col-form-label"><strong>권장사양</strong></label>
+			      <div class="col-sm-10">
+			          <input type="text" readonly 
+					  		 class="form-control-plaintext" 
+							 id="DivisionRec" 
+							 name="division"
+							 value="rec"
+					  >
+			      </div>
+			  </div>
+			  <div class="row" data-type="rec">
+			      <div class="form-group col-md-2">
+			          <label for="SelectedOpsysRec">Operating System</label>
+			          <select class="form-control" id="SelectedOpsysRec" name="opsys">
+			              <option>Windows 10 (64bit)</option>
+			              <option>Windows 11 (64bit)</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedProcRec">Processor</label>
+			          <select class="form-control" id="SelectedProcRec" name="proc">
+			              <option>Intel Core i7-8700K / AMD Ryzen 5 1600X</option>
+			              <option>Intel Core i7-7700K / AMD Ryzen 7 2700X</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-2">
+			          <label for="SelectedMemoryRec">Memory</label>
+			          <select class="form-control" id="SelectedMemoryRec" name="memory">
+			              <option>8 GB RAM</option>
+			              <option>16 GB RAM</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedGraphicsRec">Graphics</label>
+			          <select class="form-control" id="SelectedGraphicsRec" name="graphics">
+			              <option>NVIDIA GeForce GTX 1080</option>
+			              <option>NVIDIA GeForce GTX 1070</option>
+			          </select>
+			      </div>
+			  </div>
+			  <div class="row" data-type="rec">
+			      <div class="form-group col-md-2">
+			          <label for="SelectedDverRec">Directx Version</label>
+			          <select class="form-control" id="SelectedDverRec" name="dver">
+			              <option>Version 12</option>
+			              <option>Version 11</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedStorageRec">Storage</label>
+			          <select class="form-control" id="SelectedStorageRec" name="storage">
+			              <option>12 GB available space</option>
+			              <option>10 GB available space</option>
+			          </select>
+			      </div>
+			      <div class="form-group col-md-4">
+			          <label for="SelectedScardRec">Sound Card</label>
+			          <select class="form-control" id="SelectedScardRec" name="scard">
+			              <option>DirectX 9.0c Compliant</option>
+			              <option>DirectX 8.0c Compliant</option>
+			          </select>
+			      </div>
+			  </div>
+
+
 			  
 			  <button type="submit" class="btn btn-primary">등록하기</button>
 			</form>
@@ -486,24 +618,89 @@ async function gameAdd() {
 	document.getElementById('gameForm').addEventListener('submit', function (event) {
 	    event.preventDefault(); // 폼의 기본 제출 동작 방지
 
-	    const gameData = {
-	        gameTitle: document.getElementById('gameTitle').value,
-	        releaseDate: document.getElementById('releaseDate').value,
-	        price: parseInt(document.getElementById('price').value),
-	        discount: parseInt(document.getElementById('discount').value),
-	        playtype: document.getElementById('playtype').value,
-	        tag: document.getElementById('tag').value,
-	        ageRating: parseInt(document.getElementById('ageRating').value),
-	        detailCon: document.getElementById('detailCon').value,
-	        modeName1: document.getElementById('modeName1').value,
-	        modeDesc1: document.getElementById('modeDesc1').value,
-	        modeName2: document.getElementById('modeName2').value,
-	        modeDesc2: document.getElementById('modeDesc2').value,
-	        modeName3: document.getElementById('modeName3').value,
-	        modeDesc3: document.getElementById('modeDesc3').value
-	    };
+	    const gameData = new FormData();
+	    gameData.append('gameTitle', document.getElementById('gameTitle').value);
+	    gameData.append('releaseDate', document.getElementById('releaseDate').value);
+	    gameData.append('price', document.getElementById('price').value);
+	    gameData.append('discount', document.getElementById('discount').value);
+	    gameData.append('ageRating', document.getElementById('ageRating').value);
+	    gameData.append('detailCon', document.getElementById('detailCon').value);
+	    gameData.append('modeName1', document.getElementById('modeName1').value);
+	    gameData.append('modeDesc1', document.getElementById('modeDesc1').value);
+	    gameData.append('modeName2', document.getElementById('modeName2').value);
+	    gameData.append('modeDesc2', document.getElementById('modeDesc2').value);
+	    gameData.append('modeName3', document.getElementById('modeName3').value);
+	    gameData.append('modeDesc3', document.getElementById('modeDesc3').value);
 
-	    axios.post('/admin/store/add', gameData)
+	    const selectedPlaytypes = [];
+	    document.querySelectorAll('input[id^="playtypeCheckbox"]:checked').forEach(checkbox => {
+	        selectedPlaytypes.push(checkbox.nextElementSibling.textContent);
+	    });
+	    gameData.append('playtype', selectedPlaytypes.join(','));
+
+	    const selectedTags = [];
+	    document.querySelectorAll('input[id^="tagCheckbox"]:checked').forEach(checkbox => {
+	        selectedTags.push(checkbox.nextElementSibling.textContent);
+	    });
+	    gameData.append('tag', selectedTags.join(','));
+		
+		const minRequirements = {};
+		const recRequirements = {};
+		document.querySelectorAll('.row[data-type]').forEach(row => {
+		       const type = row.getAttribute('data-type'); // 'min' 또는 'rec'
+		       const selects = row.querySelectorAll('select');
+
+		       selects.forEach(select => {
+		           const fieldName = select.id.replace(type.charAt(0).toUpperCase() + type.slice(1), ''); 
+		           const fieldValue = select.value;
+
+		           // 선택된 값이 비어있지 않은지 확인
+		           if (fieldValue) {
+		               if (type === 'min') {
+		                   minRequirements[fieldName] = fieldValue;
+		               } else {
+		                   recRequirements[fieldName] = fieldValue;
+		               }
+		           }
+		       });
+		   });
+
+/*		for (let value of gameData.values()) {
+		  console.log(value);
+		}*/
+		const requestData = {
+		        ...Object.fromEntries(gameData.entries()),
+		        requirements: [
+				{ 
+	                opsys: minRequirements.SelectedOpsys,            
+	                proc: minRequirements.SelectedProc,    
+	                memory: minRequirements.SelectedMemory,         
+	                graphics: minRequirements.SelectedGraphics, 
+	                dver: minRequirements.SelectedDver,         
+	                storage: minRequirements.SelectedStorage,  
+	                scard: minRequirements.SelectedScard,    
+	                division: 'min'
+	            },
+	            { 
+	                opsys: recRequirements.SelectedOpsys,   
+	                proc: recRequirements.SelectedProc,  
+	                memory: recRequirements.SelectedMemory,   
+	                graphics: recRequirements.SelectedGraphics,  
+	                dver: recRequirements.SelectedDver,    
+	                storage: recRequirements.SelectedStorage, 
+	                scard: recRequirements.SelectedScard, 
+	                division: 'rec' 
+	            }
+		        ]
+		    };
+		/*console.log("전송데이터"+ JSON.stringify(requestData));*/
+	    axios.post('/admin/store/add', requestData
+/*		, {
+	        headers: {
+	            'Content-Type': 'multipart/form-data' // 파일 전송 시 필요
+	        }
+	    }*/
+		)
 	        .then(response => {
 	            console.log('Game added successfully', response.data);
 	            alert('Game added successfully!');
@@ -514,6 +711,7 @@ async function gameAdd() {
 	            alert('Failed to add game. Please try again.');
 	        });
 	});
+
 
 }
 
