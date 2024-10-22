@@ -186,12 +186,13 @@ function List1() {
     // }
     const token = storedLoginInfo.token;
     try {
-      const response = await apiCall(`${API_BASE_URL}/user/withdraw`, "GET", '', token);
+      const response = await apiCall(`/user/withdraw`, "GET", '', token);
       if (response) {
         // setMyInfo(response);
-        setLoginInfo(null);
+
         alert(response);
         sessionStorage.clear();
+        setLoginInfo(null);
         navigate("/");
         // onLogout();
       }

@@ -8,6 +8,7 @@ import Outlink from '../pages/mainHome/OutLink';
 import OutLinkList from '../pages/mainHome/OutLinkList'
 import { useAuth } from '../service/context/AuthProvider';
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../service/app-config';
 
 export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,12 +43,12 @@ export default function Header({ showOutLink, clickOutLink, outLinkClose }) {
 
     const Logedout = () => {
         // console.log(isLoggedIn);
-        if (isLoggedIn) {
+        if (loginInfo && isLoggedIn) {
 
             return (
                 <>
                     {/* <li><button onClick={mypageClick} style={{ width: '100%' }}><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</button></li> */}
-                    {loginInfo.userId === 'admin' && <Link to='http://localhost:8080/admin'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />AdminPage</li></Link>}
+                    {loginInfo.userId === 'admin' && <Link to={`${API_BASE_URL}/admin`}> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />AdminPage</li></Link>}
                     <Link to='/mypages'> <li><FontAwesomeIcon className="arcodianIcon" icon={faUser} size='sm' />MyPage</li></Link>
                     <Link to='/cart'><li><FontAwesomeIcon className="arcodianIcon" icon={faCartShopping} size='sm' />Cart</li></Link>
                     <li onClick={handleLogout}><FontAwesomeIcon className="arcodianIcon" icon={faHeadset} size='sm' />LogOut</li>

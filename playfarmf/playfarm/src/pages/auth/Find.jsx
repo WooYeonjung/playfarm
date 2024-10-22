@@ -35,17 +35,18 @@ const Find = () => {
 
     if (emailCofirm()) {
       try {
-        const response = await axios.get(`${API_BASE_URL}API_BASE_URL/user/findid/${email}`);
+        const response = await axios.get(`${API_BASE_URL}/user/findid/${email}`);
         if (response) {
           setUserId(response.data);
           setMessage('');
+          console.log(response.data);
         }
       } catch (err) {
-        if (err.response.status === 502) {
-          setMessage(err.response.data);
+        if (err.response === 502) {
+          setMessage(err.response);
           setUserId('');
         } else {
-          setMessage(err.response.data);
+          setMessage(err.response);
           setUserId('');
         }
       }
