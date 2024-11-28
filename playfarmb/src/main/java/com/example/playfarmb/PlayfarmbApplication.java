@@ -11,17 +11,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @MapperScan("com.example.playfarmb.mapperInterface.*")
 @SpringBootApplication //(exclude= {SecurityAutoConfiguration.class})
 @EnableJpaAuditing
-public class PlayfarmbApplication extends SpringBootServletInitializer{
+public class PlayfarmbApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(PlayfarmbApplication.class, args);
 	}
 	
-	
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		// TODO Auto-generated method stub
-		return builder.sources(this.getClass());
-	}
+
 
 }

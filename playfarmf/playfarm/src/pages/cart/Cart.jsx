@@ -134,7 +134,7 @@ export default function Cart() {
             try {
 
                 const token = loginInfo.token
-                const response = await axios.delete("/cart/cartdelete", {
+                const response = await axios.delete(`${API_BASE_URL}/cart/cartdelete`, {
                     headers:
                     {
                         'Content-Type': 'application/json',

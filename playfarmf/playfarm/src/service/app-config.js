@@ -30,9 +30,11 @@ const hostname = window && window.location && window.location.hostname;
           값을 false로 변환 가능하면 (값이 존재안하는경우 '' 등) 거짓.
 
 */
-
 if (hostname === "localhost") {
   backendHost = "http://localhost:8080";
+} else {
+  backendHost = "http://13.125.97.183:8080";
 }
+
 
 export const API_BASE_URL = `${backendHost}`;

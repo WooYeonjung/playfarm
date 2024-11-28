@@ -13,7 +13,6 @@
 	<artifactId>playfarmb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>playfarmb</name>
-	<packaging>war</packaging>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>
